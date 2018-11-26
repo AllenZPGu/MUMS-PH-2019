@@ -1,0 +1,36 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+	<div>
+		<div class="col-md-12">
+			{% if user.is_authenticated %}
+				<h4>
+					<div class="alert alert-info text-center" role="alert">
+						<b>Hi {{user.username}}!</b>
+					</div>
+				</h4>
+				<div class="btn-group btn-group-justified" role="group">
+					<div class="btn-group" role="group">
+						<button type="button" class="btn btn-primary" onclick="window.location='/puzzles/';" >Puzzless</button>
+					</div>
+				</div>
+				
+			{% else %}
+				<h4>
+					<div class="alert alert-info text-center" role="alert">
+						<b>Hi! Please login.</b>
+					</div>
+				</h4>
+				<div class="btn-group btn-group-justified" role="group">
+					<div class="btn-group" role="group">
+						<button type="button" class="btn btn-primary" onclick="window.location='/login/';" >Login</button>
+					</div>
+				</div>
+				
+			{% endif %}
+		</div>
+
+	</div>
+
+{% endblock %}
