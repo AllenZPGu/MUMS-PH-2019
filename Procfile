@@ -1,1 +1,1 @@
-web: gunicorn PH_backend/PH_backend.wsgi --log-file -
+web: gunicorn --pythonpath PH_backend PH_backend.wsgi --log-file -
