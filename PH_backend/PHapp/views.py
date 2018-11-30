@@ -15,9 +15,6 @@ def index(request):
 def puzzles(request):
 	return render(request, 'PHapp/puzzles.html')
 
-def specificPuzzle(request, path):
-	return FileResponse(open('PHapp/puzzleFiles/{}.pdf'.format(path), 'rb'), content_type='application/pdf')
-
 def faq(request):
 	return render(request, 'PHapp/faq.html')
 
