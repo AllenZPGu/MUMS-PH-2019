@@ -125,7 +125,7 @@ django_heroku.settings(locals())
 STATIC_URL = '/puzzle/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-    'PHapp/puzzleFiles'
+    os.path.join(BASE_DIR, 'PHapp/puzzleFiles')
 ]
 
 CSRF_USE_SESSIONS = True
