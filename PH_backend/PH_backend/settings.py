@@ -1,5 +1,6 @@
 import os
 import django_heroku
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -76,6 +77,7 @@ DATABASES = {
         'HOST': 'ec2-50-19-249-121.compute-1.amazonaws.com',
         'PORT': '5432',
     }
+    # 'default':dj_database_url.config(conn_max_age=600, ssl_require=True)
 }
 
 LOGIN_URL = '/login/'
@@ -117,10 +119,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-CSRF_USE_SESSIONS = True
-
 # Activate Django-Heroku.
 django_heroku.settings(locals())
+
+STATIC_URL = '/puzzle/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    'PHapp/puzzleFiles'
+]
+
+CSRF_USE_SESSIONS = True
