@@ -12,8 +12,9 @@ import random
 def index(request):
 	return render(request, 'PHapp/home.html')
 
+@login_required
 def puzzles(request):
-	return render(request, 'PHapp/puzzles.html')
+	return render(request, 'PHapp/puzzles.html', {'puz1':'1.1_Pursued_by_a_Bear.pdf'})
 
 def faq(request):
 	return render(request, 'PHapp/faq.html')

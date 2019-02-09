@@ -3,7 +3,11 @@
 
 {% block content %}
 	<div>
-		<a href="{% static "1.1_Pursued_by_a_Bear.pdf" %}">Pursued by a Bear</a>
+		{% with puz1 as puzz1 %}
+			<a href="{% static puzz1 %}">Pursued by a Bear</a>
+		{% endwith %}
+		<br>
+		<a href="{% static "1.2_Fall_of_Grace.pdf" %}">Fall of Grace</a>
 	</div>
 
 {% endblock %}
