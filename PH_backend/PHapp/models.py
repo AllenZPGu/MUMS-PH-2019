@@ -7,7 +7,7 @@ class Puzzles(models.Model):
 	act = models.IntegerField(null=True, default=0)
 	scene = models.IntegerField(null=True, default=0)
 	pdfPath = models.CharField(max_length=200, null=True)
-	answers = models.CharField(max_length=500, null=True)
+	answer = models.CharField(max_length=500, null=True)
 	winPun = models.CharField(max_length=300, null=True)
 	losePun = models.CharField(max_length=300, null=True)
 

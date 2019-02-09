@@ -14,7 +14,8 @@ def index(request):
 
 @login_required
 def puzzles(request):
-	return render(request, 'PHapp/puzzles.html', {'puz1':'1.1_Pursued_by_a_Bear.pdf'})
+	puzzleList = [i for i in Puzzles.objects.all()]
+	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList})
 
 def faq(request):
 	return render(request, 'PHapp/faq.html')

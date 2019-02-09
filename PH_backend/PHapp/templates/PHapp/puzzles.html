@@ -3,11 +3,13 @@
 
 {% block content %}
 	<div>
-		{% with puz1 as puzz1 %}
-			<a href="{% static puzz1 %}">Pursued by a Bear</a>
-		{% endwith %}
-		<br>
-		<a href="{% static "1.2_Fall_of_Grace.pdf" %}">Fall of Grace</a>
+		{% for i in puzzleList %}
+			{% with i.pdfPath as puz %}
+				<a href="{% static puz %}"> {{i.title}} </a>
+			{% endwith %}
+			<br>
+		{% endfor %}
+		<!-- <a href="{% static "1.2_Fall_of_Grace.pdf" %}">Fall of Grace</a> -->
 	</div>
 
 {% endblock %}
