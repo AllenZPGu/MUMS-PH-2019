@@ -3,13 +3,24 @@
 
 {% block content %}
 	<div>
-		{% for i in puzzleList %}
-			{% with i.pdfPath as puz %}
-				<a href="{% static puz %}"> {{i.title}} </a>
-			{% endwith %}
-			<br>
-		{% endfor %}
-		<!-- <a href="{% static "1.2_Fall_of_Grace.pdf" %}">Fall of Grace</a> -->
+		<table class="table table-bordered">
+			<tbody>
+				{% for i in puzzleList %}
+					<tr>
+						<td>Act {{i.act}}, Scene {{i.scene}}</td>
+						<td>
+							{% with i.pdfPath as puz %}
+								<a href="{% static puz %}">{{i.title}}</a>
+							{% endwith %}
+						</td>
+						<td>
+							<a href="/solve/{{i.act}}.{{i.scene}}/solve/">Solve</a>
+						</td>
+						<td>Hints</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	</div>
 
 {% endblock %}

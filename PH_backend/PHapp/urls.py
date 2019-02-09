@@ -9,7 +9,8 @@ settings.STATIC_URL = '/puzzle/'
 
 urlpatterns = [
 	url(r'^$', views.index, name='index'),
-	url(r'^puzzles/$', views.puzzles, name='puzzles'),
+	path('puzzles/', views.puzzles),
+	path('solve/<str:chapter>/<str:status>/', views.solve),
 	url(r'^teams/$', views.teams, name='teams'),
 	url(r'^faq/$', views.faq, name='faq'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

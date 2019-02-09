@@ -1,0 +1,19 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+	{% if status == 'wrong' %}
+		<h3>Incorrect! {{puzzle.losePun}}</h3>
+	{% endif %}
+	<div>
+		<h4>Enter a guess for Act {{puzzle.act}} Scene {{puzzle.scene}}: {{puzzle.title}}</h4>
+	</div>
+	<div>
+		<form method="post">
+			{% csrf_token %}
+			{{solveform}}
+			<input type="submit" value="Submit">
+		</form>
+	</div>
+
+{% endblock %}
