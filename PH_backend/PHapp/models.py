@@ -22,6 +22,7 @@ class Teams(models.Model):
 	id = models.AutoField(primary_key=True)
 	authClone = models.ForeignKey(User, models.DO_NOTHING, db_column='authClone', null=True)
 	teamName = models.CharField(max_length=50, null=True)
+	teamPoints = models.IntegerField(null=True, default=0)
 
 	class Meta:
 		db_table = 'Teams'

@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'PHapp',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -122,10 +123,12 @@ USE_TZ = True
 # Activate Django-Heroku.
 django_heroku.settings(locals())
 
-STATIC_URL = '/puzzle/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'PHapp/puzzleFiles')
+    #os.path.join(BASE_DIR, 'PHapp/puzzleFiles'),
 ]
 
 CSRF_USE_SESSIONS = True
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

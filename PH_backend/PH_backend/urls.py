@@ -21,6 +21,6 @@ urlpatterns = [
     path('', include('PHapp.urls')),
     path('', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    path('accounts/logout/', auth_views.LogoutView.as_view(next_page='/')),
+    #path('accounts/logout/', auth_views.LogoutView.as_view(next_page='/')),
     #path('accounts/', include()),
 ]

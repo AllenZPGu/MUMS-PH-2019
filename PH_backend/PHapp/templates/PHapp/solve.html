@@ -1,5 +1,6 @@
 {% extends "PHapp/header.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 	{% if status == 'wrong' %}
@@ -10,9 +11,11 @@
 	</div>
 	<div>
 		<form method="post">
-			{% csrf_token %}
-			{{solveform}}
-			<input type="submit" value="Submit">
+			<div class="form-group">
+				{% csrf_token %}
+				{{ solveform|crispy }}
+				<button type="submit" class="btn btn-success">Submit</button>
+			</div>
 		</form>
 	</div>
 

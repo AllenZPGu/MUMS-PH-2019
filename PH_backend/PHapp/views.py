@@ -9,6 +9,7 @@ from django.conf import settings
 import json
 import datetime
 import random
+import os
 
 def stripToLetters(inputStr):
 	allAlph = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -28,13 +29,20 @@ def puzzles(request):
 	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList})
 
 @login_required
+def showPuzzle(request, puzzleURL):
+	try:
+		return FileResponse(open(os.path.join(settings.BASE_DIR, 'PHapp/puzzleFiles/', puzzleURL), 'rb'), content_type='application/pdf')
+	except FileNotFoundError:
+		raise Http404("PDF file not found at "+os.path.join(settings.BASE_DIR, 'PHapp/puzzleFiles/', puzzleURL))
+
+@login_required
 def solve(request, chapter, status):
 	if status not in ('solve', 'wrong'):
 		raise Http404("This site does not exist!!!!!")
 
 	puzzle = Puzzles.objects.get(act = chapter[0], scene = chapter[2])
 	
-	if True in [i.correct for i in SubmittedGuesses.objects.filter(team = request.user)]:
+	if True in [i.correct for i in SubmittedGuesses.objects.filter(team = request.user, puzzle = puzzle)]:
 		return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle})
 	
 	if request.method == 'POST':

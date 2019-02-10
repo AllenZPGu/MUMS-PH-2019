@@ -9,10 +9,8 @@
 					<tr>
 						<td>Act {{i.act}}, Scene {{i.scene}}</td>
 						<td>
-							{% with "/puzzle/"|add:i.pdfPath as puz %}
-								<!-- <a href="{% static puz %}">{{i.title}}</a> -->
-
-								<a href='{{puz}}'>{{i.title}}</a>
+							{% with i.pdfPath as puz %}
+								<a href="{% static puz %}">{{i.title}}</a>
 							{% endwith %}
 						</td>
 						<td>
@@ -24,7 +22,5 @@
 			</tbody>
 		</table>
 	</div>
-
-	<h1>A test of the CSS</h1>
 
 {% endblock %}
