@@ -1,3 +1,3 @@
-CALL PHenv\Scripts\activate.bat
+CALL ../PHenv/Scripts/activate.bat
 pip install -r ../requirements.txt
 pause
