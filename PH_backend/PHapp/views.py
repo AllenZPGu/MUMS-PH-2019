@@ -10,14 +10,7 @@ import json
 import datetime
 import random
 import os
-
-def stripToLetters(inputStr):
-	allAlph = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-	outputStr = ''
-	for char in inputStr:
-		if char in allAlph:
-			outputStr += char
-	return outputStr.lower()
+from .helperFunctions import *
 
 def index(request):
 	return render(request, 'PHapp/home.html')
