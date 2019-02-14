@@ -60,6 +60,10 @@ def solve(request, chapter, status):
 
 	return render(request, 'PHapp/solve.html', {'solveform':solveform, 'chapter':chapter, 'status':status, 'puzzle':puzzle})
 
+def teamReg(request):
+	return render(request, 'PHapp/teamReg.html')
+
+
 def faq(request):
 	return render(request, 'PHapp/faq.html')
 

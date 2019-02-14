@@ -12,6 +12,7 @@ urlpatterns = [
 	path('puzzles/', views.puzzles),
 	path('puzzle/<str:puzzleURL>', views.showPuzzle),
 	path('solve/<str:chapter>/<str:status>/', views.solve),
+	path('registration/', views.teamReg),
 	url(r'^teams/$', views.teams, name='teams'),
 	url(r'^faq/$', views.faq, name='faq'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
