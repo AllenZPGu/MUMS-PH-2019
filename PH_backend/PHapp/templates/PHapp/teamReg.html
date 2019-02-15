@@ -1,9 +1,51 @@
 {% extends "PHapp/header.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
 
+<div>
+		<form method="post">
+			<div class="form-group">
+				{% csrf_token %}
+				{{ regForm.username|as_crispy_field }}
+				{{ regForm.password1|as_crispy_field }}
+				{{ regForm.password2|as_crispy_field }}
+				{{ regForm.teamName|as_crispy_field }}
+
+				<div class="form-row">
+					<div class="col-1"></div>
+					<div class="col">Name</div>
+					<div class="col">Email</div>
+					<div class="col-1">Residing in Australia</div>
+					<div class="col-2">Current University of Melbourne student</div>
+				</div>
+
+				{% for no, memberForm in memberForms.items %}
+					<div class="form-row">
+						<div class="col-1">
+							Member {{no}}
+						</div>
+						<div class="col">
+							{{ memberForm.name|as_crispy_field }}
+						</div>
+						<div class="col">
+							{{ memberForm.email|as_crispy_field }}
+						</div>
+						<div class="col-1">
+							{{ memberForm.aussie|as_crispy_field }}
+						</div>
+						<div class="col-2">
+							{{ memberForm.melb|as_crispy_field }}
+						</div>
+					</div>
+				{% endfor %}
+
+				<button type="submit" class="btn btn-success">Submit</button>
+			</div>
+		</form>
+	</div>
 
 
 {% endblock %}

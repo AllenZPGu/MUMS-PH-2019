@@ -23,6 +23,7 @@ class Individuals(models.Model):
 	name = models.CharField(max_length=100, null=True)
 	email = models.EmailField(max_length=254, null=True)
 	aussie = models.BooleanField(null=True)
+	melb = models.BooleanField(null=True)
 
 	class Meta:
 		db_table = 'Individuals'

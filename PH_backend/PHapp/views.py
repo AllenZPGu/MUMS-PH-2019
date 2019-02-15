@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, FileResponse, Http404
 from django.contrib.auth.models import User
 from .models import Puzzles, Teams, SubmittedGuesses
-from .forms import SolveForm
+from .forms import SolveForm, TeamRegForm, IndividualRegForm
 from django.conf import settings
 import json
 import datetime
@@ -61,8 +61,17 @@ def solve(request, chapter, status):
 	return render(request, 'PHapp/solve.html', {'solveform':solveform, 'chapter':chapter, 'status':status, 'puzzle':puzzle})
 
 def teamReg(request):
-	return render(request, 'PHapp/teamReg.html')
+	if request.user.is_authenticated:
+		raise Http404("Your team has already been registered.")
 
+	if request.method == 'POST':
+		regForm = TeamRegForm(request.POST)
+		if regForm.is_valid():
+			pass
+	else:
+		regForm = TeamRegForm()
+		memberForms = {i+1:IndividualRegForm() for i in range(10)}
+	return render(request, 'PHapp/teamReg.html', {'regForm':regForm, 'memberForms':memberForms})
 
 def faq(request):
 	return render(request, 'PHapp/faq.html')
