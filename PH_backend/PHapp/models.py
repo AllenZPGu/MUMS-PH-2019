@@ -22,8 +22,8 @@ class Individuals(models.Model):
 	id = models.AutoField(primary_key=True)
 	name = models.CharField(max_length=100, null=True)
 	email = models.EmailField(max_length=254, null=True)
-	aussie = models.BooleanField(null=True)
-	melb = models.BooleanField(null=True)
+	aussie = models.BooleanField(default = False)
+	melb = models.BooleanField(default = False)
 
 	class Meta:
 		db_table = 'Individuals'
@@ -53,7 +53,7 @@ class SubmittedGuesses(models.Model):
 	team = models.ForeignKey(User, models.DO_NOTHING, db_column = 'team', null=True)
 	puzzle = models.ForeignKey(Puzzles, models.DO_NOTHING, db_column = 'puzzle', null=True)
 	guess = models.CharField(max_length=200, null=True)
-	correct = models.BooleanField(null=True)
+	correct = models.BooleanField(default = False)
 	submitTime = models.DateTimeField(null=True)
 
 	class Meta:
