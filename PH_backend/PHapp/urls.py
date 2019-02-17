@@ -8,7 +8,7 @@ from . import views
 #settings.STATIC_URL = '/static/'
 
 urlpatterns = [
-	url(r'^$', views.index, name='index'),
+	path('', views.index),
 	path('puzzles/', views.puzzles),
 	path('puzzle/<str:puzzleURL>', views.showPuzzle),
 	path('solve/<str:chapter>/<str:status>/', views.solve),
