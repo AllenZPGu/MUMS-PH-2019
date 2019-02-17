@@ -4,48 +4,61 @@
 
 {% block content %}
 
+<h2>Team registration</h2>
+<h6>An asterisk (*) denotes a required field.</h6>
 
 <div>
-		<form method="post">
-			<div class="form-group">
-				{% csrf_token %}
-				{{ regForm.username|as_crispy_field }}
-				{{ regForm.password1|as_crispy_field }}
-				{{ regForm.password2|as_crispy_field }}
-				{{ regForm.teamName|as_crispy_field }}
+	<form method="post">
+		<div class="form-group">
+			{% csrf_token %}
 
-				<div class="form-row">
-					<div class="col-1"></div>
-					<div class="col">Name</div>
-					<div class="col">Email</div>
-					<div class="col-1">Residing in Australia</div>
-					<div class="col-2">Current University of Melbourne student</div>
-				</div>
+			{{ regForm|crispy }}
 
-				{% for no, memberForm in memberForms.items %}
-					<div class="form-row">
-						<div class="col-1">
-							Member {{no}}
-						</div>
-						<div class="col">
-							{{ memberForm.name|as_crispy_field }}
-						</div>
-						<div class="col">
-							{{ memberForm.email|as_crispy_field }}
-						</div>
-						<div class="col-1">
-							{{ memberForm.aussie|as_crispy_field }}
-						</div>
-						<div class="col-2">
-							{{ memberForm.melb|as_crispy_field }}
-						</div>
-					</div>
-				{% endfor %}
+			<br>
+			<h4>Team members*</h4>
+			<h6>Please enter details for at least 1 and at most 10 team members. Unused fields may be left blank.</h6>
 
-				<button type="submit" class="btn btn-success">Submit</button>
+			<div class="form-row">
+				<div class="col">Name</div>
+				<div class="col">Email</div>
+				<div class="col-1">Australian resident</div>
+				<div class="col-2">Current University of Melbourne student</div>
 			</div>
-		</form>
-	</div>
 
+			<div id="indivRegForm">
+			</div>
+
+			{{ indivFormSet.management_form }}
+
+			{% for memberForm in indivFormSet.forms %}
+				<div class="form-row formset_row">
+					<div class="col">
+						{{ memberForm.name|as_crispy_field }}
+					</div>
+					<div class="col">
+						{{ memberForm.email|as_crispy_field }}
+					</div>
+					<div class="col-1">
+						{{ memberForm.aussie|as_crispy_field }}
+					</div>
+					<div class="col-2">
+						{{ memberForm.melb|as_crispy_field }}
+					</div>
+				</div>
+			{% endfor %}
+
+			<button type="submit" class="btn btn-success btn-block">Submit</button>
+		</div>
+	</form>
+</div>
+
+<!-- <script src="{% static 'PHapp/js/jquery.formset.js'%}"></script>
+<script type="text/javascript">
+  $('.formset_row').formset({
+      addText: 'Add member',
+      deleteText: 'Remove member',
+      prefix: 'familymember_set'
+  });
+</script> -->
 
 {% endblock %}

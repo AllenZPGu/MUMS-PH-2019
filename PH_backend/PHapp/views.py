@@ -3,8 +3,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, FileResponse, Http404
 from django.contrib.auth.models import User
+from django.forms import formset_factory, ValidationError
 from .models import Puzzles, Teams, SubmittedGuesses
-from .forms import SolveForm, TeamRegForm, IndividualRegForm
+from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet
 from django.conf import settings
 import json
 import datetime
@@ -60,18 +61,35 @@ def solve(request, chapter, status):
 
 	return render(request, 'PHapp/solve.html', {'solveform':solveform, 'chapter':chapter, 'status':status, 'puzzle':puzzle})
 
+# def teamReg(request):
+# 	if request.user.is_authenticated:
+# 		raise Http404("Your team has already been registered.")
+
+# 	if request.method == 'POST':
+# 		indivFormSet = IndivRegFormSet(request.POST)
+
+# 		if indivFormSet.is_valid():
+# 			print("grrr")
+			
+# 	else:
+# 		indivFormSet = IndivRegFormSet()
+# 	return render(request, 'PHapp/teamReg.html', {'indivFormSet':indivFormSet})
+
 def teamReg(request):
 	if request.user.is_authenticated:
 		raise Http404("Your team has already been registered.")
 
 	if request.method == 'POST':
 		regForm = TeamRegForm(request.POST)
-		if regForm.is_valid():
+		indivFormSet = IndivRegFormSet(request.POST)
+
+		if indivFormSet.is_valid() and regForm.is_valid():
 			pass
+			
 	else:
 		regForm = TeamRegForm()
-		memberForms = {i+1:IndividualRegForm() for i in range(10)}
-	return render(request, 'PHapp/teamReg.html', {'regForm':regForm, 'memberForms':memberForms})
+		indivFormSet = IndivRegFormSet()
+	return render(request, 'PHapp/teamReg.html', {'regForm':regForm, 'indivFormSet':indivFormSet})
 
 def faq(request):
 	return render(request, 'PHapp/faq.html')
