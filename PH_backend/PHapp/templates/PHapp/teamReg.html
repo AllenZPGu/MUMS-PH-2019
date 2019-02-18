@@ -15,8 +15,16 @@
 			{{ regForm|crispy }}
 
 			<br>
+			{{ indivFormSet.management_form }}
+
 			<h4>Team members*</h4>
 			<h6>Please enter details for at least 1 and at most 10 team members. Unused fields may be left blank.</h6>
+
+			{% if indivFormSet.non_form_errors %}
+				<div class="alert alert-danger" role="alert">
+					{{ indivFormSet.non_form_errors }}
+				</div>
+			{% endif %}
 
 			<div class="form-row">
 				<div class="col">Name</div>
@@ -27,8 +35,6 @@
 
 			<div id="indivRegForm">
 			</div>
-
-			{{ indivFormSet.management_form }}
 
 			{% for memberForm in indivFormSet.forms %}
 				<div class="form-row formset_row">
@@ -54,11 +60,11 @@
 
 <!-- <script src="{% static 'PHapp/js/jquery.formset.js'%}"></script>
 <script type="text/javascript">
-  $('.formset_row').formset({
-      addText: 'Add member',
-      deleteText: 'Remove member',
-      prefix: 'familymember_set'
-  });
+	$('.formset_row').formset({
+			addText: 'Add member',
+			deleteText: 'Remove member',
+			prefix: 'familymember_set'
+	});
 </script> -->
 
 {% endblock %}

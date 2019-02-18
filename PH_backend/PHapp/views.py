@@ -67,7 +67,6 @@ def solve(request, chapter, status):
 
 # 	if request.method == 'POST':
 # 		indivFormSet = IndivRegFormSet(request.POST)
-
 # 		if indivFormSet.is_valid():
 # 			print("grrr")
 			
@@ -82,9 +81,9 @@ def teamReg(request):
 	if request.method == 'POST':
 		regForm = TeamRegForm(request.POST)
 		indivFormSet = IndivRegFormSet(request.POST)
-
+		
 		if indivFormSet.is_valid() and regForm.is_valid():
-			pass
+			print('Passed')
 			
 	else:
 		regForm = TeamRegForm()
