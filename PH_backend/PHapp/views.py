@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse, FileResponse, Http404
 from django.contrib.auth.models import User
 from django.forms import formset_factory, ValidationError
-from .models import Puzzles, Teams, SubmittedGuesses
+from .models import Puzzles, Teams, SubmittedGuesses, Individuals
 from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet
 from django.conf import settings
 import json
@@ -61,34 +62,47 @@ def solve(request, chapter, status):
 
 	return render(request, 'PHapp/solve.html', {'solveform':solveform, 'chapter':chapter, 'status':status, 'puzzle':puzzle})
 
-# def teamReg(request):
-# 	if request.user.is_authenticated:
-# 		raise Http404("Your team has already been registered.")
-
-# 	if request.method == 'POST':
-# 		indivFormSet = IndivRegFormSet(request.POST)
-# 		if indivFormSet.is_valid():
-# 			print("grrr")
-			
-# 	else:
-# 		indivFormSet = IndivRegFormSet()
-# 	return render(request, 'PHapp/teamReg.html', {'indivFormSet':indivFormSet})
-
 def teamReg(request):
 	if request.user.is_authenticated:
 		raise Http404("Your team has already been registered.")
 
 	if request.method == 'POST':
+		userForm = UserCreationForm(request.POST)
 		regForm = TeamRegForm(request.POST)
 		indivFormSet = IndivRegFormSet(request.POST)
 		
-		if indivFormSet.is_valid() and regForm.is_valid():
-			print('Passed')
+		if userForm.is_valid() and indivFormSet.is_valid() and regForm.is_valid():
+			userForm.save()
+
+			username = userForm.cleaned_data.get('username')
+			raw_password = userForm.cleaned_data.get('password1')
+			user = authenticate(username=username, password=raw_password)
+			login(request, user)
+
+			newTeam = Teams()
+			newTeam.authClone = user
+			newTeam.teamName = regForm.cleaned_data.get('teamName')
+			newTeam.teamEmail = regForm.cleaned_data.get('teamEmail')
+			newTeam.save()
+
+			for indivForm in indivFormSet:
+				if indivForm.cleaned_data.get('name') == None:
+					continue
+				newIndiv = Individuals()
+				newIndiv.name = indivForm.cleaned_data.get('name')
+				newIndiv.email = indivForm.cleaned_data.get('email')
+				newIndiv.aussie = indivForm.cleaned_data.get('aussie')
+				newIndiv.melb = indivForm.cleaned_data.get('melb')
+				newIndiv.team = newTeam
+				newIndiv.save()
 			
+			return redirect('/')
+
 	else:
+		userForm = UserCreationForm()
 		regForm = TeamRegForm()
 		indivFormSet = IndivRegFormSet()
-	return render(request, 'PHapp/teamReg.html', {'regForm':regForm, 'indivFormSet':indivFormSet})
+	return render(request, 'PHapp/teamReg.html', {'userForm':userForm, 'regForm':regForm, 'indivFormSet':indivFormSet})
 
 def faq(request):
 	return render(request, 'PHapp/faq.html')

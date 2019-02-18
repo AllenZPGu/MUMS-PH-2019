@@ -11,20 +11,21 @@
 	<form method="post">
 		<div class="form-group">
 			{% csrf_token %}
-
-			{{ regForm|crispy }}
-
-			<br>
 			{{ indivFormSet.management_form }}
-
-			<h4>Team members*</h4>
-			<h6>Please enter details for at least 1 and at most 10 team members. Unused fields may be left blank.</h6>
 
 			{% if indivFormSet.non_form_errors %}
 				<div class="alert alert-danger" role="alert">
 					{{ indivFormSet.non_form_errors }}
 				</div>
 			{% endif %}
+
+			{{ userForm|crispy }}
+			{{ regForm|crispy }}
+
+			<br>
+
+			<h4>Team members*</h4>
+			<h6>Please enter details for at least 1 and at most 10 team members. Unused fields may be left blank.</h6>			
 
 			<div class="form-row">
 				<div class="col">Name</div>
@@ -53,7 +54,9 @@
 				</div>
 			{% endfor %}
 
+			<br>
 			<button type="submit" class="btn btn-success btn-block">Submit</button>
+			<br>
 		</div>
 	</form>
 </div>
