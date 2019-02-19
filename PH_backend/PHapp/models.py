@@ -24,6 +24,7 @@ class Teams(models.Model):
 	teamName = models.CharField(max_length=50, unique=True, null=True)
 	teamPoints = models.IntegerField(default=0)
 	teamEmail = models.EmailField(max_length=254, null=True, blank=True, unique=True)
+	aussie = models.BooleanField(default=False)
 
 	class Meta:
 		db_table = 'Teams'

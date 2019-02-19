@@ -29,6 +29,10 @@ class IndivRegForm(forms.Form):
 	aussie = forms.BooleanField(required = False, label="")
 	melb = forms.BooleanField(required = False, label="")
 
+class LoginForm(forms.Form):
+	username = forms.CharField(label='Username')
+	password = forms.CharField(widget=forms.PasswordInput, label='Password')
+
 class BaseIndivRegFormSet(forms.BaseFormSet):
 	def clean(self):
 		if any(self.errors):
@@ -38,6 +42,5 @@ class BaseIndivRegFormSet(forms.BaseFormSet):
 		emailsList = [i.cleaned_data.get('email') for i in self.forms]
 		if checkListAllNone(namesList) or checkListAllNone(emailsList):
 			raise forms.ValidationError("Please ensure that at least one member's details are recorded.")
-
 
 IndivRegFormSet = forms.formset_factory(IndivRegForm, formset=BaseIndivRegFormSet, extra=10)

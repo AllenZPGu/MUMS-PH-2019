@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse, FileResponse, Http404
 from django.contrib.auth.models import User
 from django.forms import formset_factory, ValidationError
 from .models import Puzzles, Teams, SubmittedGuesses, Individuals
-from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet
+from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginForm
 from django.conf import settings
 import json
 import datetime
@@ -70,7 +70,7 @@ def teamReg(request):
 		userForm = UserCreationForm(request.POST)
 		regForm = TeamRegForm(request.POST)
 		indivFormSet = IndivRegFormSet(request.POST)
-		print(regForm.errors)
+
 		if userForm.is_valid() and indivFormSet.is_valid() and regForm.is_valid():
 			userForm.save()
 
@@ -79,12 +79,11 @@ def teamReg(request):
 			user = authenticate(username=username, password=raw_password)
 			login(request, user)
 
-			# newTeam = Teams()
-			# newTeam.authClone = user
-			# newTeam.teamName = regForm.cleaned_data.get('teamName')
-			# newTeam.teamEmail = None if regForm.cleaned_data.get('teamEmail') == "" else regForm.cleaned_data.get('teamEmail')
-			# newTeam.save()
-
+			newTeam = regForm.save()
+			newTeam.authClone = user
+			newTeam.save()
+			newTeam.aussie = False
+			
 			for indivForm in indivFormSet:
 				if indivForm.cleaned_data.get('name') == None:
 					continue
@@ -93,11 +92,14 @@ def teamReg(request):
 				newIndiv.email = indivForm.cleaned_data.get('email')
 				newIndiv.aussie = indivForm.cleaned_data.get('aussie')
 				newIndiv.melb = indivForm.cleaned_data.get('melb')
-				#newIndiv.team = newTeam
+				newIndiv.team = newTeam
 				newIndiv.save()
-			
-			return redirect('/')
+				if newIndiv.aussie:
+					newTeam.aussie = True
 
+			newTeam.save()
+			return redirect('/')
+	
 	else:
 		userForm = UserCreationForm()
 		regForm = TeamRegForm()
@@ -108,4 +110,33 @@ def faq(request):
 	return render(request, 'PHapp/faq.html')
 
 def teams(request):
-	return render(request, 'PHapp/home.html')
+	return render(request, 'PHapp/teams.html')
+
+def about(request):
+	return render(request, 'PHapp/about.html')
+
+def loginCustom(request):
+	if request.user.is_authenticated:
+		return redirect('/')
+
+	if request.method == 'POST':
+		loginForm = LoginForm(request.POST)
+		if loginForm.is_valid():
+			username = loginForm.cleaned_data.get('username')
+			password = loginForm.cleaned_data.get('password')
+			user = authenticate(username=username, password=password)
+			
+			if user == None:
+				loginForm = LoginForm()
+				return render(request, 'PHapp/login.html', {'loginForm':loginForm, 'wrong':True})
+			else:
+				login(request, user)
+				return redirect('/')
+	else:
+		loginForm = LoginForm()
+
+	return render(request, 'PHapp/login.html', {'loginForm':loginForm, 'wrong':False})
+
+def logoutCustom(request):
+	logout(request)
+	return redirect('/')
