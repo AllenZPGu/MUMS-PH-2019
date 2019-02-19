@@ -70,7 +70,7 @@ def teamReg(request):
 		userForm = UserCreationForm(request.POST)
 		regForm = TeamRegForm(request.POST)
 		indivFormSet = IndivRegFormSet(request.POST)
-		
+		print(regForm.errors)
 		if userForm.is_valid() and indivFormSet.is_valid() and regForm.is_valid():
 			userForm.save()
 
@@ -79,11 +79,11 @@ def teamReg(request):
 			user = authenticate(username=username, password=raw_password)
 			login(request, user)
 
-			newTeam = Teams()
-			newTeam.authClone = user
-			newTeam.teamName = regForm.cleaned_data.get('teamName')
-			newTeam.teamEmail = regForm.cleaned_data.get('teamEmail')
-			newTeam.save()
+			# newTeam = Teams()
+			# newTeam.authClone = user
+			# newTeam.teamName = regForm.cleaned_data.get('teamName')
+			# newTeam.teamEmail = None if regForm.cleaned_data.get('teamEmail') == "" else regForm.cleaned_data.get('teamEmail')
+			# newTeam.save()
 
 			for indivForm in indivFormSet:
 				if indivForm.cleaned_data.get('name') == None:
@@ -93,7 +93,7 @@ def teamReg(request):
 				newIndiv.email = indivForm.cleaned_data.get('email')
 				newIndiv.aussie = indivForm.cleaned_data.get('aussie')
 				newIndiv.melb = indivForm.cleaned_data.get('melb')
-				newIndiv.team = newTeam
+				#newIndiv.team = newTeam
 				newIndiv.save()
 			
 			return redirect('/')

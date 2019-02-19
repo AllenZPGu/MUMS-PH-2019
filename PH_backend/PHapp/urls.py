@@ -13,6 +13,6 @@ urlpatterns = [
 	path('puzzle/<str:puzzleURL>', views.showPuzzle),
 	path('solve/<str:chapter>/<str:status>/', views.solve),
 	path('registration/', views.teamReg),
-	url(r'^teams/$', views.teams, name='teams'),
-	url(r'^faq/$', views.faq, name='faq'),
+	path('teams/', views.teams),
+	path('faq/', views.faq),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
