@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse, FileResponse, Http404
 from django.contrib.auth.models import User
 from django.forms import formset_factory, ValidationError
-from .models import Puzzles, Teams, SubmittedGuesses, Individuals
+from .models import Puzzles, Teams, SubmittedGuesses, Individuals, CorrectGuesses
 from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginForm
 from django.conf import settings
 import json
@@ -19,8 +19,13 @@ def index(request):
 
 @login_required
 def puzzles(request):
-	puzzleList = [i for i in Puzzles.objects.exclude(releaseStatus = -1)]
-	puzzleList = sorted(puzzleList, key=lambda x:x.act*10+x.scene)
+	puzzleList = []
+	for puzzle in Puzzles.objects.exclude(releaseStatus = -1):
+		if len(CorrectGuesses.objects.filter(puzzle=puzzle, team=request.user)) == 0:
+			puzzleList.append([puzzle, False])
+		else:
+			puzzleList.append([puzzle, True])
+	puzzleList = sorted(puzzleList, key=lambda x:x[0].id)
 	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList})
 
 @login_required
@@ -52,6 +57,13 @@ def solve(request, chapter, status):
 			if guess == puzzle.answer:
 				newSubmit.correct = True
 				newSubmit.save()
+
+				newCorrectGuess = CorrectGuesses()
+				newCorrectGuess.team = request.user
+				newCorrectGuess.puzzle = puzzle
+				newCorrectGuess.subGuessKey = newSubmit
+				newCorrectGuess.save()
+
 				return redirect('/solve/{}/solve'.format(chapter))
 			else:
 				newSubmit.correct = False

@@ -5,18 +5,16 @@
 	<div>
 		<table class="table table-bordered">
 			<tbody>
-				{% for i in puzzleList %}
+				{% for puzzle, solved in puzzleList %}
 					<tr>
-						<td>Act {{i.act}}, Scene {{i.scene}}</td>
+						<td>Act {{puzzle.act}}, Scene {{puzzle.scene}} {{solved}}</td>
 						<td>
-							{% with "/puzzle/"|add:i.pdfPath as puz %}
-								<!-- <a href="{% static puz %}">{{i.title}}</a> -->
-
-								<a href='{{puz}}'>{{i.title}}</a>
+							{% with "/puzzle/"|add:puzzle.pdfPath as puz %}
+								<a href='{{puz}}'>{{puzzle.title}}</a>
 							{% endwith %}
 						</td>
 						<td>
-							<a href="/solve/{{i.act}}.{{i.scene}}/solve/">Solve</a>
+							<a href="/solve/{{puzzle.act}}.{{puzzle.scene}}/solve/">Solve</a>
 						</td>
 						<td>Hints</td>
 					</tr>

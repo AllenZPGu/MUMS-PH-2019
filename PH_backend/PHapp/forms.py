@@ -18,7 +18,7 @@ class TeamRegForm(forms.ModelForm):
 		model = Teams
 		fields = ['teamName', 'teamEmail']
 		help_texts = {'teamName': 'Enter your team name as you want it displayed publicly.',
-			'teamEmail':'Enter a teamwide email address, if you have one.'}
+			'teamEmail':'Enter a teamwide email address, if you have one. This will be kept confidential.'}
 		labels = {'teamName':'Team name', 'teamEmail':'Team email'}
 		error_messages = {'teamName':{'unique':'This team name has already been taken.'},
 			'teamEmail':{'unique':'This team email has already been taken.'}}
