@@ -21,10 +21,11 @@ def index(request):
 def puzzles(request):
 	puzzleList = []
 	for puzzle in Puzzles.objects.exclude(releaseStatus = -1):
+		allGuesses = [i.correct for i in SubmittedGuesses.objects.filter(puzzle=puzzle)]
 		if len(CorrectGuesses.objects.filter(puzzle=puzzle, team=request.user)) == 0:
-			puzzleList.append([puzzle, False])
+			puzzleList.append([puzzle, False, sum(allGuesses), len(allGuesses)])
 		else:
-			puzzleList.append([puzzle, True])
+			puzzleList.append([puzzle, True, sum(allGuesses), len(allGuesses)])
 	puzzleList = sorted(puzzleList, key=lambda x:x[0].id)
 	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList})
 

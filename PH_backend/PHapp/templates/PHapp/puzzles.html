@@ -2,27 +2,43 @@
 {% load static %}
 
 {% block content %}
-	<div>
-		<table class="table table-bordered">
-			<tbody>
-				{% for puzzle, solved in puzzleList %}
-					<tr>
-						<td>Act {{puzzle.act}}, Scene {{puzzle.scene}} {{solved}}</td>
-						<td>
-							{% with "/puzzle/"|add:puzzle.pdfPath as puz %}
-								<a href='{{puz}}'>{{puzzle.title}}</a>
-							{% endwith %}
+<div>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<td></td>
+				<td>Puzzle</td>
+				<td></td>
+				<td></td>
+				<td>Solves / Guesses</td>
+			</tr>
+		<tbody>
+			{% for puzzle, solved, correct, all in puzzleList %}
+				<tr>
+					<td>Act {{puzzle.act}}, Scene {{puzzle.scene}} {{solved}}</td>
+					<td>
+						{% with "/puzzle/"|add:puzzle.pdfPath as puz %}
+							<a href='{{puz}}'>{{puzzle.title}}</a>
+						{% endwith %}
+					</td>
+					
+					{% if solved %}
+						<td style="color:green">
+							<b>{{puzzle.answer}}</b>
 						</td>
+						<td></td>
+					{% else %}
 						<td>
 							<a href="/solve/{{puzzle.act}}.{{puzzle.scene}}/solve/">Solve</a>
 						</td>
 						<td>Hints</td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
-
-	<h1>A test of the CSS</h1>
+					{% endif %}
+					
+					<td>{{correct}}/{{all}}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
 
 {% endblock %}
