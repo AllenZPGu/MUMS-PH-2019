@@ -15,7 +15,7 @@
 		<tbody>
 			{% for puzzle, solved, correct, all in puzzleList %}
 				<tr>
-					<td>Act {{puzzle.act}}, Scene {{puzzle.scene}} {{solved}}</td>
+					<td>Act {{puzzle.act}}, Scene {{puzzle.scene}}</td>
 					<td>
 						{% with "/puzzle/"|add:puzzle.pdfPath as puz %}
 							<a href='{{puz}}'>{{puzzle.title}}</a>

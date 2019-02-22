@@ -123,7 +123,9 @@ def faq(request):
 	return render(request, 'PHapp/faq.html')
 
 def teams(request):
-	return render(request, 'PHapp/teams.html')
+	allTeams = Teams.objects.all()
+	allTeams = sorted(allTeams, key=lambda x:-x.teamPoints)
+	return render(request, 'PHapp/teams.html', {'allTeams':allTeams})
 
 def about(request):
 	return render(request, 'PHapp/about.html')

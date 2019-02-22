@@ -3,7 +3,22 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<table>
-	
-</table>
+<div>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<td>Rank</td>
+				<td>Team</td>
+				<td>Points</td>
+				<td>Average solve time</td>
+			</tr>
+		</thead>
+		<tbody>
+			{% for rank, team in allTeams %}
+				<tr>
+				</tr>
+			{% endfor %}
+		</tr>
+	</table>
+</tbody>
 {% endblock %}
