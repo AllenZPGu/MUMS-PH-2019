@@ -18,7 +18,7 @@
 					<td>Act {{puzzle.act}}, Scene {{puzzle.scene}}</td>
 					<td>
 						{% with "/puzzle/"|add:puzzle.pdfPath as puz %}
-							<a href='{{puz}}'>{{puzzle.title}}</a>
+							<a href='{{puz}}.pdf'>{{puzzle.title}}</a>
 						{% endwith %}
 					</td>
 					
@@ -29,7 +29,7 @@
 						<td></td>
 					{% else %}
 						<td>
-							<a href="/solve/{{puzzle.act}}.{{puzzle.scene}}/solve/">Solve</a>
+							<a href="/solve/{{puzzle.pdfPath}}/">Solve</a>
 						</td>
 						<td>Hints</td>
 					{% endif %}

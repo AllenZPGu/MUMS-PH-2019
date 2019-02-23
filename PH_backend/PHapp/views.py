@@ -37,11 +37,8 @@ def showPuzzle(request, puzzleURL):
 		raise Http404("PDF file not found at "+os.path.join(settings.BASE_DIR, 'PHapp/puzzleFiles/', puzzleURL))
 
 @login_required
-def solve(request, chapter, status):
-	if status not in ('solve', 'wrong'):
-		raise Http404("This site does not exist!!!!!")
-
-	puzzle = Puzzles.objects.get(act = chapter[0], scene = chapter[2])
+def solve(request, title):
+	puzzle = Puzzles.objects.get(pdfPath=title)
 	
 	if True in [i.correct for i in SubmittedGuesses.objects.filter(team = request.user, puzzle = puzzle)]:
 		return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle})
@@ -65,15 +62,17 @@ def solve(request, chapter, status):
 				newCorrectGuess.subGuessKey = newSubmit
 				newCorrectGuess.save()
 
-				return redirect('/solve/{}/solve'.format(chapter))
+				return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle})
 			else:
 				newSubmit.correct = False
 				newSubmit.save()
-				return redirect('/solve/{}/wrong'.format(chapter))
+				displayWrong = True
 	else:
 		solveform = SolveForm()
+		displayWrong = False
 
-	return render(request, 'PHapp/solve.html', {'solveform':solveform, 'chapter':chapter, 'status':status, 'puzzle':puzzle})
+	return render(request, 'PHapp/solve.html', 
+		{'solveform':solveform, 'displayWrong':displayWrong, 'puzzle':puzzle})
 
 def teamReg(request):
 	if request.user.is_authenticated:
@@ -123,9 +122,18 @@ def faq(request):
 	return render(request, 'PHapp/faq.html')
 
 def teams(request):
-	allTeams = Teams.objects.all()
-	allTeams = sorted(allTeams, key=lambda x:-x.teamPoints)
-	return render(request, 'PHapp/teams.html', {'allTeams':allTeams})
+	allTeamsRaw = Teams.objects.all()
+	allTeamsRaw = sorted(allTeamsRaw, key=lambda x:-x.teamPoints)
+	allTeams = [[i+1, allTeamsRaw[i]] for i in range(len(allTeamsRaw))]
+	teamName = None
+	if request.user.is_authenticated:
+		teamName = Teams.objects.get(authClone = request.user).teamName
+	return render(request, 'PHapp/teams.html', {'allTeams':allTeams, 'teamName':teamName})
+
+def teamInfo(request, teamId):
+	team = Teams.objects.get(id=teamId)
+	membersList = Individuals.objects.filter(team=team)
+	return render(request, 'PHapp/teamInfo.html', {'team':team, 'members':membersList})
 
 def about(request):
 	return render(request, 'PHapp/about.html')

@@ -30,8 +30,8 @@ class IndivRegForm(forms.Form):
 	melb = forms.BooleanField(required = False, label="")
 
 class LoginForm(forms.Form):
-	username = forms.CharField(label='Username')
-	password = forms.CharField(widget=forms.PasswordInput, label='Password')
+	username = forms.CharField(label='Username', help_text='Please enter your username and NOT your team name. This is case-sensitive.')
+	password = forms.CharField(widget=forms.PasswordInput, label='Password', help_text='This is case-sensitive.')
 
 class BaseIndivRegFormSet(forms.BaseFormSet):
 	def clean(self):

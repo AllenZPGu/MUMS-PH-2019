@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-	{% if status == 'wrong' %}
+	{% if displayWrong %}
 		<h3>Incorrect! {{puzzle.losePun}}</h3>
 	{% endif %}
 	<div>

@@ -25,9 +25,7 @@ class Teams(models.Model):
 	teamPoints = models.IntegerField(default=0)
 	teamEmail = models.EmailField(max_length=254, null=True, blank=True, unique=True)
 	aussie = models.BooleanField(default=False)
-	avHr = models.IntegerField(default=0, null=True)
-	avMin = models.IntegerField(default=0, null=True)
-	avSec = models.IntegerField(default=0, null=True)
+	avSolve = models.TimeField(null=True)
 
 	class Meta:
 		db_table = 'Teams'
