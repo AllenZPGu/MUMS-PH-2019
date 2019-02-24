@@ -8,19 +8,21 @@
 		<thead>
 			<tr>
 				<td>Rank</td>
+				<td>Australian rank</td>
 				<td>Team</td>
 				<td>Points</td>
 				<td>Average solve time</td>
 			</tr>
 		</thead>
 		<tbody>
-			{% for rank, team in allTeams %}
+			{% for rank, ausRank, team in allTeams %}
 				{% if team.teamName == teamName %}
 					<tr style="background:lightgreen">
 				{% else %}
 					<tr>
 				{% endif %}
 					<td>{{rank}}</td>
+					<td>{{ausRank}}</td>
 					<td><a href='/team/{{team.id}}'>{{team.teamName}}</a></td>
 					<td>{{team.teamPoints}}</td>
 					{% if team.avSolve == None %}

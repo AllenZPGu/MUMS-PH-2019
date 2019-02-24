@@ -11,10 +11,10 @@
 				<td>Puzzle</td>
 				<td></td>
 				<td></td>
-				<td>Solves / Guesses</td>
+				<td>Solves / Incorrect guesses</td>
 			</tr>
 		<tbody>
-			{% for puzzle, solved, correct, all in puzzleList %}
+			{% for puzzle, solved, correct, incorrect in puzzleList %}
 				<tr>
 					<td>Act {{puzzle.act}}, Scene {{puzzle.scene}}</td>
 					<td>
@@ -31,7 +31,7 @@
 						</td>
 					{% endif %}
 					<td><a href='/hints/{{puzzle.pdfPath}}'>Hints</a></td>
-					<td>{{correct}}/{{all}}</td>
+					<td><a href='/stats/{{puzzle.pdfPath}}'>{{correct}}/{{incorrect}}</a></td>
 				</tr>
 			{% endfor %}
 		</tbody>

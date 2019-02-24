@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse, FileResponse, Http404
 from django.contrib.auth.models import User
 from django.forms import formset_factory, ValidationError
-from .models import Puzzles, Teams, SubmittedGuesses, Individuals, CorrectGuesses
+from .models import Puzzles, Teams, SubmittedGuesses, Individuals
 from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginForm
 from django.conf import settings
 import json
@@ -23,13 +23,12 @@ def index(request):
 @login_required
 def puzzles(request):
 	puzzleList = []
-	print(releaseStage(releaseTimes))
 	for puzzle in Puzzles.objects.filter(releaseStatus__lte = releaseStage(releaseTimes)):
 		allGuesses = [i.correct for i in SubmittedGuesses.objects.filter(puzzle=puzzle)]
-		if len(CorrectGuesses.objects.filter(puzzle=puzzle, team=request.user)) == 0:
-			puzzleList.append([puzzle, False, sum(allGuesses), len(allGuesses)])
+		if len(SubmittedGuesses.objects.filter(puzzle=puzzle, team=request.user, correct=True)) == 0:
+			puzzleList.append([puzzle, False, sum(allGuesses), len(allGuesses)-sum(allGuesses)])
 		else:
-			puzzleList.append([puzzle, True, sum(allGuesses), len(allGuesses)])
+			puzzleList.append([puzzle, True, sum(allGuesses), len(allGuesses)-sum(allGuesses)])
 	puzzleList = sorted(puzzleList, key=lambda x:x[0].id)
 	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList})
 
@@ -57,6 +56,11 @@ def solve(request, title):
 	
 	if True in [i.correct for i in SubmittedGuesses.objects.filter(team = request.user, puzzle = puzzle)]:
 		return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle})
+
+	team = Teams.objects.get(authClone = request.user)
+
+	if team.guesses <= 0:
+		return render(request, 'PHapp/noGuesses.html')
 	
 	if request.method == 'POST':
 		solveform = SolveForm(request.POST)
@@ -71,16 +75,12 @@ def solve(request, title):
 				newSubmit.correct = True
 				newSubmit.save()
 
-				newCorrectGuess = CorrectGuesses()
-				newCorrectGuess.team = request.user
-				newCorrectGuess.puzzle = puzzle
-				newCorrectGuess.subGuessKey = newSubmit
-				newCorrectGuess.save()
-
 				return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle})
 			else:
 				newSubmit.correct = False
 				newSubmit.save()
+				team.guesses -= 1
+				team.save()
 				displayWrong = True
 	else:
 		solveform = SolveForm()
@@ -158,8 +158,21 @@ def hints(request, title):
 	return render(request, 'PHapp/hints.html', {'toRender':toRender, 'anyHints':anyHints, 'nextHint':nextHint})
 
 @login_required
-def stats(request):
-	return 0
+def stats(request, title):
+	try:
+		puzzle = Puzzles.objects.get(pdfPath=title)
+	except:
+		raise Http404()
+	if releaseStage(releaseTimes) < puzzle.releaseStatus:
+		raise Http404()
+
+	allGuesses = SubmittedGuesses.objects.filter(puzzle=puzzle)
+	allSolves = sorted([i for i in allGuesses if i.correct], key=lambda x:x.submitTime)
+	
+	totalRight = len(allSolves)
+	totalWrong = len(allGuesses) - totalRight
+
+	return render(request, 'PHapp/puzzleStats.html', {'puzzle':puzzle, 'allSolves':allSolves, 'totalWrong':totalWrong, 'totalRight':totalRight})
 
 def faq(request):
 	return render(request, 'PHapp/faq.html')
@@ -167,7 +180,7 @@ def faq(request):
 def teams(request):
 	allTeamsRaw = Teams.objects.all()
 	allTeamsRaw = sorted(allTeamsRaw, key=lambda x:-x.teamPoints)
-	allTeams = [[i+1, allTeamsRaw[i]] for i in range(len(allTeamsRaw))]
+	allTeams = [[i+1, 1, allTeamsRaw[i]] for i in range(len(allTeamsRaw))]
 	teamName = None
 	if request.user.is_authenticated:
 		teamName = Teams.objects.get(authClone = request.user).teamName
@@ -176,9 +189,10 @@ def teams(request):
 def teamInfo(request, teamId):
 	team = Teams.objects.get(id=teamId)
 	membersList = Individuals.objects.filter(team=team)
-	correctList = SubmittedGuesses.objects.filter(team=team.authClone, correct=True)
-	correctList = sorted(correctList, key=lambda x:x.submitTime)
-	return render(request, 'PHapp/teamInfo.html', {'team':team, 'members':membersList, 'correctList':correctList})
+	correctList = [[i, 0, 0] for i in SubmittedGuesses.objects.filter(team=team.authClone, correct=True)]
+	correctList = sorted(correctList, key=lambda x:x[0].submitTime)
+	anySolves = True if len(correctList) > 0 else False
+	return render(request, 'PHapp/teamInfo.html', {'team':team, 'members':membersList, 'correctList':correctList, 'anySolves':anySolves})
 
 def about(request):
 	return render(request, 'PHapp/about.html')

@@ -14,9 +14,10 @@ h1 {
 }
 
 .navbar-container-inner {
-	padding: 10px;
+	padding: 1rem;
+	padding-top: 1rem;
 	text-align: center;
-	font-size: 1rem;
+	font-size: 1.2rem;
 	font-weight: bold;
 }
 
@@ -26,8 +27,8 @@ h1 {
 
 .link-nav {
 	text-decoration: none;
-	padding-right: 20px;
-	padding-left: 20px;
+	padding-right: 1.5rem;
+	padding-left: 1.5rem;
 	color: white;
 	font-weight: bold;
 }

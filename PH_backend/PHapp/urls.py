@@ -12,7 +12,7 @@ urlpatterns = [
 	path('puzzles/', views.puzzles),
 	path('puzzle/<str:puzzleURL>/', views.showPuzzle),
 	path('solve/<str:title>/', views.solve),
-	path('stats/<str:puzzleURL>/', views.stats),
+	path('stats/<str:title>/', views.stats),
 	path('hints/<str:title>/', views.hints),
 	path('registration/', views.teamReg),
 	path('teams/', views.teams),

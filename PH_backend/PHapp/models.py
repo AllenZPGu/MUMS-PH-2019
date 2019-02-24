@@ -26,6 +26,7 @@ class Teams(models.Model):
 	teamEmail = models.EmailField(max_length=254, null=True, blank=True, unique=True)
 	aussie = models.BooleanField(default=False)
 	avSolve = models.TimeField(null=True)
+	guesses = models.IntegerField(default=100)
 
 	class Meta:
 		db_table = 'Teams'
@@ -51,12 +52,3 @@ class SubmittedGuesses(models.Model):
 
 	class Meta:
 		db_table = 'SubmittedGuesses'
-
-class CorrectGuesses(models.Model):
-	id = models.AutoField(primary_key=True)
-	team = models.ForeignKey(User, models.DO_NOTHING, db_column = 'team', null=True)
-	puzzle = models.ForeignKey(Puzzles, models.DO_NOTHING, db_column = 'puzzle', null=True)
-	subGuessKey = models.ForeignKey(SubmittedGuesses, models.DO_NOTHING, db_column='subGuessKey', null=True)
-
-	class Meta:
-		db_table = 'CorrectGuesses'

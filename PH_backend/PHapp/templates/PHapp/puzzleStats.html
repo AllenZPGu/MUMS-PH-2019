@@ -4,14 +4,39 @@
 {% block content %}
 <div class="outer-container">
 <div class="inner-container">
-	<h6>Team</h6>
-	<h1>{{team.teamName}}</h1>
-	<h4>Points: {{team.teamPoints}}</h4>
-	<h4>Average solve time: {{team.avSolve}}</h4>
-	<h5>Members:</h5>
-	{% for member in members %}
-		<h6>{{member.name}}</h6>
-	{% endfor %}
+	<center>
+		<h6>Puzzle information</h6>
+		<h1><a href='/puzzle/{{puzzle.pdfPath}}.pdf'>{{puzzle.title}}</a></h1>
+		<h4>Number of solves: {{totalRight}}</h4>
+		<h4>Number of incorrect guesses: {{totalWrong}}</h4>
+		<br>
+	</center>
+	
+	{% if totalRight > 0 %}
+		<center>
+			<h5>Solve history</h5>
+		</center>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<td>Team</td>
+					<td>Solve time</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for solve in allSolves %}
+					<tr>
+						<td><a href='/team/{{solve.team.teams_set.all.0.id}}/'>{{solve.team.teams_set.all.0.teamName}}</a></td>
+						<td>{{solve.submitTime|date:"d M, h:i:s a"}}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		<center>
+			<h5>No team has solved this puzzle.</h5>
+		</center>
+	{% endif %}
 </div>
 </div>
 

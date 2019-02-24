@@ -9,33 +9,50 @@
 <h1>{{team.teamName}}</h1>
 <h4>Points: {{team.teamPoints}}</h4>
 <h4>Average solve time: {{team.avSolve}}</h4>
+{% if team.authClone == user %}
+	<h4>Guesses remaining: {{team.guesses}}</h4>
+{% endif %}
 <br>
 <h5>Members:</h5>
 {% for member in members %}
 	<h6>{{member.name}}</h6>
 {% endfor %}
 <br>
-<h5>Solve history</h5>
 </center>
-<table class="table table-bordered">
-	<thead>
-		<tr>
-			<td>Puzzle</td>
-			<td>Solve time</td>
-			<td>Time taken</td>
-		</tr>
-	</thead>
-	<tbody>
-		{% for correct in correctList %}
-			<tr>
-				<td><a href='/puzzle/{{correct.puzzle.pdfPath}}.pdf'>{{correct.puzzle.act}}.{{correct.puzzle.scene}} {{correct.puzzle.title}}</a></td>
-				<td>{{correct.submitTime|date:"d M, h:i:s a"}}</td>
-				<td></td>
-			</tr>
-		{% endfor %}
-	</tbody>
 
-</table>
+{% if anySolves %}
+	<center>
+		<h5>Solve history</h5>
+	</center>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<td>Puzzle</td>
+				<td>Solve time</td>
+				<td>Time taken</td>
+				{% if team.authClone == user %}
+					<td>Incorrect guesses </td>
+				{% endif %}
+			</tr>
+		</thead>
+		<tbody>
+			{% for correct, timeTaken, incorrect in correctList %}
+				<tr>
+					<td><a href='/puzzle/{{correct.puzzle.pdfPath}}.pdf'>{{correct.puzzle.act}}.{{correct.puzzle.scene}} {{correct.puzzle.title}}</a></td>
+					<td>{{correct.submitTime|date:"d M, h:i:s a"}}</td>
+					<td>{{timeTaken}}</td>
+					{% if team.authClone == user %}
+						<td>{{incorrect}}</td>
+					{% endif %}
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<center>
+		<h5>This team has not solved any puzzles yet.</h5>
+	</center>
+{% endif %}
 </div>
 </div>
 {% endblock %}
