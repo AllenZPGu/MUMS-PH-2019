@@ -1,7 +1,49 @@
 body {
-	background-color: white;
+	background-color: black;
+	color: text;
+	font-family: "Gill Sans MT";
 }
 
 h1 {
 	color: red;
+}
+
+.navbar-container {
+	width:100%;
+	background-color: black;
+}
+
+.navbar-container-inner {
+	padding: 10px;
+	text-align: center;
+	font-size: 1rem;
+	font-weight: bold;
+}
+
+.main_nav {
+	display: inline-block;
+}
+
+.link-nav {
+	text-decoration: none;
+	padding-right: 20px;
+	padding-left: 20px;
+	color: white;
+	font-weight: bold;
+}
+
+.link-nav:hover {
+	color: red;
+	text-decoration: none;
+}
+
+.outer-container {
+	background-color: white;
+	border: 5px solid;
+	border-color: red;
+	border-radius: 10px;
+}
+
+.inner-container {
+	padding: 20px;
 }

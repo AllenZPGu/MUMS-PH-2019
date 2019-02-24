@@ -3,30 +3,33 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
-<h2>Login</h2>
-
-
-{% if wrong %}
-	<div class="alert alert-danger" role="alert">
-		Invalid username or password.
-	</div>
-{% endif %}
+<div class="outer-container">
+<div class="inner-container">
+	<h2>Login</h2>
 
 
-
-<div>
-	<form method="post">
-		<div class="form-group">
-			{% csrf_token %}
-
-			{{ loginForm|crispy }}	
-
-			<br>
-			<button type="submit" class="btn btn-success btn-block">Submit</button>
-			<br>
+	{% if wrong %}
+		<div class="alert alert-danger" role="alert">
+			Invalid username or password.
 		</div>
-	</form>
+	{% endif %}
+
+
+
+	<div>
+		<form method="post">
+			<div class="form-group">
+				{% csrf_token %}
+
+				{{ loginForm|crispy }}	
+
+				<br>
+				<button type="submit" class="btn btn-success btn-block">Submit</button>
+				<br>
+			</div>
+		</form>
+	</div>
+</div>
 </div>
 
 

@@ -8,11 +8,13 @@ def stripToLetters(inputStr):
 			outputStr += char
 	return outputStr.upper()
 
-def releaseStage():
-	startTime = datetime.datetime(2019, 4, 28, 12, 0)
+def releaseStage(timeList):
+	x = 0
 	nowTime = datetime.datetime.now()
-	stage = nowTime-startTime
-	return stage.days
+	for i in timeList:
+		if nowTime > i:
+			x += 1
+	return x
 
 def checkListAllNone(aList):
 	for i in aList:

@@ -3,7 +3,8 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
+<div class="outer-container">
+<div class="inner-container">
 <h2>Team registration</h2>
 <h6>An asterisk (*) denotes a required field.</h6>
 
@@ -30,8 +31,8 @@
 			<div class="form-row">
 				<div class="col">Name</div>
 				<div class="col">Email</div>
-				<div class="col-1">Australian resident</div>
-				<div class="col-2">Current University of Melbourne student</div>
+				<div class="col col-md-2">Australian resident</div>
+				<div class="col col-md-2">Current University of Melbourne student</div>
 			</div>
 
 			<div id="indivRegForm">
@@ -45,10 +46,10 @@
 					<div class="col">
 						{{ memberForm.email|as_crispy_field }}
 					</div>
-					<div class="col-1">
+					<div class="col col-md-2">
 						{{ memberForm.aussie|as_crispy_field }}
 					</div>
-					<div class="col-2">
+					<div class="col col-md-2">
 						{{ memberForm.melb|as_crispy_field }}
 					</div>
 				</div>
@@ -60,14 +61,7 @@
 		</div>
 	</form>
 </div>
-
-<!-- <script src="{% static 'PHapp/js/jquery.formset.js'%}"></script>
-<script type="text/javascript">
-	$('.formset_row').formset({
-			addText: 'Add member',
-			deleteText: 'Remove member',
-			prefix: 'familymember_set'
-	});
-</script> -->
+</div>
+</div>
 
 {% endblock %}

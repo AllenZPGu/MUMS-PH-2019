@@ -2,25 +2,22 @@
 {% load static %}
 
 {% block content %}
-	<div>
-		<table class="table table-bordered">
-			<tbody>
-				{% for i in puzzleList %}
-					<tr>
-						<td>Act {{i.act}}, Scene {{i.scene}}</td>
-						<td>
-							{% with i.pdfPath as puz %}
-								<a href="{% static puz %}">{{i.title}}</a>
-							{% endwith %}
-						</td>
-						<td>
-							<a href="/solve/{{i.act}}.{{i.scene}}/solve/">Solve</a>
-						</td>
-						<td>Hints</td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
+<div class="outer-container">
+<div class="inner-container">
+	{% if anyHints %}
+		{% for hintNo, hint in toRender %}
+			<h4>Hint {{hintNo}}</h4>
+			<h6>{{hint}}</h6>
+			<br>
+		{% endfor %}
+	{% else %}
+		<h2>No hints have been released.</h2>
+	{% endif %}
+
+	{% if nextHint is not None %}
+		<h4>The next hint will be released at {{nextHint|date:"d M, h:i:s a"}}</h4>
+	{% endif %}
+</div>
+</div>
 
 {% endblock %}

@@ -1,0 +1,18 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	<h6>Team</h6>
+	<h1>{{team.teamName}}</h1>
+	<h4>Points: {{team.teamPoints}}</h4>
+	<h4>Average solve time: {{team.avSolve}}</h4>
+	<h5>Members:</h5>
+	{% for member in members %}
+		<h6>{{member.name}}</h6>
+	{% endfor %}
+</div>
+</div>
+
+{% endblock %}

@@ -2,10 +2,12 @@
 {% load static %}
 
 {% block content %}
-	<div>
-		<h3>{{puzzle.winPun}}</h3>
-		<h4>You have solved Act {{puzzle.act}} Scene {{puzzle.scene}}: {{puzzle.title}}.</h4>
-		<h5>The solution is: {{puzzle.answer}}</h5>
-	</div>
+<div class="outer-container">
+<div class="inner-container">
+	<h3>{{puzzle.winPun}}</h3>
+	<h4>You have solved Act {{puzzle.act}} Scene {{puzzle.scene}}: {{puzzle.title}}.</h4>
+	<h5>The solution is: {{puzzle.answer}}</h5>
+</div>
+</div>
 
 {% endblock %}

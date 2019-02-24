@@ -14,13 +14,17 @@ import random
 import os
 from .helperFunctions import *
 
+#releaseTimes = [datetime.datetime(2019, 4, 24, 12) + datetime.timedelta(days=i) for i in range(10)]
+releaseTimes = [datetime.datetime(2019, 2, 22, 12) + datetime.timedelta(days=i) for i in range(10)]
+
 def index(request):
 	return render(request, 'PHapp/home.html')
 
 @login_required
 def puzzles(request):
 	puzzleList = []
-	for puzzle in Puzzles.objects.exclude(releaseStatus = -1):
+	print(releaseStage(releaseTimes))
+	for puzzle in Puzzles.objects.filter(releaseStatus__lte = releaseStage(releaseTimes)):
 		allGuesses = [i.correct for i in SubmittedGuesses.objects.filter(puzzle=puzzle)]
 		if len(CorrectGuesses.objects.filter(puzzle=puzzle, team=request.user)) == 0:
 			puzzleList.append([puzzle, False, sum(allGuesses), len(allGuesses)])
@@ -32,13 +36,24 @@ def puzzles(request):
 @login_required
 def showPuzzle(request, puzzleURL):
 	try:
+		puzzle = Puzzles.objects.get(pdfPath=puzzleURL.replace('.pdf', ''))
+	except:
+		raise Http404()
+	if releaseStage(releaseTimes) < puzzle.releaseStatus:
+		raise Http404()
+	try:
 		return FileResponse(open(os.path.join(settings.BASE_DIR, 'PHapp/puzzleFiles/', puzzleURL), 'rb'), content_type='application/pdf')
 	except FileNotFoundError:
 		raise Http404("PDF file not found at "+os.path.join(settings.BASE_DIR, 'PHapp/puzzleFiles/', puzzleURL))
 
 @login_required
 def solve(request, title):
-	puzzle = Puzzles.objects.get(pdfPath=title)
+	try:
+		puzzle = Puzzles.objects.get(pdfPath=title)
+	except:
+		raise Http404()
+	if releaseStage(releaseTimes) < puzzle.releaseStatus:
+		raise Http404()
 	
 	if True in [i.correct for i in SubmittedGuesses.objects.filter(team = request.user, puzzle = puzzle)]:
 		return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle})
@@ -76,7 +91,7 @@ def solve(request, title):
 
 def teamReg(request):
 	if request.user.is_authenticated:
-		raise Http404("Your team has already been registered.")
+		return redirect('/')
 
 	if request.method == 'POST':
 		userForm = UserCreationForm(request.POST)
@@ -118,6 +133,34 @@ def teamReg(request):
 		indivFormSet = IndivRegFormSet()
 	return render(request, 'PHapp/teamReg.html', {'userForm':userForm, 'regForm':regForm, 'indivFormSet':indivFormSet})
 
+@login_required
+def hints(request, title):
+	try:
+		puzzle = Puzzles.objects.get(pdfPath=title)
+	except:
+		raise Http404()
+	if releaseStage(releaseTimes) < puzzle.releaseStatus:
+		raise Http404()
+
+	toRender = []
+	anyHints = False
+	nextHint = releaseTimes[puzzle.releaseStatus]
+	if releaseStage(releaseTimes) - puzzle.releaseStatus >= 1:
+		toRender.append([1, puzzle.hint1])
+		anyHints = True
+		nextHint = releaseTimes[puzzle.releaseStatus + 1]
+	if releaseStage(releaseTimes) - puzzle.releaseStatus >= 2:
+		toRender.append([2, puzzle.hint2])
+		nextHint = releaseTimes[puzzle.releaseStatus + 2]
+	if releaseStage(releaseTimes) - puzzle.releaseStatus >= 3:
+		toRender.append([3, puzzle.hint3])
+		nextHint = None
+	return render(request, 'PHapp/hints.html', {'toRender':toRender, 'anyHints':anyHints, 'nextHint':nextHint})
+
+@login_required
+def stats(request):
+	return 0
+
 def faq(request):
 	return render(request, 'PHapp/faq.html')
 
@@ -133,7 +176,9 @@ def teams(request):
 def teamInfo(request, teamId):
 	team = Teams.objects.get(id=teamId)
 	membersList = Individuals.objects.filter(team=team)
-	return render(request, 'PHapp/teamInfo.html', {'team':team, 'members':membersList})
+	correctList = SubmittedGuesses.objects.filter(team=team.authClone, correct=True)
+	correctList = sorted(correctList, key=lambda x:x.submitTime)
+	return render(request, 'PHapp/teamInfo.html', {'team':team, 'members':membersList, 'correctList':correctList})
 
 def about(request):
 	return render(request, 'PHapp/about.html')

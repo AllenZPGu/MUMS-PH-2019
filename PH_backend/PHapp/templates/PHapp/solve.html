@@ -3,6 +3,8 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+<div class="outer-container">
+<div class="inner-container">
 	{% if displayWrong %}
 		<h3>Incorrect! {{puzzle.losePun}}</h3>
 	{% endif %}
@@ -18,5 +20,7 @@
 			</div>
 		</form>
 	</div>
+</div>
+</div>
 
 {% endblock %}

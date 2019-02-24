@@ -2,14 +2,40 @@
 {% load static %}
 
 {% block content %}
-
-<h6>Team</h6>
+<div class="outer-container">
+<div class="inner-container">
+<center>
+<h6>Team information</h6>
 <h1>{{team.teamName}}</h1>
 <h4>Points: {{team.teamPoints}}</h4>
 <h4>Average solve time: {{team.avSolve}}</h4>
+<br>
 <h5>Members:</h5>
 {% for member in members %}
 	<h6>{{member.name}}</h6>
 {% endfor %}
+<br>
+<h5>Solve history</h5>
+</center>
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>Puzzle</td>
+			<td>Solve time</td>
+			<td>Time taken</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% for correct in correctList %}
+			<tr>
+				<td><a href='/puzzle/{{correct.puzzle.pdfPath}}.pdf'>{{correct.puzzle.act}}.{{correct.puzzle.scene}} {{correct.puzzle.title}}</a></td>
+				<td>{{correct.submitTime|date:"d M, h:i:s a"}}</td>
+				<td></td>
+			</tr>
+		{% endfor %}
+	</tbody>
 
+</table>
+</div>
+</div>
 {% endblock %}
