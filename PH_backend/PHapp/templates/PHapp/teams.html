@@ -11,11 +11,12 @@
 				<td>Australian rank</td>
 				<td>Team</td>
 				<td>Points</td>
+				<td>Puzzles solved</td>
 				<td>Average solve time</td>
 			</tr>
 		</thead>
 		<tbody>
-			{% for rank, ausRank, team in allTeams %}
+			{% for rank, ausRank, team, noSolved, avSolveTime in allTeams %}
 				{% if team.teamName == teamName %}
 					<tr style="background:lightgreen">
 				{% else %}
@@ -25,11 +26,8 @@
 					<td>{{ausRank}}</td>
 					<td><a href='/team/{{team.id}}'>{{team.teamName}}</a></td>
 					<td>{{team.teamPoints}}</td>
-					{% if team.avSolve == None %}
-						<td>-</td>
-					{% else %}
-						<td>{{team.avSolve}}</td>
-					{% endif %}
+					<td>{{noSolved}}</td>
+						<td>{{avSolveTime}}</td>
 				</tr>
 			{% endfor %}
 		</tr>

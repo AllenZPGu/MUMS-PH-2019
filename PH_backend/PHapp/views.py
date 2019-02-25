@@ -74,7 +74,6 @@ def solve(request, title):
 			if guess == puzzle.answer:
 				newSubmit.correct = True
 				newSubmit.save()
-
 				return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle})
 			else:
 				newSubmit.correct = False
@@ -179,8 +178,11 @@ def faq(request):
 
 def teams(request):
 	allTeamsRaw = Teams.objects.all()
-	allTeamsRaw = sorted(allTeamsRaw, key=lambda x:-x.teamPoints)
-	allTeams = [[i+1, 1, allTeamsRaw[i]] for i in range(len(allTeamsRaw))]
+	allTeams = []
+	for i in range(len(allTeamsRaw)):
+		solves = len(SubmittedGuesses.objects.filter(team=allTeamsRaw[i].authClone, correct=True))
+		allTeams.append([1, 1, allTeamsRaw[i], solves, calcSolveTime(allTeamsRaw[i], releaseTimes)])
+	print(allTeams)
 	teamName = None
 	if request.user.is_authenticated:
 		teamName = Teams.objects.get(authClone = request.user).teamName
