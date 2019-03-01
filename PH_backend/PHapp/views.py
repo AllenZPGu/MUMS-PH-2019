@@ -10,12 +10,15 @@ from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginF
 from django.conf import settings
 import json
 import datetime
+import pytz
 import random
 import os
 from .helperFunctions import *
 
-#releaseTimes = [datetime.datetime(2019, 4, 24, 12) + datetime.timedelta(days=i) for i in range(10)]
-releaseTimes = [datetime.datetime(2019, 2, 22, 12) + datetime.timedelta(days=i) for i in range(10)]
+aest = pytz.timezone("Australia/Melbourne")
+
+#releaseTimes = [aest.localize(datetime.datetime(2019, 4, 24, 12)) + datetime.timedelta(days=i) for i in range(10)]
+releaseTimes = [aest.localize(datetime.datetime(2019, 2, 22, 12)) + datetime.timedelta(days=i) for i in range(10)]
 
 def index(request):
 	return render(request, 'PHapp/home.html')
@@ -86,7 +89,7 @@ def solve(request, title):
 		displayWrong = False
 
 	return render(request, 'PHapp/solve.html', 
-		{'solveform':solveform, 'displayWrong':displayWrong, 'puzzle':puzzle})
+		{'solveform':solveform, 'displayWrong':displayWrong, 'puzzle':puzzle, 'team':team})
 
 def teamReg(request):
 	if request.user.is_authenticated:
@@ -177,15 +180,37 @@ def faq(request):
 	return render(request, 'PHapp/faq.html')
 
 def teams(request):
-	allTeamsRaw = Teams.objects.all()
 	allTeams = []
-	for i in range(len(allTeamsRaw)):
-		solves = len(SubmittedGuesses.objects.filter(team=allTeamsRaw[i].authClone, correct=True))
-		allTeams.append([1, 1, allTeamsRaw[i], solves, calcSolveTime(allTeamsRaw[i], releaseTimes)])
-	print(allTeams)
+	totRank = 1
+	ausRank = 1
+
+	teamsWithSolves = Teams.objects.filter(teamPoints__gt=0)
+	for team in teamsWithSolves:
+		solves = len(SubmittedGuesses.objects.filter(team=team.authClone, correct=True))
+		allTeams.append([team, solves] + calcSolveTime(team, releaseTimes))
+
+	allTeams = sorted(allTeams, key=lambda x:x[0].id)
+	allTeams = sorted(allTeams, key=lambda x:3600*x[2]+60*x[3]+x[4])
+	allTeams = sorted(allTeams, key=lambda x:x[1])
+	allTeams = sorted(allTeams, key=lambda x:x[0].teamPoints)
+
+	for i in range(len(allTeams)):
+		allTeams[i].append(totRank)
+		totRank += 1
+		if allTeams[i][0].aussie:
+			allTeams[i].append(ausRank)
+			ausRank += 1
+		else:
+			allTeams[i].append('-')
+
+	teamsWithoutSolves = Teams.objects.filter(teamPoints=0)
+	allTeams += sorted([[team, 0, '-', None, None, None, '-', '-'] for team in teamsWithoutSolves], key=lambda x:x[0].id)
+
 	teamName = None
 	if request.user.is_authenticated:
 		teamName = Teams.objects.get(authClone = request.user).teamName
+	
+
 	return render(request, 'PHapp/teams.html', {'allTeams':allTeams, 'teamName':teamName})
 
 def teamInfo(request, teamId):
@@ -194,7 +219,8 @@ def teamInfo(request, teamId):
 	correctList = [[i, 0, 0] for i in SubmittedGuesses.objects.filter(team=team.authClone, correct=True)]
 	correctList = sorted(correctList, key=lambda x:x[0].submitTime)
 	anySolves = True if len(correctList) > 0 else False
-	return render(request, 'PHapp/teamInfo.html', {'team':team, 'members':membersList, 'correctList':correctList, 'anySolves':anySolves})
+	avSolveTime = calcSolveTime(team, releaseTimes)[0] if anySolves else '-'
+	return render(request, 'PHapp/teamInfo.html', {'team':team, 'members':membersList, 'correctList':correctList, 'anySolves':anySolves, 'avSolveTime':avSolveTime})
 
 def rules(request):
 	return render(request, 'PHapp/rules.html')

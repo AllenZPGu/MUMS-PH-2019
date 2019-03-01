@@ -12,11 +12,11 @@
 				<td>Team</td>
 				<td>Points</td>
 				<td>Puzzles solved</td>
-				<td>Average solve time</td>
+				<td>Average solve time (h:m:s)</td>
 			</tr>
 		</thead>
 		<tbody>
-			{% for rank, ausRank, team, noSolved, avSolveTime in allTeams %}
+			{% for team, noSolved, avSolveTimeString, avSolveInt, rank, ausRank in allTeams %}
 				{% if team.teamName == teamName %}
 					<tr style="background:lightgreen">
 				{% else %}
@@ -27,7 +27,7 @@
 					<td><a href='/team/{{team.id}}'>{{team.teamName}}</a></td>
 					<td>{{team.teamPoints}}</td>
 					<td>{{noSolved}}</td>
-						<td>{{avSolveTime}}</td>
+						<td>{{avSolveTimeString}}</td>
 				</tr>
 			{% endfor %}
 		</tr>

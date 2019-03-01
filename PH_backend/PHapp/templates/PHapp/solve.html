@@ -7,9 +7,11 @@
 <div class="inner-container">
 	{% if displayWrong %}
 		<h3>Incorrect! {{puzzle.losePun}}</h3>
+		<br>
 	{% endif %}
 	<div>
 		<h4>Enter a guess for Act {{puzzle.act}} Scene {{puzzle.scene}}: {{puzzle.title}}</h4>
+		<h5>You have {{team.guesses}} remaining.</h5>
 	</div>
 	<div>
 		<form method="post">

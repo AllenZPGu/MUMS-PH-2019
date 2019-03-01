@@ -36,7 +36,12 @@ def calcSolveTime(team, releaseTimes):
 	totalTime = datetime.timedelta(0)
 	for guess in puzzlesSolved:
 		start = releaseTimes[guess.puzzle.releaseStatus-1]
-		solveTime = datetime.datetime.now() - start
+		solveTime = guess.submitTime - start
 		totalTime += solveTime
 
-	return totalTime/solves
+	x = totalTime/solves
+	xh = x.days*24 + x.seconds//3600
+	xm = (x.seconds//60)%60
+	xs = x.seconds%60
+	
+	return ["{:02d}h {:02d}m {:02d}s".format(xh, xm, xs), xh, xm, xs]
