@@ -196,8 +196,8 @@ def teamInfo(request, teamId):
 	anySolves = True if len(correctList) > 0 else False
 	return render(request, 'PHapp/teamInfo.html', {'team':team, 'members':membersList, 'correctList':correctList, 'anySolves':anySolves})
 
-def about(request):
-	return render(request, 'PHapp/about.html')
+def rules(request):
+	return render(request, 'PHapp/rules.html')
 
 def loginCustom(request):
 	if request.user.is_authenticated:

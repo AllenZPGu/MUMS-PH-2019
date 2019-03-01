@@ -18,7 +18,7 @@ urlpatterns = [
 	path('teams/', views.teams),
 	path('team/<int:teamId>/', views.teamInfo),
 	path('faq/', views.faq),
-	path('about/', views.about),
+	path('rules/', views.rules),
 	path('login/', views.loginCustom),
 	path('logout/', views.logoutCustom)
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
