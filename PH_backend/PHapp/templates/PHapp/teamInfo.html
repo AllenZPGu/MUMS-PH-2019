@@ -33,6 +33,7 @@
 				{% if team.authClone == user %}
 					<td>Incorrect guesses </td>
 				{% endif %}
+				<td>Points awarded</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -44,6 +45,7 @@
 					{% if team.authClone == user %}
 						<td>{{incorrect}}</td>
 					{% endif %}
+					<td>{{correct.pointsAwarded}}</td>
 				</tr>
 			{% endfor %}
 		</tbody>

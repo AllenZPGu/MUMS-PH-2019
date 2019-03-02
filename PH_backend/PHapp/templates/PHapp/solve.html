@@ -5,20 +5,23 @@
 {% block content %}
 <div class="outer-container">
 <div class="inner-container">
-	{% if displayWrong %}
-		<h3>Incorrect! {{puzzle.losePun}}</h3>
-		<br>
-	{% endif %}
-	<div>
+	<center>
 		<h4>Enter a guess for Act {{puzzle.act}} Scene {{puzzle.scene}}: {{puzzle.title}}</h4>
-		<h5>You have {{team.guesses}} remaining.</h5>
-	</div>
+		<br>
+		{% if displayWrong %}
+			<h4 style='color:red'>Incorrect!</h4>
+			<h4 style='color:red'>{{puzzle.losePun}}</h4>
+			<br>
+		{% endif %}
+		<h6>You have {{team.guesses}} guesses remaining.</h6>
+	</center>
+
 	<div>
 		<form method="post">
-			<div class="form-group">
+			<div class="form-group text-center">
 				{% csrf_token %}
 				{{ solveform|crispy }}
-				<button type="submit" class="btn btn-success">Submit</button>
+				<button type="submit" class="btn btn-success btn-block">Submit</button>
 			</div>
 		</form>
 	</div>

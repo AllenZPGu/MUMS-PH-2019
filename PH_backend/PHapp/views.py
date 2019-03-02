@@ -18,10 +18,11 @@ from .helperFunctions import *
 aest = pytz.timezone("Australia/Melbourne")
 
 #releaseTimes = [aest.localize(datetime.datetime(2019, 4, 24, 12)) + datetime.timedelta(days=i) for i in range(10)]
-releaseTimes = [aest.localize(datetime.datetime(2019, 2, 22, 12)) + datetime.timedelta(days=i) for i in range(10)]
+releaseTimes = [aest.localize(datetime.datetime(2019, 3, 1, 12)) + datetime.timedelta(days=i) for i in range(10)]
 
 def index(request):
-	return render(request, 'PHapp/home.html')
+	huntOver = False if releaseStage(releaseTimes) < len(releaseTimes) else True
+	return render(request, 'PHapp/home.html', {'huntOver':huntOver})
 
 @login_required
 def puzzles(request):
@@ -29,11 +30,29 @@ def puzzles(request):
 	for puzzle in Puzzles.objects.filter(releaseStatus__lte = releaseStage(releaseTimes)):
 		allGuesses = [i.correct for i in SubmittedGuesses.objects.filter(puzzle=puzzle)]
 		if len(SubmittedGuesses.objects.filter(puzzle=puzzle, team=request.user, correct=True)) == 0:
-			puzzleList.append([puzzle, False, sum(allGuesses), len(allGuesses)-sum(allGuesses)])
+			puzzleList.append([puzzle, False, sum(allGuesses), len(allGuesses)-sum(allGuesses), calcWorth(puzzle, releaseTimes)])
 		else:
-			puzzleList.append([puzzle, True, sum(allGuesses), len(allGuesses)-sum(allGuesses)])
+			puzzleList.append([puzzle, True, sum(allGuesses), len(allGuesses)-sum(allGuesses), calcWorth(puzzle, releaseTimes)])
 	puzzleList = sorted(puzzleList, key=lambda x:x[0].id)
 	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList})
+
+@login_required
+def puzzleInfo(request, title):
+	try:
+		puzzle = Puzzles.objects.get(pdfPath=title)
+	except:
+		raise Http404()
+	if releaseStage(releaseTimes) < puzzle.releaseStatus:
+		raise Http404()
+
+	allGuesses = SubmittedGuesses.objects.filter(puzzle=puzzle)
+	allSolves = sorted([[i, calcSingleTime(i, i.submitTime, releaseTimes)[0]] for i in allGuesses if i.correct], key=lambda x:x[0].submitTime)
+	
+	totalRight = len(allSolves)
+	totalWrong = len(allGuesses) - totalRight
+
+	return render(request, 'PHapp/puzzleStats.html', 
+		{'puzzle':puzzle, 'allSolves':allSolves, 'totalWrong':totalWrong, 'totalRight':totalRight, 'avTime':calcPuzzleTime(puzzle, releaseTimes)[0]})
 
 @login_required
 def showPuzzle(request, puzzleURL):
@@ -57,10 +76,11 @@ def solve(request, title):
 	if releaseStage(releaseTimes) < puzzle.releaseStatus:
 		raise Http404()
 	
-	if True in [i.correct for i in SubmittedGuesses.objects.filter(team = request.user, puzzle = puzzle)]:
-		return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle})
-
 	team = Teams.objects.get(authClone = request.user)
+
+	if True in [i.correct for i in SubmittedGuesses.objects.filter(team = request.user, puzzle = puzzle)]:
+		points = SubmittedGuesses.objects.filter(team=request.user, correct=True, puzzle=puzzle)[0].pointsAwarded
+		return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle, 'points':points, 'team':team})
 
 	if team.guesses <= 0:
 		return render(request, 'PHapp/noGuesses.html')
@@ -76,8 +96,18 @@ def solve(request, title):
 			newSubmit.submitTime = datetime.datetime.now()
 			if guess == puzzle.answer:
 				newSubmit.correct = True
+				newSubmit.pointsAwarded = calcWorth(puzzle, releaseTimes)
 				newSubmit.save()
-				return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle})
+
+				solveTime = calcSolveTime(team, releaseTimes)
+				team.avHr = solveTime[1]
+				team.avMin = solveTime[2]
+				team.avSec = solveTime[3]
+				team.teamPoints += calcWorth(puzzle, releaseTimes)
+				team.teamPuzzles += 1
+				team.save()
+
+				return redirect('/solve/{}/'.format(title))
 			else:
 				newSubmit.correct = False
 				newSubmit.save()
@@ -90,6 +120,38 @@ def solve(request, title):
 
 	return render(request, 'PHapp/solve.html', 
 		{'solveform':solveform, 'displayWrong':displayWrong, 'puzzle':puzzle, 'team':team})
+
+def teams(request):
+	allTeams = []
+	totRank = 1
+	ausRank = 1
+
+	teamsWithSolves = Teams.objects.filter(teamPoints__gt=0)
+	for team in teamsWithSolves:
+		allTeams.append([team, "{:02d}h {:02d}m {:02d}s".format(team.avHr, team.avMin, team.avSec), team.avHr, team.avMin, team.avSec])
+
+	allTeams = sorted(allTeams, key=lambda x:x[0].id) #sort by ID
+	allTeams = sorted(allTeams, key=lambda x:3600*x[2]+60*x[3]+x[4]) #sort by average solve time
+	allTeams = sorted(allTeams, key=lambda x:-x[0].teamPuzzles) #sort by team puzzles
+	allTeams = sorted(allTeams, key=lambda x:-x[0].teamPoints) #sort by team points
+
+	for i in range(len(allTeams)):
+		allTeams[i].append(totRank)
+		totRank += 1
+		if allTeams[i][0].aussie:
+			allTeams[i].append(ausRank)
+			ausRank += 1
+		else:
+			allTeams[i].append('-')
+
+	teamsWithoutSolves = Teams.objects.filter(teamPoints=0)
+	allTeams += sorted([[team, '-', None, None, None, '-', '-'] for team in teamsWithoutSolves], key=lambda x:x[0].id)
+
+	teamName = None
+	if request.user.is_authenticated:
+		teamName = Teams.objects.get(authClone = request.user).teamName
+	
+	return render(request, 'PHapp/teams.html', {'allTeams':allTeams, 'teamName':teamName})
 
 def teamReg(request):
 	if request.user.is_authenticated:
@@ -135,6 +197,15 @@ def teamReg(request):
 		indivFormSet = IndivRegFormSet()
 	return render(request, 'PHapp/teamReg.html', {'userForm':userForm, 'regForm':regForm, 'indivFormSet':indivFormSet})
 
+def teamInfo(request, teamId):
+	team = Teams.objects.get(id=teamId)
+	membersList = Individuals.objects.filter(team=team)
+	correctList = [[i, calcSingleTime(i, i.submitTime, releaseTimes)[0], len(SubmittedGuesses.objects.filter(team=team.authClone, correct=False))] for i in SubmittedGuesses.objects.filter(team=team.authClone, correct=True)]
+	correctList = sorted(correctList, key=lambda x:x[0].submitTime)
+	anySolves = True if len(correctList) > 0 else False
+	avSolveTime = "{:02d}h {:02d}m {:02d}s".format(team.avHr, team.avMin, team.avSec) if anySolves else '-'
+	return render(request, 'PHapp/teamInfo.html', {'team':team, 'members':membersList, 'correctList':correctList, 'anySolves':anySolves, 'avSolveTime':avSolveTime})
+
 @login_required
 def hints(request, title):
 	try:
@@ -157,70 +228,10 @@ def hints(request, title):
 	if releaseStage(releaseTimes) - puzzle.releaseStatus >= 3:
 		toRender.append([3, puzzle.hint3])
 		nextHint = None
-	return render(request, 'PHapp/hints.html', {'toRender':toRender, 'anyHints':anyHints, 'nextHint':nextHint})
-
-@login_required
-def stats(request, title):
-	try:
-		puzzle = Puzzles.objects.get(pdfPath=title)
-	except:
-		raise Http404()
-	if releaseStage(releaseTimes) < puzzle.releaseStatus:
-		raise Http404()
-
-	allGuesses = SubmittedGuesses.objects.filter(puzzle=puzzle)
-	allSolves = sorted([i for i in allGuesses if i.correct], key=lambda x:x.submitTime)
-	
-	totalRight = len(allSolves)
-	totalWrong = len(allGuesses) - totalRight
-
-	return render(request, 'PHapp/puzzleStats.html', {'puzzle':puzzle, 'allSolves':allSolves, 'totalWrong':totalWrong, 'totalRight':totalRight})
+	return render(request, 'PHapp/hints.html', {'toRender':toRender, 'anyHints':anyHints, 'nextHint':nextHint, 'puzzle':puzzle})
 
 def faq(request):
 	return render(request, 'PHapp/faq.html')
-
-def teams(request):
-	allTeams = []
-	totRank = 1
-	ausRank = 1
-
-	teamsWithSolves = Teams.objects.filter(teamPoints__gt=0)
-	for team in teamsWithSolves:
-		solves = len(SubmittedGuesses.objects.filter(team=team.authClone, correct=True))
-		allTeams.append([team, solves] + calcSolveTime(team, releaseTimes))
-
-	allTeams = sorted(allTeams, key=lambda x:x[0].id)
-	allTeams = sorted(allTeams, key=lambda x:3600*x[2]+60*x[3]+x[4])
-	allTeams = sorted(allTeams, key=lambda x:x[1])
-	allTeams = sorted(allTeams, key=lambda x:x[0].teamPoints)
-
-	for i in range(len(allTeams)):
-		allTeams[i].append(totRank)
-		totRank += 1
-		if allTeams[i][0].aussie:
-			allTeams[i].append(ausRank)
-			ausRank += 1
-		else:
-			allTeams[i].append('-')
-
-	teamsWithoutSolves = Teams.objects.filter(teamPoints=0)
-	allTeams += sorted([[team, 0, '-', None, None, None, '-', '-'] for team in teamsWithoutSolves], key=lambda x:x[0].id)
-
-	teamName = None
-	if request.user.is_authenticated:
-		teamName = Teams.objects.get(authClone = request.user).teamName
-	
-
-	return render(request, 'PHapp/teams.html', {'allTeams':allTeams, 'teamName':teamName})
-
-def teamInfo(request, teamId):
-	team = Teams.objects.get(id=teamId)
-	membersList = Individuals.objects.filter(team=team)
-	correctList = [[i, 0, 0] for i in SubmittedGuesses.objects.filter(team=team.authClone, correct=True)]
-	correctList = sorted(correctList, key=lambda x:x[0].submitTime)
-	anySolves = True if len(correctList) > 0 else False
-	avSolveTime = calcSolveTime(team, releaseTimes)[0] if anySolves else '-'
-	return render(request, 'PHapp/teamInfo.html', {'team':team, 'members':membersList, 'correctList':correctList, 'anySolves':anySolves, 'avSolveTime':avSolveTime})
 
 def rules(request):
 	return render(request, 'PHapp/rules.html')
