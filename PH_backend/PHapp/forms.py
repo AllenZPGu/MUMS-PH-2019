@@ -24,10 +24,10 @@ class TeamRegForm(forms.ModelForm):
 			'teamEmail':{'unique':'This team email has already been taken.'}}
 
 class IndivRegForm(forms.Form):
-	name = forms.CharField(max_length=100, label="",  widget=forms.TextInput(attrs={'placeholder': 'Name'}))
-	email = forms.EmailField(max_length=254, label="",  widget=forms.TextInput(attrs={'placeholder': 'Email'}))
-	aussie = forms.BooleanField(required = False, label="")
-	melb = forms.BooleanField(required = False, label="")
+	name = forms.CharField(max_length=100, label="", widget=forms.TextInput(attrs={'placeholder': 'Name'}))
+	email = forms.EmailField(max_length=254, label="", widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+	aussie = forms.BooleanField(required = False, label="", widget=forms.CheckboxInput(attrs={'class': 'centred-checkbox'}))
+	melb = forms.BooleanField(required = False, label="", widget=forms.CheckboxInput(attrs={'class': 'centred-checkbox'}))
 
 class LoginForm(forms.Form):
 	username = forms.CharField(label='Username', help_text='Please enter your username and NOT your team name. This is case-sensitive.')
