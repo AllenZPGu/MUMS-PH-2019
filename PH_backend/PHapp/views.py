@@ -84,17 +84,18 @@ def solve(request, title):
 
 	if team.guesses <= 0:
 		return render(request, 'PHapp/noGuesses.html')
-	
+
 	if request.method == 'POST':
 		solveform = SolveForm(request.POST)
 		if solveform.is_valid():
 			guess = stripToLetters(solveform.cleaned_data['guess'])
-			newSubmit = SubmittedGuesses()
-			newSubmit.team = request.user
-			newSubmit.puzzle = puzzle
-			newSubmit.guess = guess
-			newSubmit.submitTime = datetime.datetime.now()
+			
 			if guess == puzzle.answer:
+				newSubmit = SubmittedGuesses()
+				newSubmit.team = request.user
+				newSubmit.puzzle = puzzle
+				newSubmit.guess = guess
+				newSubmit.submitTime = datetime.datetime.now()
 				newSubmit.correct = True
 				newSubmit.pointsAwarded = calcWorth(puzzle, releaseTimes)
 				newSubmit.save()
@@ -108,18 +109,37 @@ def solve(request, title):
 				team.save()
 
 				return redirect('/solve/{}/'.format(title))
+
 			else:
-				newSubmit.correct = False
-				newSubmit.save()
-				team.guesses -= 1
-				team.save()
-				displayWrong = True
+				if len(SubmittedGuesses.objects.filter(guess=guess, puzzle=puzzle, team=team.authClone)) == 0:
+					newSubmit = SubmittedGuesses()
+					newSubmit.team = request.user
+					newSubmit.puzzle = puzzle
+					newSubmit.guess = guess
+					newSubmit.submitTime = datetime.datetime.now()
+					newSubmit.correct = False
+					newSubmit.save()
+					team.guesses -= 1
+					team.save()
+					displayWrong = True
+					displayDouble = False
+					displayGuess = None
+				else:
+					displayWrong = False
+					displayDouble = True
+					displayGuess = guess
+
 	else:
 		solveform = SolveForm()
 		displayWrong = False
+		displayDouble = False
+		displayGuess = None
+
+	previousGuesses = [i.guess for i in SubmittedGuesses.objects.filter(puzzle=puzzle, team=team.authClone, correct=False)]
+	previousGuesses = sorted(previousGuesses)
 
 	return render(request, 'PHapp/solve.html', 
-		{'solveform':solveform, 'displayWrong':displayWrong, 'puzzle':puzzle, 'team':team})
+		{'solveform':solveform, 'displayWrong':displayWrong, 'displayDouble':displayDouble, 'displayGuess':displayGuess, 'puzzle':puzzle, 'team':team, 'previousGuesses':previousGuesses})
 
 def teams(request):
 	allTeams = []

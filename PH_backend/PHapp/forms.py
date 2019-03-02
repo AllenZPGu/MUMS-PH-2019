@@ -5,7 +5,7 @@ from .helperFunctions import *
 from .models import Teams
 
 class SolveForm(forms.Form):
-	guess = forms.CharField(label='', max_length = 200, widget=forms.TextInput(attrs={'placeholder': 'Guess', 'class':'text-center'}))
+	guess = forms.CharField(label='', max_length = 200, widget=forms.TextInput(attrs={'placeholder': 'Enter guess here', 'class':'text-center'}))
 
 # class TeamRegForm(forms.Form):
 # 	teamName = forms.CharField(max_length=50, 

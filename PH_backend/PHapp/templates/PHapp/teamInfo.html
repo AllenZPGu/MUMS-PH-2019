@@ -6,14 +6,23 @@
 <div class="inner-container">
 <center>
 <h6>Team information</h6>
-<h1>{{team.teamName}}</h1>
+
+{% if team.aussie %}
+	<h1>🇦🇺 {{team.teamName}} 🇦🇺</h1>
+{% else %}
+	<h1>{{team.teamName}}</h1>
+{% endif %}
+
+<br>
 <h4>Points: {{team.teamPoints}}</h4>
+<h4>Puzzles solved: {{team.teamPuzzles}}</h4>
 <h4>Average solve time: {{avSolveTime}}</h4>
 {% if team.authClone == user %}
 	<h4>Guesses remaining: {{team.guesses}}</h4>
 {% endif %}
 <br>
-<h5>Members:</h5>
+
+<h4>Members:</h4>
 {% for member in members %}
 	<h6>{{member.name}}</h6>
 {% endfor %}

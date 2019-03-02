@@ -4,13 +4,13 @@
 {% block content %}
 <div class="outer-container">
 <div class="inner-container">
-	<table class="table">
+	<table class="table table-bordered">
 		<thead>
 			<tr>
 				<td></td>
 				<td>Puzzle</td>
 				<td>Points</td>
-				<td>Solve</td>
+				<td>Solve / Solution</td>
 				<td>Hints</td>
 				<td>Solves / Incorrect guesses</td>
 			</tr>
@@ -23,7 +23,7 @@
 					</td>
 					
 					{% if solved %}
-						<td style="color:green">{{worth}}</td>
+						<td style="color:green"><b>{{worth}}<b></td>
 						<td style="color:green"><b>{{puzzle.answer}}</b></td>
 					{% else %}
 						<td>{{worth}}</td>
