@@ -1,6 +1,67 @@
 <!DOCTYPE html>
 <html>
     <body>
-        
+        <script src="three.js"></script>
+        <script>
+            RotationControls = function( domElement, camera ) {
+                this.scene = domElement;
+
+                this.camera = camera;
+
+                
+            }
+        </script>
+        <script>
+            const cube_width = 570;
+            const cube_height = 570;
+            const cube_spacing = 1.05;
+            const cube_size = 1;
+
+            var cvas = document.getElementById("my_Canvas");
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(75, cube_width / cube_height, 0.1, 100 );
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize(cube_width, cube_height);
+            document.body.appendChild(renderer.domElement);
+
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    for (let k = 0; k < 3; k++) {
+                        let geometry = new THREE.BoxGeometry( cube_size, cube_size, cube_size );
+                        let material = new THREE.MeshBasicMaterial( { color: 0x7f7f7f } );
+                        let cube = new THREE.Mesh( geometry, material );
+                        scene.add(cube);
+                        cube.translateX(i*cube_spacing);
+                        cube.translateY(j*cube_spacing);
+                        cube.translateZ(k*cube_spacing);
+                    }
+                }
+            }
+            const cubecolors = {RED: 0xff0000,
+            BLUE: 0x0000ff,
+            GREEN: 0x00ff00,
+            YELLOW: 0xffff00,
+            ORANGE: 0xff7f00,
+            WHITE: 0xffffff}
+
+            let sidegeometry = new THREE.BoxGeometry(0.9, 0.9, 0.9);
+            let bluematerial = new THREE.MeshBasicMaterial( { color: cubecolors.BLUE } );
+            let side = new THREE.Mesh(sidegeometry, bluematerial);
+            scene.add(side);
+            side.translateX(-0.05);
+            side.translateY(-0.05);
+            side.translateZ(2.15);
+
+            camera.position.x = camera.position.y = (cube_size*2 + (cube_spacing - cube_size) * 2)/2;
+
+            camera.position.z = 8;
+
+            function animate() {
+                requestAnimationFrame( animate );
+                renderer.render( scene, camera );
+            }
+            animate();
+
+        </script>
     </body>
 </html>
