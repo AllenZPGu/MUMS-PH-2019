@@ -23,9 +23,12 @@ class Teams(models.Model):
 	authClone = models.ForeignKey(User, models.DO_NOTHING, db_column='authClone', null=True)
 	teamName = models.CharField(max_length=50, unique=True, null=True)
 	teamPoints = models.IntegerField(default=0)
+	teamPuzzles = models.IntegerField(default=0)
 	teamEmail = models.EmailField(max_length=254, null=True, blank=True, unique=True)
 	aussie = models.BooleanField(default=False)
-	avSolve = models.TimeField(null=True)
+	avHr = models.IntegerField(null=True)
+	avMin = models.IntegerField(null=True)
+	avSec = models.IntegerField(null=True)
 	guesses = models.IntegerField(default=100)
 
 	class Meta:
@@ -48,6 +51,7 @@ class SubmittedGuesses(models.Model):
 	puzzle = models.ForeignKey(Puzzles, models.DO_NOTHING, db_column = 'puzzle', null=True)
 	guess = models.CharField(max_length=200, null=True)
 	correct = models.BooleanField(default = False)
+	pointsAwarded = models.IntegerField(null=True)
 	submitTime = models.DateTimeField(null=True)
 
 	class Meta:

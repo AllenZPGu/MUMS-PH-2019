@@ -4,3 +4,5 @@ django-heroku
 psycopg2-binary
 dj-database-url
 django-crispy-forms
+pytz
+django-extensions

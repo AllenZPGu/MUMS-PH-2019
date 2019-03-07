@@ -5,21 +5,54 @@
 {% block content %}
 <div class="outer-container">
 <div class="inner-container">
-	{% if displayWrong %}
-		<h3>Incorrect! {{puzzle.losePun}}</h3>
-	{% endif %}
-	<div>
-		<h4>Enter a guess for Act {{puzzle.act}} Scene {{puzzle.scene}}: {{puzzle.title}}</h4>
-	</div>
+	<center>
+		<h4>Enter a guess for <a href='/puzzle/{{puzzle.pdfPath}}.pdf'>Act {{puzzle.act}} Scene {{puzzle.scene}}: {{puzzle.title}}</a></h4>
+		<br>
+
+		{% if displayWrong %}
+			<h4 style='color:red'>Incorrect!</h4>
+			<h4 style='color:red'>{{puzzle.losePun}}</h4>
+			<br>
+		{% endif %}
+
+		{% if displayDouble %}
+			<h4 style='color:red'>You have already guessed "{{displayGuess}}"!</h4>
+			<h4 style='color:red'>For the record, it was incorrect. This does not affect your remaining incorrect guesses.</h4>
+			<br>
+		{% endif %}
+
+		<h6>You have {{team.guesses}} guesses remaining.</h6>
+	</center>
+
 	<div>
 		<form method="post">
-			<div class="form-group">
+			<div class="form-group text-center">
 				{% csrf_token %}
 				{{ solveform|crispy }}
-				<button type="submit" class="btn btn-success">Submit</button>
+				<button type="submit" class="btn btn-success btn-block">Submit</button>
 			</div>
 		</form>
 	</div>
+
+	<br>
+	<button class="btn btn-info btn-block" type="button" data-toggle="collapse" data-target="#guessCollapse" aria-expanded="false" aria-controls="guessCollapse">
+		Click to display / hide your previous incorrect guesses.
+	</button>
+
+	<div class="collapse" id="guessCollapse">
+		<div class="card card-body">
+			<center>
+				{% for previousGuess in previousGuesses %}
+					<p>{{previousGuess}}</p>
+				{% endfor %}
+			</center>
+		</div>
+	</div>
+
+
+
+
+
 </div>
 </div>
 

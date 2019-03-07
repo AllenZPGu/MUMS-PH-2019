@@ -4,17 +4,18 @@
 {% block content %}
 <div class="outer-container">
 <div class="inner-container">
-	<table class="table">
+	<table class="table table-bordered">
 		<thead>
 			<tr>
 				<td></td>
 				<td>Puzzle</td>
-				<td></td>
-				<td></td>
+				<td>Points</td>
+				<td>Solve / Solution</td>
+				<td>Hints</td>
 				<td>Solves / Incorrect guesses</td>
 			</tr>
 		<tbody>
-			{% for puzzle, solved, correct, incorrect in puzzleList %}
+			{% for puzzle, solved, correct, incorrect, worth in puzzleList %}
 				<tr>
 					<td>Act {{puzzle.act}}, Scene {{puzzle.scene}}</td>
 					<td>
@@ -22,16 +23,14 @@
 					</td>
 					
 					{% if solved %}
-						<td style="color:green">
-							<b>{{puzzle.answer}}</b>
-						</td>
+						<td style="color:green"><b>{{worth}}<b></td>
+						<td style="color:green"><b>{{puzzle.answer}}</b></td>
 					{% else %}
-						<td>
-							<a href="/solve/{{puzzle.pdfPath}}/">Solve</a>
-						</td>
+						<td>{{worth}}</td>
+						<td><a href="/solve/{{puzzle.pdfPath}}/">Solve</a></td>
 					{% endif %}
 					<td><a href='/hints/{{puzzle.pdfPath}}'>Hints</a></td>
-					<td><a href='/stats/{{puzzle.pdfPath}}'>{{correct}}/{{incorrect}}</a></td>
+					<td><a href='/puzzlestats/{{puzzle.pdfPath}}'>{{correct}}/{{incorrect}}</a></td>
 				</tr>
 			{% endfor %}
 		</tbody>

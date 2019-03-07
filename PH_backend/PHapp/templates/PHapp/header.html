@@ -21,18 +21,16 @@
 		<div class="navbar-container-inner">
 			<nav class="main-nav">
 				<a class="link-nav" href="/">Home</a></li>
-				<a class="link-nav" href="/faq/">About & FAQ</a></li>
+				<a class="link-nav" href="/faq/">About / FAQ</a></li>
 				<a class="link-nav" href="/rules/">Rules</a></li>
 				<a class="link-nav" href="/puzzles/">Puzzles</a></li>
-				{% if not user.is_authenticated %}
-					<a class="link-nav" href="/registration/">Registration</a></li>
-				{% endif %}
 				<a class="link-nav" href="/teams/">Teams</a></li>
 
 				{% if user.is_authenticated %}
 					<a class="link-nav" style="color:yellow" href="/team/{{user.teams_set.all.0.id}}/">{{user.teams_set.all.0.teamName}}</a></li>
 					<a class="link-nav" href="/logout/">Logout</a></li>
 				{% else %}
+				<a class="link-nav" href="/registration/">Registration</a></li>
 					<a class="link-nav" href="/login/">Login</a></li>
 				{% endif %}
 
@@ -48,7 +46,8 @@
 	{% endblock %}
 </div>
 <div class="container col-sm-2"></div>
-	
+
+<br>
 </body>
 
 </html>
