@@ -84,6 +84,20 @@ Y = YELLOW = new Color(
 	'font-weight: bold; color: #ED0',
 	'background-color: #FE0; color: rgba( 0, 0, 0, 0.5 )'
 ),
+A = GRAY = new Color(
+	'gray',
+	'A',
+	'#777',
+	'font-weight: bold; color: #666',
+	'background-color: #777; color: rgba(0,0,0,0.5)'
+),
+P = PURPLE = new Color(
+	'purple',
+	'P',
+	'#F0F',
+	'font-weight: bold; color: #E0E',
+	'background-color: #F0F; color: rgba(255, 255, 255, 0.9)'
+),
 COLORLESS = new Color(
 
 	'NA',

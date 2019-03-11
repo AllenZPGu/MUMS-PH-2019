@@ -94,7 +94,7 @@ var erno = {
 	//  How much output do we want in the browser's console?
 	//  0 = None. 1 = Everything.
 
-	verbosity: 0.5,
+	verbosity: 1,
 
 
 	//  We're using Three.js for sure, 
@@ -212,45 +212,15 @@ var erno = {
 			if( hash.charAt( hash.length - 1 ) === '/' ) hash = hash.substr( 0, hash.length - 1 )
 			hash = hash.charAt( 0 ).toUpperCase() + hash.substr( 1, hash.length )
 
-
 			//  Create a Rubik's Cube. Just one. 
 			//  Though we're entirely capable of spawning several!
 			//  (Update: that's not entirely true...)
 
 			window.cube = new Cube( hash )
 
-
 			//  Let's enable our Cube Control keyboard commands.
 
 			updateControls()
-			$( '#container' ).click( function(){
-
-				$( '#controls input, #controls textarea' ).blur()
-			})
-			$( '#controls input' ).change( applyControls )
-			$( '#controls input' ).keydown( function( event ){
-
-				var code = event.keyCode || event.which
-
-				if( code === 13 ) applyControls()
-				if( !isNaN( $( this ).val() ) &&  ( code === 38 || code === 40 )){
-
-					if( code === 40 ) $( this ).val( +$( this ).val() - 1 )
-					if( code === 38 ) $( this ).val( +$( this ).val() + 1 )
-					applyControls()
-				}
-			})
-			$( '#texts' ).keydown( function( event ){
-
-				var code = event.keyCode || event.which
-				if( code === 13 ){
-
-					applyControls()
-					return false
-				}
-			})
-			$( '#texts' ).change( applyControls ).blur( applyControls )
-
 
 			//  Ok, we're done with the setup tasks
 			//  so let's change our state to loop.
@@ -378,19 +348,24 @@ function setupControls(){
 	//  Mouse trackball controls.
 
 	window.controls = new THREE.TrackballControls( camera, renderer.domElement )
+	controls.noZoom = controls.noPan = true;
 	//window.controls = new THREE.TrackballControls( window.cube.threeObject, document.body )
 	controls.rotateSpeed = 0.5
+	controls.beginAutoRotate();
+	controls.mouseUpCallback = function () {
+		controls.stopAutoRotate();
+		controls.mouseUpCallback = false;
+	}
 	//controls.addEventListener( 'change', render )
-
 
 	//  Change Field of View
 
-	$( document ).keydown( function( event ){
+	/*$( document ).keydown( function( event ){
 
 		if( event.keyCode === 38 ) camera.fov ++
 		if( event.keyCode === 40 ) camera.fov --
 		//camera.updateProjectionMatrix()
-	})
+	})*/
 }
 function onWindowResize(){
 	
@@ -399,13 +374,13 @@ function onWindowResize(){
 	HEIGHT = window.innerHeight
 
 	camera.aspect = WIDTH / HEIGHT
-	//camera.fov = ( 360 / Math.PI ) * Math.atan( camera.tanFOV * ( HEIGHT / renderer.originalHeight ))    
+	camera.fov = ( 360 / Math.PI ) * Math.atan( camera.tanFOV * ( HEIGHT / renderer.originalHeight ))    
 	camera.updateProjectionMatrix()
 	renderer.setSize( WIDTH, HEIGHT )
 	render()
 }
 function animate(){
-	
+	//console.log("Animate loop");
 	TWEEN.update()
 	if( window.controls && window.controls instanceof THREE.TrackballControls ){
 
@@ -432,7 +407,7 @@ function animate(){
 		}		
 	}
 	render()
-	//requestAnimationFrame( animate )
+	requestAnimationFrame( animate )
 }
 function render(){
 	
@@ -453,97 +428,11 @@ function render(){
 //////////////////
 
 
-function applyControls(){
-
-	if( $( '#attributeFaceLabels' ).prop( 'indeterminate' ) !== true ){
-
-		if( $( '#attributeFaceLabels' ).prop( 'checked' )) cube.showFaceLabels()
-		else cube.hideFaceLabels()
-	}
-	if( $( '#attributePlastics' ).prop( 'indeterminate' ) !== true ){
-
-		if( $( '#attributePlastics' ).prop( 'checked' )) cube.showPlastics()
-		else cube.hidePlastics()
-	}
-	if( $( '#attributeInteriors' ).prop( 'indeterminate' ) !== true ){
-
-		if( $( '#attributeIntroverts' ).prop( 'checked' )) cube.showIntroverts()
-		else cube.hideIntroverts()
-	}
-	if( $( '#attributeStickers' ).prop( 'indeterminate' ) !== true ){
-
-		if( $( '#attributeStickers' ).prop( 'checked' )) cube.showStickers()
-		else cube.hideStickers()
-	}
-	if( $( '#attributeIds' ).prop( 'indeterminate' ) !== true ){
-
-		if( $( '#attributeIds' ).prop( 'checked' )) cube.showIds()
-		else cube.hideIds()
-	}
-	if( $( '#attributeTexts' ).prop( 'indeterminate' ) !== true ){
-
-		if( $( '#attributeTexts' ).prop( 'checked' )) cube.showTexts()
-		else cube.hideTexts()
-	}
-	if( $( '#attributeWireframes' ).prop( 'indeterminate' ) !== true ){
-
-		if( $( '#attributeWireframes' ).prop( 'checked' )) cube.showWireframes()
-		else cube.hideWireframes()
-	}
-	cube.isShuffling = $( '#actionShuffle' ).prop( 'checked' )
-	cube.isRotating  = $( '#actionRotate'  ).prop( 'checked' )
-	$( '#twist' ).css( 'visibility', $( '#actionNotation' ).prop( 'checked' ) ? 'visible' : 'hidden' )
-	cube.setText( $( '#texts' ).val())
-}
 function updateControls( cube ){
 
 	if( cube === undefined ) cube = window.cube
 	$( '#backgroundColorCss' ).val( $( 'body' ).css( 'background-color' ))	
 	$( '#cameraFov' ).val( camera.fov )
-	if( cube.showingFaceLabels ) $( '#attributeFaceLabels' ).prop( 'checked', true )
-	else $( '#attributeFaceLabels' ).prop( 'checked', false )
-
-	var
-	plastics   = 0,
-	introverts = 0,
-	stickers   = 0,
-	ids        = 0,
-	texts      = 0,
-	wireframes = 0
-
-	cube.cubelets.forEach( function( cubelet ){
-
-		if( cubelet.showingPlastics   ) plastics ++
-		if( cubelet.showingIntroverts ) introverts ++
-		if( cubelet.showingStickers   ) stickers ++
-		if( cubelet.showingIds        ) ids ++
-		if( cubelet.showingTexts      ) texts ++
-		if( cubelet.showingWireframes ) wireframes ++
-	})
-	if( erno.verbosity >= 0.9 ){
-	
-		console.log( '\n\nCubelets tallied with the following attributes:' )
-		console.log( '  plastics .....', plastics )
-		console.log( '  introverts ...', introverts )
-		console.log( '  stickers .....', stickers )
-		console.log( '  ids ..........', ids )
-		console.log( '  texts ........', texts )
-		console.log( '  wireframes ...', wireframes )
-		console.log( '' )
-	}
-
-	assessTrueFalseMixed( '#attributePlastics',   plastics )
-	assessTrueFalseMixed( '#attributeIntroverts', introverts )
-	assessTrueFalseMixed( '#attributeStickers',   stickers )
-	assessTrueFalseMixed( '#attributeIds',        ids )
-	assessTrueFalseMixed( '#attributeTexts',      texts )
-	assessTrueFalseMixed( '#attributeWireframes', wireframes )
-
-	$( '#actionShuffle'  ).prop( 'checked', cube.isShuffling )
-	$( '#actionNotation' ).prop( 'checked', $( '#twist' ).css( 'visibility' ) === 'visible' ? true : false )
-	$( '#actionRotate'   ).prop( 'checked', cube.isRotating )
-
-	$( '#texts' ).val( cube.getText( 0 ))
 }
 function assessTrueFalseMixed( id, count ){
 

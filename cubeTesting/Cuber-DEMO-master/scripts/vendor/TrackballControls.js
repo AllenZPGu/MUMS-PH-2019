@@ -4,8 +4,8 @@
 
 THREE.TrackballControls = function ( object, domElement ) {
 
-	var _this = this;
-	var STATE = { NONE: -1, ROTATE: 0, ZOOM: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_ZOOM: 4, TOUCH_PAN: 5 };
+	var _this = this,
+	STATE = { AUTOROTATE: -10, NONE: -1, ROTATE: 0, ZOOM: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_ZOOM: 4, TOUCH_PAN: 5 };
 
 	this.object = object;
 	this.domElement = ( domElement !== undefined ) ? domElement : document;
@@ -16,9 +16,13 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 	this.screen = { left: 0, top: 0, width: 0, height: 0 };
 
+	this.autoRotateTheta = 135; // Theta sets direction of rotation
+	this.autoRotatePhi = -5; // Phi sets rate of rotation
 	this.rotateSpeed = 1.0;
 	this.zoomSpeed = 1.2;
 	this.panSpeed = 0.3;
+
+	this.autoRotate = false;
 
 	this.noRotate = false;
 	this.noZoom = false;
@@ -68,6 +72,18 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 
 	// methods
+
+	this.beginAutoRotate = function () {
+		_state = STATE.AUTOROTATE;
+		_this.autoRotate = true;
+	}
+
+	this.stopAutoRotate = function () {
+		if (_this.autoRotate) {
+			_this.autoRotate = false;
+			_state = STATE.NONE;
+		}
+	}
 
 	this.handleResize = function () {
 
@@ -152,6 +168,8 @@ THREE.TrackballControls = function ( object, domElement ) {
 		var angle = Math.acos( _rotateStart.dot( _rotateEnd ) / _rotateStart.length() / _rotateEnd.length() );
 
 		if ( angle ) {
+
+			//console.log("Doing rotation from " + JSON.stringify(_rotateStart) + " to " + JSON.stringify(_rotateEnd) + " (angle " + angle)
 
 			var axis = ( new THREE.Vector3() ).crossVectors( _rotateStart, _rotateEnd ).normalize(),
 				quaternion = new THREE.Quaternion();
@@ -260,7 +278,20 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 	};
 
+	this._lastupdated = false;
+
 	this.update = function () {
+
+		if (_this.autoRotate) {
+			if (this._lastupdated) {
+				var degreesToRadians = function (d) {
+					return (d*Math.PI/180.0)
+				}
+				let diff = ((new Date ()).getTime() - _this._lastupdated) / 1000;
+				_rotateStart = (new THREE.Vector3()).setFromSphericalCoords(1,0,0);
+				_rotateEnd = (new THREE.Vector3()).setFromSphericalCoords(1,degreesToRadians(_this.autoRotatePhi * diff), degreesToRadians(_this.autoRotateTheta));
+			}
+		}
 
 		_eye.subVectors( _this.object.position, _this.target );
 
@@ -295,7 +326,7 @@ THREE.TrackballControls = function ( object, domElement ) {
 			lastPosition.copy( _this.object.position );
 
 		}
-
+		this._lastupdated = new Date().getTime();
 	};
 
 	this.reset = function () {
@@ -402,7 +433,6 @@ THREE.TrackballControls = function ( object, domElement ) {
 		if ( _state === STATE.ROTATE && !_this.noRotate ) {
 
 			_rotateEnd = _this.getMouseProjectionOnBall( event.clientX, event.clientY );
-
 		} else if ( _state === STATE.ZOOM && !_this.noZoom ) {
 
 			_zoomEnd = _this.getMouseOnScreen( event.clientX, event.clientY );
@@ -415,12 +445,18 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 	}
 
+	this.mouseUpCallback = false;
+
 	function mouseup( event ) {
 
 		if ( _this.enabled === false ) return;
 
 		event.preventDefault();
 		event.stopPropagation();
+
+		if (_this.mouseUpCallback) {
+			_this.mouseUpCallback();
+		}
 
 		_state = STATE.NONE;
 
@@ -455,6 +491,9 @@ THREE.TrackballControls = function ( object, domElement ) {
 	function touchstart( event ) {
 
 		if ( _this.enabled === false ) return;
+
+		event.preventDefault();
+		event.stopPropagation();
 
 		switch ( event.touches.length ) {
 
@@ -515,6 +554,13 @@ THREE.TrackballControls = function ( object, domElement ) {
 	function touchend( event ) {
 
 		if ( _this.enabled === false ) return;
+
+		event.preventDefault();
+		event.stopPropagation();
+
+		if (_this.mouseUpCallback) {
+			_this.mouseUpCallback();
+		}
 
 		switch ( event.touches.length ) {
 

@@ -1,67 +1,65 @@
 <!DOCTYPE html>
 <html>
-    <body>
-        <script src="three.js"></script>
-        <script>
-            RotationControls = function( domElement, camera ) {
-                this.scene = domElement;
+    <head>
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
-                this.camera = camera;
+		<link rel="stylesheet" type="text/css" href="Cuber-DEMO-master/styles/base.css">
 
-                
-            }
-        </script>
-        <script>
-            const cube_width = 570;
-            const cube_height = 570;
-            const cube_spacing = 1.05;
-            const cube_size = 1;
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/vendor/three.min.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/vendor/CSS3DRenderer.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/vendor/SVGRenderer.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/vendor/tween.min.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/vendor/TrackballControls.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/vendor/jquery.js"></script>
+        <script charset="utf-8" src="Cuber-DEMO-master/scripts/vendor/skip.js"></script>		
+        <script charset="utf-8" src="Cuber-DEMO-master/scripts/vendor/Projector.js"></script>		
+        
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/colors.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/directions.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/queues.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/twists.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/cubelets.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/groups.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/slices.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/folds.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/cubes.js"></script>		
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/solvers.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/solvers/stewart.js"></script>		
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/erno.js"></script>	
+    </head>
+    <body class="graydient">
+		<div id="container"></div>
+		<div id="controlsOpen">
+			<div class="pad">
+				<a href="." onclick="$('#controls').fadeIn( 500 );$('#controlsOpen').fadeOut( 500 );return false">Cube Control</a>
+			</div>
+		</div>
+		<div id="controls">
+			<div class="pad">
+				<a id="controlsClose" class="key" href="." onclick="$('#controls').fadeOut( 500 );$('#controlsOpen').fadeIn( 500 );return false">&uarr;</a>
 
-            var cvas = document.getElementById("my_Canvas");
-            var scene = new THREE.Scene();
-            var camera = new THREE.PerspectiveCamera(75, cube_width / cube_height, 0.1, 100 );
-            var renderer = new THREE.WebGLRenderer();
-            renderer.setSize(cube_width, cube_height);
-            document.body.appendChild(renderer.domElement);
-
-            for (let i = 0; i < 3; i++) {
-                for (let j = 0; j < 3; j++) {
-                    for (let k = 0; k < 3; k++) {
-                        let geometry = new THREE.BoxGeometry( cube_size, cube_size, cube_size );
-                        let material = new THREE.MeshBasicMaterial( { color: 0x7f7f7f } );
-                        let cube = new THREE.Mesh( geometry, material );
-                        scene.add(cube);
-                        cube.translateX(i*cube_spacing);
-                        cube.translateY(j*cube_spacing);
-                        cube.translateZ(k*cube_spacing);
-                    }
-                }
-            }
-            const cubecolors = {RED: 0xff0000,
-            BLUE: 0x0000ff,
-            GREEN: 0x00ff00,
-            YELLOW: 0xffff00,
-            ORANGE: 0xff7f00,
-            WHITE: 0xffffff}
-
-            let sidegeometry = new THREE.BoxGeometry(0.9, 0.9, 0.9);
-            let bluematerial = new THREE.MeshBasicMaterial( { color: cubecolors.BLUE } );
-            let side = new THREE.Mesh(sidegeometry, bluematerial);
-            scene.add(side);
-            side.translateX(-0.05);
-            side.translateY(-0.05);
-            side.translateZ(2.15);
-
-            camera.position.x = camera.position.y = (cube_size*2 + (cube_spacing - cube_size) * 2)/2;
-
-            camera.position.z = 8;
-
-            function animate() {
-                requestAnimationFrame( animate );
-                renderer.render( scene, camera );
-            }
-            animate();
-
-        </script>
+				<div id="commands">
+					<h2>Keyboard commands</h2>
+					<div class="keyBundle">
+						<a class="key" href="javascript:cube.twistQueue.add('X')">X</a><a class="key" href="javascript:cube.twistQueue.add('x')">x</a> whole cube<br>
+						<a class="key" href="javascript:cube.twistQueue.add('L')">L</a><a class="key" href="javascript:cube.twistQueue.add('l')">l</a> left face<br>
+						<a class="key" href="javascript:cube.twistQueue.add('M')">M</a><a class="key" href="javascript:cube.twistQueue.add('m')">m</a> middle slice<br>
+						<a class="key" href="javascript:cube.twistQueue.add('R')">R</a><a class="key" href="javascript:cube.twistQueue.add('r')">r</a> right face<br>
+					</div>
+					<div class="keyBundle">
+						<a class="key" href="javascript:cube.twistQueue.add('Y')">Y</a><a class="key" href="javascript:cube.twistQueue.add('y')">y</a> whole cube<br>
+						<a class="key" href="javascript:cube.twistQueue.add('U')">U</a><a class="key" href="javascript:cube.twistQueue.add('u')">u</a> up face<br>
+						<a class="key" href="javascript:cube.twistQueue.add('E')">E</a><a class="key" href="javascript:cube.twistQueue.add('e')">e</a> equator slice<br>
+						<a class="key" href="javascript:cube.twistQueue.add('D')">D</a><a class="key" href="javascript:cube.twistQueue.add('d')">d</a> down face<br>
+					</div>
+					<div class="keyBundle">
+						<a class="key" href="javascript:cube.twistQueue.add('Z')">Z</a><a class="key" href="javascript:cube.twistQueue.add('z')">z</a> whole cube<br>
+						<a class="key" href="javascript:cube.twistQueue.add('F')">F</a><a class="key" href="javascript:cube.twistQueue.add('f')">f</a> front face<br>
+						<a class="key" href="javascript:cube.twistQueue.add('S')">S</a><a class="key" href="javascript:cube.twistQueue.add('s')">s</a> standing slice<br>
+						<a class="key" href="javascript:cube.twistQueue.add('B')">B</a><a class="key" href="javascript:cube.twistQueue.add('b')">b</a> back face<br>
+					</div>
+				</div>
+			</div>
+		</div>
     </body>
 </html>

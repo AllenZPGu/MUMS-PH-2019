@@ -137,13 +137,13 @@ function Cube( preset ){
 		this.domElement.classList.add( 'cube' )
 		this.threeObject = new THREE.CSS3DObject( this.domElement )
 	}
-	else if( erno.renderMode === 'svg' ){
+	/*else if( erno.renderMode === 'svg' ){
 
 		this.threeObject = new THREE.Object3D()
-	}
+	}*/
 	this.threeObject.rotation.set(
 
-		(  25 ).degreesToRadians(), 
+		(  30 ).degreesToRadians(), 
 		( -30 ).degreesToRadians(),
 		0
 	)
@@ -154,7 +154,7 @@ function Cube( preset ){
 	//  by adding the following values to the Three object on each frame.
 
 	this.rotationDeltaX = 0.1
-	this.rotationDeltaY = 0.15
+	this.rotationDeltaY = -0.05
 	this.rotationDeltaZ = 0
 
 
@@ -172,23 +172,23 @@ function Cube( preset ){
 
 		//  Front slice
 
-		[ W, O,  ,  , G,   ],    [ W, O,  ,  ,  ,   ],    [ W, O, B,  ,  ,   ],//   0,  1,  2
-		[ W,  ,  ,  , G,   ],    [ W,  ,  ,  ,  ,   ],    [ W,  , B,  ,  ,   ],//   3,  4,  5
-		[ W,  ,  , R, G,   ],    [ W,  ,  , R,  ,   ],    [ W,  , B, R,  ,   ],//   6,  7,  8
+		[ A, A,  ,  , A,   ],    [ A, A,  ,  ,  ,   ],    [ A, A, A,  ,  ,   ],//   0,  1,  2
+		[ A,  ,  ,  , A,   ],    [ A,  ,  ,  ,  ,   ],    [ A,  , A,  ,  ,   ],//   3,  4,  5
+		[ A,  ,  , A, A,   ],    [ A,  ,  , A,  ,   ],    [ A,  , A, A,  ,   ],//   6,  7,  8
 
 
-		//  Standing slice
+		//  Standing, slice
 
-		[  , O,  ,  , G,   ],    [  , O,  ,  ,  ,   ],    [  , O, B,  ,  ,   ],//   9, 10, 11
-		[  ,  ,  ,  , G,   ],    [  ,  ,  ,  ,  ,   ],    [  ,  , B,  ,  ,   ],//  12, XX, 14
-		[  ,  ,  , R, G,   ],    [  ,  ,  , R,  ,   ],    [  ,  , B, R,  ,   ],//  15, 16, 17
+		[  , A,  ,  , A,   ],    [  , A,  ,  ,  ,   ],    [  , A, A,  ,  ,   ],//   9, 10, 11
+		[  ,  ,  ,  , A,   ],    [  ,  ,  ,  ,  ,   ],    [  ,  , A,  ,  ,   ],//  12, XX, 14
+		[  ,  ,  , A, A,   ],    [  ,  ,  , A,  ,   ],    [  ,  , A, A,  ,   ],//  15, 16, 17
 
 
 		//  Back slice
 
-		[  , O,  ,  , G, Y ],    [  , O,  ,  ,  , Y ],    [  , O, B,  ,  , Y ],//  18, 19, 20
-		[  ,  ,  ,  , G, Y ],    [  ,  ,  ,  ,  , Y ],    [  ,  , B,  ,  , Y ],//  21, 22, 23
-		[  ,  ,  , R, G, Y ],    [  ,  ,  , R,  , Y ],    [  ,  , B, R,  , Y ] //  24, 25, 26
+		[  , A,  ,  , A, A, ],    [  , A,  ,  ,  , A, ],    [  , A, A,  ,  , A ],//  18, 19, 20
+		[  ,  ,  ,  , A, A, ],    [  ,  ,  ,  ,  , A, ],    [  ,  , A,  ,  , A, ],//  21, 22, 23
+		[  ,  ,  , A, A, A ],    [  ,  ,  , A,  , A, ],    [  ,  , A, A,  , A, ] //  24, 25, 26
 
 	]).forEach( function( cubeletColorMap, cubeletId ){
 
@@ -233,16 +233,16 @@ function Cube( preset ){
 	
 	if( erno.renderMode === 'css' ){
 
-		this.setText( 'BEYONDRUBIKs  CUBE', 0 )
-		this.setText( 'BEYONDRUBIKs  CUBE', 1 )
-		this.setText( 'BEYONDRUBIKs  CUBE', 2 )
+		this.setText( 'ABCDEFGHIJKLMNOPQR', 0 )
+		this.setText( 'STUVWXYZ stuvwxyz ', 1 )
+		this.setText( 'abcedefhijklmnopqr', 2 )
 	}
 
 
 	//  Shall we load some presets here?
 
 	preset = 'preset' + preset.capitalize()
-	if( this[ preset ] instanceof Function === false ) preset = 'presetBling'
+	if( this[ preset ] instanceof Function === false ) preset = 'presetNormal'
 	this[ preset ]()
 
 
