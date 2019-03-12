@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<script src="Cuber-DEMO-master/scripts/vendor/jquery.js"></script>
+    <style>
+        #wrapper {
+  position: fixed !important;
+position: absolute;
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
+}
+
+#head {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  background-color: red;
+}
+
+#main {
+    position: absolute;
+  background-color: blue;
+  right:0;
+  left:0;
+  bottom:0;
+}
+    </style>
+<body>
+<div id="wrapper">
+<div id="head">
+<p>
+Hello World!
+</p>
+</div>
+<div id="main">
+<p>
+Dummy content Helloooooo
+</p>
+</div>
+</div>
+<script>
+    $(document).ready(function(){
+resizeDiv();
+});
+window.onresize = function(event) {
+resizeDiv();
+}
+function resizeDiv() {
+    let vph = $("#wrapper")[0].clientHeight, header_height = $("#head")[0].clientHeight
+$("#main").css({"top": header_height + "px", "min-height": (vph-header_height) + "px"});
+}
+</script>
+</body>
+</html>

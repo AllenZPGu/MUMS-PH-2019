@@ -20,5 +20,6 @@ urlpatterns = [
 	path('faq/', views.faq),
 	path('rules/', views.rules),
 	path('login/', views.loginCustom),
-	path('logout/', views.logoutCustom)
+	path('logout/', views.logoutCustom),
+	path('cube/', views.cube)
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -17,6 +17,7 @@
 </head>
 
 <body class="body">
+	<div id="fullscreen-wrapper">
 	<div class="navbar-container">
 		<div class="navbar-container-inner">
 			<nav class="main-nav">
@@ -39,15 +40,29 @@
 	</div>
 
 <br>
-
-<div class="container col-sm-2"></div>
-<div class="container col-sm-8">
-	{% block content %}
-	{% endblock %}
-</div>
-<div class="container col-sm-2"></div>
+<!--<div class="container col-sm-2"></div>-->
+	<div id="content-wrapper" class="container" >
+		{% block content %}
+		{% endblock %}
+	</div>
+<!--<div class="container col-sm-2"></div>-->
 
 <br>
+</div>
+
+
+<script>
+		$(document).ready(function(){
+	resizeContent();
+	});
+	window.onresize = function(event) {
+	resizeContent();
+	}
+	function resizeContent() {
+		let vph = $(window).height, header_height = $(".navbar-container")[0].clientHeight
+	$("#content-wrapper").css({"top": header_height + "px", "max-height": (vph-header_height) + "px"});
+	}
+	</script>
 </body>
 
 </html>
