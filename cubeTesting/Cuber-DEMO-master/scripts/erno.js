@@ -408,7 +408,7 @@ function animate(){
 		}		
 	}
 	render()
-	requestAnimationFrame( animate )
+	//requestAnimationFrame( animate )
 }
 function render(){
 	

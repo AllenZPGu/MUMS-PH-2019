@@ -247,10 +247,9 @@ function Cube( preset ){
 
 
 	//  Get ready for major loop-age.
-	//  Our Cube checks these booleans at roughly 60fps.
+	//  Updated to requestAnimationFrame to (hopefully) allow the cube to remain stable over long periods of time
 
-	setInterval( cube.loop, 16 )
-
+		requestAnimationFrame(cube.loop)
 
 	//  Enable key commands for our Cube.
 
@@ -1792,6 +1791,8 @@ setupTasks.push( function(){
 
 				$( '#cubeIsTweening' ).fadeIn( 100 )
 			}
+			
+			requestAnimationFrame(cube.loop)
 		}// loop: function()
 
 
