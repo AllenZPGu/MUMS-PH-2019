@@ -289,8 +289,8 @@ function setupThree(){
 	
 	var
 	FIELD_OF_VIEW = 45,
-	WIDTH         = window.innerWidth,
-	HEIGHT        = window.innerHeight,
+	WIDTH         = document.getElementById('outer-container').offsetWidth,
+	HEIGHT        = document.getElementById('outer-container').offsetHeight,
 	ASPECT_RATIO  = WIDTH / HEIGHT,
 	NEAR          = 1,
 	FAR           = 6000
@@ -335,12 +335,12 @@ function setupThree(){
 	}
 	renderer.setSize( WIDTH, HEIGHT )
 	renderer.originalHeight = HEIGHT
-	document.getElementById( 'container' ).appendChild( renderer.domElement )
+	document.getElementById( 'cube-container' ).appendChild( renderer.domElement )
 
 
 	//  Readjust on window resize.
 
-	window.addEventListener( 'resize', onWindowResize, false )
+	document.getElementById('outer-container').addEventListener( 'resize', onWindowResize, false )
 }
 function setupControls(){
 
@@ -351,6 +351,7 @@ function setupControls(){
 	controls.noZoom = controls.noPan = true;
 	//window.controls = new THREE.TrackballControls( window.cube.threeObject, document.body )
 	controls.rotateSpeed = 0.5
+	controls.autoRotateTheta=135;
 	controls.beginAutoRotate();
 	controls.mouseUpCallback = function () {
 		controls.stopAutoRotate();
@@ -370,8 +371,8 @@ function setupControls(){
 function onWindowResize(){
 	
 	var
-	WIDTH  = window.innerWidth,
-	HEIGHT = window.innerHeight
+	WIDTH         = document.getElementById('outer-container').offsetWidth,
+	HEIGHT        = document.getElementById('outer-container').offsetHeight
 
 	camera.aspect = WIDTH / HEIGHT
 	camera.fov = ( 360 / Math.PI ) * Math.atan( camera.tanFOV * ( HEIGHT / renderer.originalHeight ))    

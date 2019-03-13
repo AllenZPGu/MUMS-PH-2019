@@ -24,11 +24,6 @@ def index(request):
 	huntOver = False if releaseStage(releaseTimes) < len(releaseTimes) else True
 	return render(request, 'PHapp/home.html', {'huntOver':huntOver})
 
-def cube(request):
-	# TODO: implement colouring/links/everything based on where team is up to.
-	# Might be useful to put this in a new app?
-	return render(request, 'PHapp/cube.html', {})
-
 @login_required
 def puzzles(request):
 	puzzleList = []

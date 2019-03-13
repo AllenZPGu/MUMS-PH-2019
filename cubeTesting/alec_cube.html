@@ -27,7 +27,8 @@
 		<script charset="utf-8" src="Cuber-DEMO-master/scripts/erno.js"></script>	
     </head>
     <body class="graydient">
-		<div id="container"></div>
+		<div id="outer-container" style="width:100%;height:100%">
+		<div id="cube-container"></div>
 		<div id="controlsOpen">
 			<div class="pad">
 				<a href="." onclick="$('#controls').fadeIn( 500 );$('#controlsOpen').fadeOut( 500 );return false">Cube Control</a>
@@ -59,6 +60,7 @@
 					</div>
 				</div>
 			</div>
+		</div>
 		</div>
     </body>
 </html>

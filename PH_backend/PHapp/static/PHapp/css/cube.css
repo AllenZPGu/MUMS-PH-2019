@@ -9,7 +9,7 @@
 /************/
 
 
-@font-face {
+/*@font-face {
 
 	font-family: "RubikExtended";
 	src: 
@@ -17,7 +17,7 @@
 		url( "../media/RubikExtended.otf"  ) format( "otf" );
 	font-weight: normal;
 	font-style: normal;
-}
+}*/
 html, body {
 	
 	width:  100%;
@@ -44,7 +44,7 @@ h2 {
 h1 {
 	color: red;
 }
-a {
+/*a {
 
 	color: rgba( 255, 255, 255, 0.7 );
 	text-decoration: none;
@@ -54,7 +54,7 @@ a:hover {
 
 	color: #FFF;
 	border-bottom: 1px solid #FFF;
-}
+}*/
 table, td, tr {
 
 	margin: 0;
@@ -140,7 +140,7 @@ table, td, tr {
 	font-size:    60px;
 	line-height: 420px;
 	text-align: center;	
-	font-family: "RubikExtended";
+	/*font-family: "RubikExtended";*/
 	text-shadow: 0 0 24px rgba( 0, 0, 0, 0.3 );
 	color: #FFF;
 }
@@ -370,7 +370,7 @@ table, td, tr {
 	height: 100%;
 	text-align: center;
 	color: #FFF;
-	font-family: "RubikExtended", sans-serif;
+	/*font-family: "RubikExtended", sans-serif;*/
 	font-size:   150px;
 	line-height: 170px;
 }
@@ -432,7 +432,7 @@ table, td, tr {
 	height: 100%;
 	color: #FFF;
 	text-shadow: 0 0 24px rgba( 0, 0, 0, 1 );
-	font-family: "RubikExtended", sans-serif;
+	/*font-family: "RubikExtended", sans-serif;*/
 	font-size:   75px;
 	line-height: 85px;
 	text-transform: uppercase;
@@ -589,7 +589,7 @@ table, td, tr {
 	border-radius: 2px;	
 	/*padding: 2px 4px 2px 4px;	*/
 	text-align: center;
-	/*font-family: 'Courier New', Courier, monospace;*/
+	font-family: 'Courier New', Courier, monospace;
 	font-weight: bold;
 	color: rgba( 0, 0, 0, 0.8 );
 }
@@ -607,7 +607,7 @@ table, td, tr {
 }
 textarea#texts {
 
-	font-family: "RubikExtended";
+	/*font-family: "RubikExtended";*/
 	font-size: 24px;
 }
 
@@ -617,4 +617,7 @@ textarea#texts {
 	color: red;
 }
 
+body {
+	overflow: hidden;
+}
 
