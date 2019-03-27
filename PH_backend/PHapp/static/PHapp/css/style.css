@@ -5,6 +5,8 @@ body {
 	font-style: normal; 
 	font-variant: normal; 
 	font-weight: medium;
+	vertical-align: top;
+	overflow: hidden;
 }
 
 .navbar-container {
