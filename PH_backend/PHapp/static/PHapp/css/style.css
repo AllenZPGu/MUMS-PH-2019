@@ -1,11 +1,10 @@
 body {
 	background-color: black;
 	color: text;
-	font-family: "Gill Sans MT";
-}
-
-h1 {
-	color: red;
+	font-family: "Ubuntu";
+	font-style: normal; 
+	font-variant: normal; 
+	font-weight: medium;
 }
 
 .navbar-container {
