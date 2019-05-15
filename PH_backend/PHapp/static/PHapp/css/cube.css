@@ -1,4 +1,18 @@
+body {
+	overflow: hidden;
+}
 
+.navbar-container {
+	position: absolute;
+}
+
+#fullscreen-wrapper {
+	position: absolute;
+}
+
+#content-wrapper {
+	position: absolute;
+}
 
 
 

@@ -6,11 +6,9 @@ body {
 	font-variant: normal; 
 	font-weight: medium;
 	vertical-align: top;
-	overflow: hidden;
 }
 
 .navbar-container {
-	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -54,7 +52,6 @@ body {
 }
 #fullscreen-wrapper {
 	margin: 0;
-	position: absolute;
 	top: 0;
 	bottom: 0;
 	left: 0;
@@ -62,7 +59,6 @@ body {
 	background-color: black;
 }
 #content-wrapper {
-	position: absolute;
 	bottom: 0;
 	left: 0;
 	right: 0;

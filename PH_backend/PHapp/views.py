@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse, FileResponse, Http404
 from django.contrib.auth.models import User
 from django.forms import formset_factory, ValidationError
-from .models import Puzzles, Teams, SubmittedGuesses, Individuals
+from .models import Puzzles, Teams, SubmittedGuesses, Individuals, AltAnswers
 from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginForm
 from django.conf import settings
 import json
@@ -29,10 +29,14 @@ def puzzles(request):
 	puzzleList = []
 	for puzzle in Puzzles.objects.filter(releaseStatus__lte = releaseStage(releaseTimes)):
 		allGuesses = [i.correct for i in SubmittedGuesses.objects.filter(puzzle=puzzle)]
-		if len(SubmittedGuesses.objects.filter(puzzle=puzzle, team=request.user, correct=True)) == 0:
+
+		guesses = SubmittedGuesses.objects.filter(puzzle=puzzle, team=request.user)
+
+		if True not in [i.correct for i in guesses]:
 			puzzleList.append([puzzle, False, sum(allGuesses), len(allGuesses)-sum(allGuesses), calcWorth(puzzle, releaseTimes)])
 		else:
-			puzzleList.append([puzzle, True, sum(allGuesses), len(allGuesses)-sum(allGuesses), calcWorth(puzzle, releaseTimes)])
+			correctGuess = guesses.filter(correct = True)[0]
+			puzzleList.append([puzzle, True, sum(allGuesses), len(allGuesses)-sum(allGuesses), correctGuess.pointsAwarded])
 	puzzleList = sorted(puzzleList, key=lambda x:x[0].id)
 	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList})
 
@@ -77,10 +81,15 @@ def solve(request, title):
 		raise Http404()
 	
 	team = Teams.objects.get(authClone = request.user)
-
-	if True in [i.correct for i in SubmittedGuesses.objects.filter(team = request.user, puzzle = puzzle)]:
-		points = SubmittedGuesses.objects.filter(team=request.user, correct=True, puzzle=puzzle)[0].pointsAwarded
-		return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle, 'points':points, 'team':team})
+	guesses = SubmittedGuesses.objects.filter(team = request.user, puzzle = puzzle)
+	if True in [i.correct for i in guesses]:
+		correctGuess = guesses.filter(correct=True)[0]
+		points = correctGuess.pointsAwarded
+		if correctGuess.guess != puzzle.answer:
+			altAns = correctGuess.guess
+		else:
+			altAns = None
+		return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle, 'points':points, 'team':team, 'altAns':altAns})
 
 	if team.guesses <= 0:
 		return render(request, 'PHapp/noGuesses.html')
@@ -89,8 +98,9 @@ def solve(request, title):
 		solveform = SolveForm(request.POST)
 		if solveform.is_valid():
 			guess = stripToLetters(solveform.cleaned_data['guess'])
+			altAnswersList = [i.altAnswer for i in AltAnswers.objects.filter(puzzle=puzzle)]
 			
-			if guess == puzzle.answer:
+			if guess == puzzle.answer or guess in altAnswersList:
 				newSubmit = SubmittedGuesses()
 				newSubmit.team = request.user
 				newSubmit.puzzle = puzzle
@@ -108,6 +118,7 @@ def solve(request, title):
 				team.teamPuzzles += 1
 				team.save()
 
+				
 				return redirect('/solve/{}/'.format(title))
 
 			else:

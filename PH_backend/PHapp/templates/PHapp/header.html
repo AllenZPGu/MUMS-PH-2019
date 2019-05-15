@@ -42,31 +42,18 @@
 			</nav>
 		</div>
 	</div>
-
-<br>
-<!--<div class="container col-sm-2"></div>-->
-	<div id="content-wrapper" class="container" >
-		{% block content %}
-		{% endblock %}
-	</div>
-<!--<div class="container col-sm-2"></div>-->
-
-<br>
+	<br>
+	<!--<div class="container col-sm-2"></div>-->
+		<div id="content-wrapper" class="container" >
+			{% block content %}
+			{% endblock %}
+		</div>
+	<!--<div class="container col-sm-2"></div>-->
+	<br>
 </div>
 
 
-<script>
-		$(document).ready(function(){
-	resizeContent();
-	});
-	window.onresize = function(event) {
-	resizeContent();
-	}
-	function resizeContent() {
-		let vph = $(window).height, header_height = $(".navbar-container")[0].clientHeight
-	$("#content-wrapper").css({"top": header_height + "px", "max-height": (vph-header_height) + "px"});
-	}
-	</script>
+
 </body>
 
 </html>

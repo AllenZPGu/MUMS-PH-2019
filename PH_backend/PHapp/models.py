@@ -56,3 +56,11 @@ class SubmittedGuesses(models.Model):
 
 	class Meta:
 		db_table = 'SubmittedGuesses'
+
+class AltAnswers(models.Model):
+	id = models.AutoField(primary_key=True)
+	puzzle = models.ForeignKey(Puzzles, models.DO_NOTHING, db_column = 'puzzle', null=True)
+	altAnswer = models.CharField(max_length=500, null=True)
+
+	class Meta:
+		db_table = 'AltAnswers'
