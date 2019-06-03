@@ -13,10 +13,12 @@ import datetime
 import pytz
 import random
 import os
+from discord_webhook import DiscordWebhook, DiscordEmbed
 from .helperFunctions import *
 
-aest = pytz.timezone("Australia/Melbourne")
+solveBotURL = 'https://discordapp.com/api/webhooks/585024945478696961/WuI0J8wGk-GpOPeTayg0AGjL376DdYgo0LUEJjWgH3yz8HnIOvJp71fnrwjef91zYWSL'
 
+aest = pytz.timezone("Australia/Melbourne")
 #releaseTimes = [aest.localize(datetime.datetime(2019, 4, 24, 12)) + datetime.timedelta(days=i) for i in range(10)]
 releaseTimes = [aest.localize(datetime.datetime(2019, 3, 1, 12)) + datetime.timedelta(days=i) for i in range(10)]
 
@@ -38,6 +40,7 @@ def puzzles(request):
 			correctGuess = guesses.filter(correct = True)[0]
 			puzzleList.append([puzzle, True, sum(allGuesses), len(allGuesses)-sum(allGuesses), correctGuess.pointsAwarded])
 	puzzleList = sorted(puzzleList, key=lambda x:x[0].id)
+
 	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList})
 
 @login_required
@@ -100,6 +103,7 @@ def solve(request, title):
 			guess = stripToLetters(solveform.cleaned_data['guess'])
 			altAnswersList = [i.altAnswer for i in AltAnswers.objects.filter(puzzle=puzzle)]
 			
+
 			if guess == puzzle.answer or guess in altAnswersList:
 				newSubmit = SubmittedGuesses()
 				newSubmit.team = request.user
@@ -118,7 +122,13 @@ def solve(request, title):
 				team.teamPuzzles += 1
 				team.save()
 
-				
+				webhook = DiscordWebhook(url=solveBotURL)
+				webhookTitle = '**{}** solved **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
+				webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+				webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=47872)
+				webhook.add_embed(webhookEmbed)
+				webhook.execute()
+
 				return redirect('/solve/{}/'.format(title))
 
 			else:
@@ -135,10 +145,20 @@ def solve(request, title):
 					displayWrong = True
 					displayDouble = False
 					displayGuess = None
+
 				else:
 					displayWrong = False
 					displayDouble = True
 					displayGuess = guess
+
+				webhook = DiscordWebhook(url=solveBotURL)
+				webhookTitle = '**{}** incorrectly attempted **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
+				webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+				webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=12255232)
+				webhook.add_embed(webhookEmbed)
+				webhook.execute()
+
+				solveform = SolveForm()
 
 	else:
 		solveform = SolveForm()

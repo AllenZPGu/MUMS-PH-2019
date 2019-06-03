@@ -6,3 +6,4 @@ dj-database-url
 django-crispy-forms
 pytz
 django-extensions
+discord-webhook
