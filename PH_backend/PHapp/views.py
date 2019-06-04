@@ -20,7 +20,7 @@ solveBotURL = 'https://discordapp.com/api/webhooks/585024945478696961/WuI0J8wGk-
 
 aest = pytz.timezone("Australia/Melbourne")
 #releaseTimes = [aest.localize(datetime.datetime(2019, 4, 24, 12)) + datetime.timedelta(days=i) for i in range(10)]
-releaseTimes = [aest.localize(datetime.datetime(2019, 3, 1, 12)) + datetime.timedelta(days=i) for i in range(10)]
+releaseTimes = [aest.localize(datetime.datetime(2019, 6, 4, 12)) + datetime.timedelta(days=i) for i in range(10)]
 
 def index(request):
 	huntOver = False if releaseStage(releaseTimes) < len(releaseTimes) else True
@@ -109,7 +109,7 @@ def solve(request, title):
 				newSubmit.team = request.user
 				newSubmit.puzzle = puzzle
 				newSubmit.guess = guess
-				newSubmit.submitTime = datetime.datetime.now()
+				newSubmit.submitTime = aest.localize(datetime.datetime.now())
 				newSubmit.correct = True
 				newSubmit.pointsAwarded = calcWorth(puzzle, releaseTimes)
 				newSubmit.save()
@@ -137,7 +137,7 @@ def solve(request, title):
 					newSubmit.team = request.user
 					newSubmit.puzzle = puzzle
 					newSubmit.guess = guess
-					newSubmit.submitTime = datetime.datetime.now()
+					newSubmit.submitTime = aest.localize(datetime.datetime.now())
 					newSubmit.correct = False
 					newSubmit.save()
 					team.guesses -= 1
