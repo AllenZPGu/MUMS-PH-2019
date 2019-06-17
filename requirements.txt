@@ -1,4 +1,5 @@
 django
+python
 gunicorn
 django-heroku
 psycopg2-binary
