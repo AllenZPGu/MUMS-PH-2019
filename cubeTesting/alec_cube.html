@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+		<link rel="stylesheet" type="text/css" href="Cuber-DEMO-master/styles/base.css">
+
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/vendor/three.min.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/vendor/CSS3DRenderer.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/vendor/SVGRenderer.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/vendor/tween.min.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/vendor/TrackballControls.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/vendor/jquery.js"></script>
+        <script charset="utf-8" src="Cuber-DEMO-master/scripts/vendor/skip.js"></script>		
+        <script charset="utf-8" src="Cuber-DEMO-master/scripts/vendor/Projector.js"></script>		
+        
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/colors.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/directions.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/queues.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/twists.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/cubelets.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/groups.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/slices.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/folds.js"></script>
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/cubes.js"></script>		
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/solvers.js"></script>		
+		<script charset="utf-8" src="Cuber-DEMO-master/scripts/erno.js"></script>	
+    </head>
+    <body class="graydient">
+		<div id="outer-container" style="width:100%;height:100%">
+		<div id="cube-container"></div>
+		<div id="controlsOpen">
+			<div class="pad">
+				<a href="." onclick="$('#controls').fadeIn( 500 );$('#controlsOpen').fadeOut( 500 );return false">Cube Control</a>
+			</div>
+		</div>
+		<div id="controls">
+			<div class="pad">
+				<a id="controlsClose" class="key" href="." onclick="$('#controls').fadeOut( 500 );$('#controlsOpen').fadeIn( 500 );return false">&uarr;</a>
+
+				<div id="commands">
+					<h2>Keyboard commands</h2>
+					<div class="keyBundle">
+						<a class="key" href="javascript:cube.twistQueue.add('X')">X</a><a class="key" href="javascript:cube.twistQueue.add('x')">x</a> whole cube<br>
+						<a class="key" href="javascript:cube.twistQueue.add('L')">L</a><a class="key" href="javascript:cube.twistQueue.add('l')">l</a> left face<br>
+						<a class="key" href="javascript:cube.twistQueue.add('M')">M</a><a class="key" href="javascript:cube.twistQueue.add('m')">m</a> middle slice<br>
+						<a class="key" href="javascript:cube.twistQueue.add('R')">R</a><a class="key" href="javascript:cube.twistQueue.add('r')">r</a> right face<br>
+					</div>
+					<div class="keyBundle">
+						<a class="key" href="javascript:cube.twistQueue.add('Y')">Y</a><a class="key" href="javascript:cube.twistQueue.add('y')">y</a> whole cube<br>
+						<a class="key" href="javascript:cube.twistQueue.add('U')">U</a><a class="key" href="javascript:cube.twistQueue.add('u')">u</a> up face<br>
+						<a class="key" href="javascript:cube.twistQueue.add('E')">E</a><a class="key" href="javascript:cube.twistQueue.add('e')">e</a> equator slice<br>
+						<a class="key" href="javascript:cube.twistQueue.add('D')">D</a><a class="key" href="javascript:cube.twistQueue.add('d')">d</a> down face<br>
+					</div>
+					<div class="keyBundle">
+						<a class="key" href="javascript:cube.twistQueue.add('Z')">Z</a><a class="key" href="javascript:cube.twistQueue.add('z')">z</a> whole cube<br>
+						<a class="key" href="javascript:cube.twistQueue.add('F')">F</a><a class="key" href="javascript:cube.twistQueue.add('f')">f</a> front face<br>
+						<a class="key" href="javascript:cube.twistQueue.add('S')">S</a><a class="key" href="javascript:cube.twistQueue.add('s')">s</a> standing slice<br>
+						<a class="key" href="javascript:cube.twistQueue.add('B')">B</a><a class="key" href="javascript:cube.twistQueue.add('b')">b</a> back face<br>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+    </body>
+</html>

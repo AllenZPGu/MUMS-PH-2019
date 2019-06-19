@@ -1,0 +1,28 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	<center>
+	<h4>Hints for <a href='/puzzle/{{puzzle.pdfPath}}.pdf'>Act {{puzzle.act}} Scene {{puzzle.scene}}: {{puzzle.title}}</a>:</h4>
+	<br>
+	{% if anyHints %}
+		{% for hintNo, hint in toRender %}
+			<h4 style="color:red">Hint {{hintNo}}</h4>
+			<h6>{{hint}}</h6>
+			<br>
+		{% endfor %}
+	{% else %}
+		<h4>No hints have been released.</h4>
+		<br>
+	{% endif %}
+
+	{% if nextHint is not None %}
+		<h4>The next hint will be released at {{nextHint|date:"d M, h:i:s a"}}</h4>
+	{% endif %}
+	</center>
+</div>
+</div>
+
+{% endblock %}

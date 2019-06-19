@@ -1,0 +1,41 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% if teamsExist %}
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<td>Rank</td>
+					<td>Australian rank</td>
+					<td>Team</td>
+					<td>Points</td>
+					<td>Puzzles solved</td>
+					<td>Average solve time (h:m:s)</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for team, avSolveTimeString, avHr, avMin, avSec, rank, ausRank in allTeams %}
+					{% if team.teamName == teamName %}
+						<tr style="background:lightgreen">
+					{% else %}
+						<tr>
+					{% endif %}
+						<td>{{rank}}</td>
+						<td>{{ausRank}}</td>
+						<td><a href='/team/{{team.id}}'>{{team.teamName}}</a></td>
+						<td>{{team.teamPoints}}</td>
+						<td>{{team.teamPuzzles}}</td>
+						<td>{{avSolveTimeString}}</td>
+					</tr>
+				{% endfor %}
+			</tr>
+		</tbody>
+		</table>
+	{% else %}
+		<h4>No teams have been registered yet.</h4>
+	{% endif %}
+</div>
+{% endblock %}

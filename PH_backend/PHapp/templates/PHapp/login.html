@@ -1,0 +1,30 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	<h2>Login</h2>
+	<p>If you haven't yet registered a team, do so <a href='/registration/'>here</a>.</p>
+	{% if wrong %}
+		<div class="alert alert-danger" role="alert">
+			Invalid username or password.
+		</div>
+	{% endif %}
+
+	<div>
+		<form method="post">
+			<div class="form-group">
+				{% csrf_token %}
+
+				{{ loginForm|crispy }}	
+
+				<br>
+				<button type="submit" class="btn btn-success btn-block">Submit</button>
+			</div>
+		</form>
+	</div>
+</div>
+</div>
+{% endblock %}

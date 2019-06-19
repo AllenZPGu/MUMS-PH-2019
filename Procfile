@@ -1,0 +1,1 @@
+web: gunicorn --pythonpath PH_backend PH_backend.wsgi --log-file -

@@ -1,0 +1,49 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	<center>
+		<h4>Act {{puzzle.act}}, Scene {{puzzle.scene}}</h4>
+		<h1><a href='/puzzle/{{puzzle.pdfPath}}.pdf'>{{puzzle.title}}</a></h1>
+		<br>
+		<h4>Number of solves: {{totalRight}}</h4>
+		<h4>Number of incorrect guesses: {{totalWrong}}</h4>
+		<h4>Average solve time: {{avTime}}</h4>
+		<br>
+	</center>
+	
+	{% if totalRight > 0 %}
+		<center>
+			<h5>Solve history</h5>
+		</center>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<td>Team</td>
+					<td>Submission time (AEST)</td>
+					<td>Time taken</td>
+					<td>Points awarded</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for solve, timeTaken in allSolves %}
+					<tr>
+						<td><a href='/team/{{solve.team.teams_set.all.0.id}}/'>{{solve.team.teams_set.all.0.teamName}}</a></td>
+						<td>{{solve.submitTime|date:"d M, h:i:s a"}}</td>
+						<td>{{timeTaken}}</td>
+						<td>{{solve.pointsAwarded}}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		<center>
+			<h5>No team has solved this puzzle.</h5>
+		</center>
+	{% endif %}
+</div>
+</div>
+
+{% endblock %}
