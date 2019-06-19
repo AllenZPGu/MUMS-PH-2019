@@ -41,7 +41,7 @@ def puzzles(request):
 			puzzleList.append([puzzle, True, sum(allGuesses), len(allGuesses)-sum(allGuesses), correctGuess.pointsAwarded])
 	puzzleList = sorted(puzzleList, key=lambda x:x[0].id)
 
-	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList})
+	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList, 'nextRelease':nextRelease})
 
 @login_required
 def puzzleInfo(request, title):
@@ -173,6 +173,9 @@ def solve(request, title):
 		{'solveform':solveform, 'displayWrong':displayWrong, 'displayDouble':displayDouble, 'displayGuess':displayGuess, 'puzzle':puzzle, 'team':team, 'previousGuesses':previousGuesses})
 
 def teams(request):
+	if len(Teams.objects.all()) == 0:
+		return render(request, 'PHapp/teams.html', {'teamsExist':False})
+
 	allTeams = []
 	totRank = 1
 	ausRank = 1
@@ -202,7 +205,7 @@ def teams(request):
 	if request.user.is_authenticated:
 		teamName = Teams.objects.get(authClone = request.user).teamName
 	
-	return render(request, 'PHapp/teams.html', {'allTeams':allTeams, 'teamName':teamName})
+	return render(request, 'PHapp/teams.html', {'allTeams':allTeams, 'teamName':teamName, 'teamsExist':True})
 
 def teamReg(request):
 	if request.user.is_authenticated:
