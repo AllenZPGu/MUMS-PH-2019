@@ -2,6 +2,8 @@ import datetime
 import pytz
 from .models import Puzzles, Teams, SubmittedGuesses, Individuals
 
+aest = pytz.timezone("Australia/Melbourne")
+
 def stripToLetters(inputStr):
 	allAlph = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 	outputStr = ''
@@ -80,3 +82,33 @@ def calcSingleTime(guess, submitTime, releaseTimes):
 	xs = solveTime.seconds%60
 
 	return ["{:02d}h {:02d}m {:02d}s".format(xh, xm, xs), xh, xm, xs]
+
+def huntFinished(releaseTimes):
+	aest = pytz.timezone("Australia/Melbourne")
+	now = aest.localize(datetime.datetime.now())
+	if (now-releaseTimes[-1]).days < 0:
+		return True
+	else:
+		return False
+
+def calcNextRelease(releaseTimes):
+	aest = pytz.timezone("Australia/Melbourne")
+	now = aest.localize(datetime.datetime.now())
+
+	for i in releaseTimes[:-4]:
+		if (now-i).days > 0:
+			days = (now-i).days
+			hrs = (now-i).seconds//3600
+			mins = ((now-i).seconds//60)%60
+			secs = (now-i).seconds%60
+			return [True,days,hrs,mins,secs]
+
+	for i in releaseTimes[-4:-1]:
+		if (now-i).days > 0:
+			days = (now-i).days
+			hrs = (now-i).seconds//3600
+			mins = ((now-i).seconds//60)%60
+			secs = (now-i).seconds%60
+			return [False,days,hrs,mins,secs]
+
+	return None
