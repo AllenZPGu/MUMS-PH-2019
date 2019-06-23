@@ -17,9 +17,15 @@
 {% endblock %}
 
 {% block content %}
+
 <div class="fill graydient" id="outer-container">
 	<div id="cube-container">
-		<h1 class="heading">MUMS Puzzle Hunt 2019</h1></div>
+		<div class="heading">
+			<h1>MUMS Puzzle Hunt 2019</h1>
+			<br><br>
+			<h4 id="loading-message">Cube loading: may take a few seconds.</h4>
+		</div>
+	</div>
 <div id="controlsOpen">
 	<div class="pad">
 		<a href="." onclick="$('#controls').fadeIn( 500 );$('#controlsOpen').fadeOut( 500 );return false">Cube Control</a>

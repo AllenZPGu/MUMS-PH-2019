@@ -1,6 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Cubelets(models.Model):
+	id = models.AutoField(primary_key=True)
+	cubeletId = models.IntegerField(null=True)
+	cubeface = models.IntegerField(null=True)
+	colour = models.CharField(max_length=1, null=True)
+
+	class Meta:
+		db_table = 'Cubelets'
+
 class Puzzles(models.Model):
 	id = models.AutoField(primary_key=True)
 	title = models.CharField(max_length=200, null=True)
@@ -14,6 +23,11 @@ class Puzzles(models.Model):
 	hint2 = models.CharField(max_length=200, null=True)
 	hint3 = models.CharField(max_length=200, null=True)
 	releaseStatus = models.IntegerField(null=True, default = -1)
+	cubelet1 = models.ForeignKey(Cubelets, models.DO_NOTHING, db_column='cubelet1', related_name='cubelet1', null=True)
+	cubelet2 = models.ForeignKey(Cubelets, models.DO_NOTHING, db_column='cubelet2', related_name='cubelet2', null=True)
+	cubelet3 = models.ForeignKey(Cubelets, models.DO_NOTHING, db_column='cubelet3', related_name='cubelet3', null=True)
+	cubelet4 = models.ForeignKey(Cubelets, models.DO_NOTHING, db_column='cubelet4', related_name='cubelet4', null=True)
+	cubelet5 = models.ForeignKey(Cubelets, models.DO_NOTHING, db_column='cubelet5', related_name='cubelet5', null=True)
 
 	class Meta:
 		db_table = 'Puzzles'

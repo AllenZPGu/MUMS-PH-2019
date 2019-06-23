@@ -26,6 +26,23 @@ def index(request):
 	huntOver = False if releaseStage(releaseTimes) < len(releaseTimes) else True
 	return render(request, 'PHapp/home.html', {'huntOver':huntOver})
 
+def colourCube(request):
+	coloured = []
+	if request.user.is_authenticated:
+		puzzlesRight = [i.puzzle for i in SubmittedGuesses.objects.filter(team=request.user, correct=True)]
+		
+		for rightPuzz in puzzlesRight:
+			if rightPuzz.scene == 5 and rightPuzz.act in range(1,7):
+				cubelets = [rightPuzz.cubelet1, rightPuzz.cubelet2, rightPuzz.cubelet3, rightPuzz.cubelet4, rightPuzz.cubelet5]
+			else:
+				cubelets = [rightPuzz.cubelet1]
+
+			for cubelet in cubelets:
+				coloured.append({'cubeletId':cubelet.cubeletId, 'cubeface':cubelet.cubeface, 'colour':cubelet.colour})
+	print(coloured)
+	data={'coloured':coloured}
+	return JsonResponse(data)
+
 @login_required
 def puzzles(request):
 	puzzleList = []
@@ -40,6 +57,8 @@ def puzzles(request):
 			correctGuess = guesses.filter(correct = True)[0]
 			puzzleList.append([puzzle, True, sum(allGuesses), len(allGuesses)-sum(allGuesses), correctGuess.pointsAwarded])
 	puzzleList = sorted(puzzleList, key=lambda x:x[0].id)
+
+	nextRelease = calcNextRelease(releaseTimes)
 
 	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList, 'nextRelease':nextRelease})
 
