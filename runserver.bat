@@ -1,1 +1,2 @@
-python-3.7.1
+CALL PHenv/Scripts/activate.bat
+python PH_backend/manage.py runserver

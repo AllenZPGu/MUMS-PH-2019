@@ -20,16 +20,20 @@ solveBotURL = 'https://discordapp.com/api/webhooks/585024945478696961/WuI0J8wGk-
 
 aest = pytz.timezone("Australia/Melbourne")
 #releaseTimes = [aest.localize(datetime.datetime(2019, 4, 24, 12)) + datetime.timedelta(days=i) for i in range(10)]
-releaseTimes = [aest.localize(datetime.datetime(2019, 6, 4, 12)) + datetime.timedelta(days=i) for i in range(10)]
+releaseTimes = [aest.localize(datetime.datetime(2019, 6, 15, 12)) + datetime.timedelta(days=i) for i in range(10)]
 
 def index(request):
 	huntOver = False if releaseStage(releaseTimes) < len(releaseTimes) else True
 	return render(request, 'PHapp/home.html', {'huntOver':huntOver})
 
 def colourCube(request):
+	huntOver = False if releaseStage(releaseTimes) < len(releaseTimes) else True
 	coloured = []
-	if request.user.is_authenticated:
-		puzzlesRight = [i.puzzle for i in SubmittedGuesses.objects.filter(team=request.user, correct=True)]
+	if request.user.is_authenticated or huntOver:
+		if huntOver:
+			puzzlesRight = [i for i in Puzzles.objects.all()]
+		else:
+			puzzlesRight = [i.puzzle for i in SubmittedGuesses.objects.filter(team=request.user, correct=True)]
 		
 		for rightPuzz in puzzlesRight:
 			if rightPuzz.scene == 5 and rightPuzz.act in range(1,7):
@@ -39,7 +43,7 @@ def colourCube(request):
 
 			for cubelet in cubelets:
 				coloured.append({'cubeletId':cubelet.cubeletId, 'cubeface':cubelet.cubeface, 'colour':cubelet.colour})
-	print(coloured)
+
 	data={'coloured':coloured}
 	return JsonResponse(data)
 
@@ -59,6 +63,7 @@ def puzzles(request):
 	puzzleList = sorted(puzzleList, key=lambda x:x[0].id)
 
 	nextRelease = calcNextRelease(releaseTimes)
+	print(nextRelease)
 
 	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList, 'nextRelease':nextRelease})
 
@@ -308,6 +313,12 @@ def faq(request):
 
 def rules(request):
 	return render(request, 'PHapp/rules.html')
+
+def debrief(request):
+	if not huntFinished(releaseTimes):
+		raise Http404()
+	else:
+		return render(request, 'PHapp/home.html')
 
 def loginCustom(request):
 	if request.user.is_authenticated:

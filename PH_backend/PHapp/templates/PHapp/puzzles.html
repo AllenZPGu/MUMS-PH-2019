@@ -4,42 +4,50 @@
 {% block content %}
 <div class="outer-container">
 <div class="inner-container">
-	<table class="table table-bordered">
-		<thead>
-			<tr>
-				<td></td>
-				<td>Puzzle</td>
-				<td>Points</td>
-				<td>Solve / Solution</td>
-				<td>Hints</td>
-				<td>Solves / Incorrect guesses</td>
-			</tr>
-		<tbody>
-			{% for puzzle, solved, correct, incorrect, worth in puzzleList %}
+	{% if nextRelease.0 != 0 %}
+		<table class="table table-bordered">
+			<thead>
 				<tr>
-					<td>Act {{puzzle.act}}, Scene {{puzzle.scene}}</td>
-					<td>
-						<a href='/puzzle/{{puzzle.pdfPath}}.pdf'>{{puzzle.title}}</a>
-					</td>
-					
-					{% if solved %}
-						<td style="color:green"><b>{{worth}}<b></td>
-						<td style="color:green"><b>{{puzzle.answer}}</b></td>
-					{% else %}
-						<td>{{worth}}</td>
-						<td><a href="/solve/{{puzzle.pdfPath}}/">Solve</a></td>
-					{% endif %}
-					<td><a href='/hints/{{puzzle.pdfPath}}'>Hints</a></td>
-					<td><a href='/puzzlestats/{{puzzle.pdfPath}}'>{{correct}}/{{incorrect}}</a></td>
+					<td></td>
+					<td>Puzzle</td>
+					<td>Points</td>
+					<td>Solve / Solution</td>
+					<td>Hints</td>
+					<td>Solves / Incorrect guesses</td>
 				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+			<tbody>
+				{% for puzzle, solved, correct, incorrect, worth in puzzleList %}
+					<tr>
+						<td>Act {{puzzle.act}}, Scene {{puzzle.scene}}</td>
+						<td>
+							<a href='/puzzle/{{puzzle.pdfPath}}.pdf'>{{puzzle.title}}</a>
+						</td>
+						
+						{% if solved %}
+							<td style="color:green"><b>{{worth}}<b></td>
+							<td style="color:green"><b>{{puzzle.answer}}</b></td>
+						{% else %}
+							<td>{{worth}}</td>
+							<td><a href="/solve/{{puzzle.pdfPath}}/">Solve</a></td>
+						{% endif %}
+						<td><a href='/hints/{{puzzle.pdfPath}}'>Hints</a></td>
+						<td><a href='/puzzlestats/{{puzzle.pdfPath}}'>{{correct}}/{{incorrect}}</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
 
-	{% if nextRelease == None %}
+	{% if nextRelease.0 == 0 %}
+		<h4>Puzzles will be released in {{nextRelease.1}}.</h4>
+	{% elif nextRelease.0 == 1 %}
+		<h4>More puzzles and hints will be released in {{nextRelease.1}}.</h4>
+	{% elif nextRelease.0 == 2 %}
+		<h4>More hints will be released in {{nextRelease.1}}.</h4>
+	{% elif nextRelease.0 == 3 %}
+		<h4>The hunt will end in {{nextRelease.1}}.</h4>
+	{% elif nextRelease.0 == 4 %}
 		<h4>Hunt over!</h4>
-	{% else %}
-
 	{% endif %}
 
 </div>
