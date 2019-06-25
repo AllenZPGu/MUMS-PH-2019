@@ -19,7 +19,7 @@ var W = WHITE = new Color("white", "W", "#FFF", "font-weight: bold; color: #888"
 var colDict = {"W":W, "O":O, "B":B, "R":R, "G":G, "Y":Y, "A":A, "P":P};
 
 var globalColourMap = [
-    [A, A, , , A], // 0
+    [A, A, , , A, ], // 0
     [A, A, , , , ], // 1
     [A, A, A, , , ], // 2
     [A, , , , A], // 3
@@ -48,6 +48,36 @@ var globalColourMap = [
     [, , A, A, , A] // 26
 ];
 
+var cubeletPuzzleMap = [
+    ['1', '3', '', '', '4',''], // 0
+    ['', '', '', '', '', ''], // 1
+    ['2', '4', '1', '', '', ], // 2
+    ['', '', '', '', '', ''], // 3
+    ['I.', '', '', '', '', ''], // 4
+    ['', '', '', '', '', ''], // 5
+    ['3', '', '', '3', '3', ''], // 6
+    ['', '', '', '', '', ''], // 7
+    ['4', '', '3', '1', '', ''], // 8
+    ['', '', '', '', '', ''], // 9
+    ['', 'II.', '', '', '', ''], // 10
+    ['', '', '', '', '', ''], // 11
+    ['', '', '', '', 'V.', ''], // 12
+    ['', '', '', '', '', ''], // 13
+    ['', '', 'III.', '', '', ''], // 14
+    ['', '', '', '', '', ''], // 15
+    ['', '', '', 'IV.', '', ''], // 16
+    ['', '', '', '', '', ''], // 17
+    ['', '1', '', '', '2', '4'], // 18
+    ['', '', '', '', '', ''], // 19
+    ['', '2', '2', '', '', '2'], // 20
+    ['', '', '', '', '', ''], // 21
+    ['', '', '', '', '', 'VI.'], // 22
+    ['', '', '', '', '', ''], // 23
+    ['', '', '', '4', '1', '3'], // 24
+    ['', '', '', '', '', ''], // 25
+    ['', '', '4', '2', '', '1'] // 26
+];
+
 $.ajax({
     url: '/ajax/colourCube/',
     data: {},
@@ -58,10 +88,18 @@ $.ajax({
         };
 
         grandCall();
+
         loadingMsg = document.getElementById("loading-message");
         loadingMsg.parentNode.removeChild(loadingMsg);
     }
 });
+
+function changeLabels() {
+    for (var i = 0; i < 6; i++) {
+        console.log($(".cubeletId-24 .id")[5].innerHTML);
+        //'<p style="font-size:50px;"><b>999</b></p>';
+    }
+}
 
 function grandCall() {
     function Cubelet(a, b, c) {
@@ -108,8 +146,7 @@ function grandCall() {
                 e.classList.add("id");
                 f.appendChild(e);
                 var g = document.createElement("span");
-                g.classList.add("underline");
-                g.innerText = this.id;
+                g.innerText = cubeletPuzzleMap[this.id][b];
                 e.appendChild(g)
             }
             if (d === COLORLESS) "css" === erno.renderMode ? f.classList.add("faceIntroverted") : (this.plastic.geometry.faces[b].color.setHex(0), this.plastic.geometry.colorsNeedUpdate = !0);
@@ -1368,7 +1405,13 @@ function grandCall() {
 
                 window.cube = new Cube(a);
                 updateControls();
-                erno.changeStateTo("loop")
+
+                erno.changeStateTo("loop");
+
+                console.log(window.cube.cubelets[9]);
+                window.cube.cubelets[9].showIds();
+                console.log(window.cube.cubelets[9]);
+
             },
             loop: function() {
                 animate()
@@ -1784,6 +1827,7 @@ function grandCall() {
         this.cubelets = Array.prototype.slice.call(arguments);
         this.map()
     }
+
     setupTasks = window.setupTasks || [];
     setupTasks.push(function() {
         augment(Slice, {
@@ -1891,6 +1935,7 @@ function grandCall() {
             }
         } else return !1
     }
+
     Twist.validate = function() {
         var a = Array.prototype.slice.call(arguments),
             b, c;
