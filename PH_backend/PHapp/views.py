@@ -20,7 +20,7 @@ solveBotURL = 'https://discordapp.com/api/webhooks/585024945478696961/WuI0J8wGk-
 
 aest = pytz.timezone("Australia/Melbourne")
 #releaseTimes = [aest.localize(datetime.datetime(2019, 4, 24, 12)) + datetime.timedelta(days=i) for i in range(10)]
-releaseTimes = [aest.localize(datetime.datetime(2019, 8, 7, 12)) + datetime.timedelta(days=i) for i in range(10)]
+releaseTimes = [aest.localize(datetime.datetime(2019, 6, 24, 12)) + datetime.timedelta(days=i) for i in range(10)]
 
 def index(request):
 	huntOver = False if releaseStage(releaseTimes) < len(releaseTimes) else True
