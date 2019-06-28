@@ -36,13 +36,8 @@ def colourCube(request):
 			puzzlesRight = [i.puzzle for i in SubmittedGuesses.objects.filter(team=request.user, correct=True)]
 		
 		for rightPuzz in puzzlesRight:
-			if rightPuzz.scene == 5 and rightPuzz.act in range(1,7):
-				cubelets = [rightPuzz.cubelet1, rightPuzz.cubelet2, rightPuzz.cubelet3, rightPuzz.cubelet4, rightPuzz.cubelet5]
-			else:
-				cubelets = [rightPuzz.cubelet1]
-
-			for cubelet in cubelets:
-				coloured.append({'cubeletId':cubelet.cubeletId, 'cubeface':cubelet.cubeface, 'colour':cubelet.colour})
+			if rightPuzz.act in range(1,7):
+				coloured.append({'cubeletId':rightPuzz.cubelet1.cubeletId, 'cubeface':rightPuzz.cubelet1.cubeface, 'colour':rightPuzz.cubelet1.colour})
 
 	data={'coloured':coloured}
 	return JsonResponse(data)
