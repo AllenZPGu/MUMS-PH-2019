@@ -94,13 +94,6 @@ $.ajax({
     }
 });
 
-function changeLabels() {
-    for (var i = 0; i < 6; i++) {
-        console.log($(".cubeletId-24 .id")[5].innerHTML);
-        //'<p style="font-size:50px;"><b>999</b></p>';
-    }
-}
-
 function grandCall() {
     function Cubelet(a, b, c) {
         this.cube = a;
@@ -214,10 +207,10 @@ function grandCall() {
                 10 > a && (a = "0" + a);
                 10 >
                     c && (c = "0" + c);
-                console.log("\n    ID         " + a + "\n    Type       " + d.toUpperCase() + "\n\n    Address    " + c + "\n    Address X  " + this.addressX.toSignedString() + "\n    Address Y  " + this.addressY.toSignedString() + "\n    Address Z  " + this.addressZ.toSignedString() + "\n\n    Engaged X  " + this.isEngagedX + "\n    Engaged Y  " + this.isEngagedY + "\n    Engaged Z  " + this.isEngagedZ + "\n    Tweening   " + this.isTweening + "\n\n%c 0  Front      " + e("front", 0, 7) + "%c\n%c 1  Up         " + e("up", 0, 7) + "%c\n%c 2  Right      " +
-                    e("right", 0, 7) + "%c\n%c 3  Down       " + e("down", 0, 7) + "%c\n%c 4  Left       " + e("left", 0, 7) + "%c\n%c 5  Back       " + e("back", 0, 7) + "%c\n\n              -----------  %cback%c\n            /    %cup%c     /|  %c5%c\n           /     %c1%c     / | %c" + e("back") + "%c\n          /%c" + e("up", 1, 11) + "%c/  |\n  %cleft%c    -----------   %cright%c\n   %c4%c     |           |   %c2%c\n%c" + e("left", 1, 8) + "%c |   %cfront%c   |  %c" + e("right") + "%c\n         |     %c0%c     |  /\n         |%c" + e("front", 1, 11) + "%c| /\n         |           |/\n          -----------\n               %cdown%c\n                %c3%c\n           %c" +
-                    e("down", 1, 11) + "%c\n", this.front.color.styleB, "", this.up.color.styleB, "", this.right.color.styleB, "", this.down.color.styleB, "", this.left.color.styleB, "", this.back.color.styleB, "", this.back.color.styleF, "", this.up.color.styleF, "", this.back.color.styleF, "", this.up.color.styleF, "", this.back.color.styleF, "", this.up.color.styleF, "", this.left.color.styleF, "", this.right.color.styleF, "", this.left.color.styleF, "", this.right.color.styleF, "", this.left.color.styleF, "", this.front.color.styleF, "", this.right.color.styleF,
-                    "", this.front.color.styleF, "", this.front.color.styleF, "", this.down.color.styleF, "", this.down.color.styleF, "", this.down.color.styleF, "")
+                // console.log("\n    ID         " + a + "\n    Type       " + d.toUpperCase() + "\n\n    Address    " + c + "\n    Address X  " + this.addressX.toSignedString() + "\n    Address Y  " + this.addressY.toSignedString() + "\n    Address Z  " + this.addressZ.toSignedString() + "\n\n    Engaged X  " + this.isEngagedX + "\n    Engaged Y  " + this.isEngagedY + "\n    Engaged Z  " + this.isEngagedZ + "\n    Tweening   " + this.isTweening + "\n\n%c 0  Front      " + e("front", 0, 7) + "%c\n%c 1  Up         " + e("up", 0, 7) + "%c\n%c 2  Right      " +
+                //     e("right", 0, 7) + "%c\n%c 3  Down       " + e("down", 0, 7) + "%c\n%c 4  Left       " + e("left", 0, 7) + "%c\n%c 5  Back       " + e("back", 0, 7) + "%c\n\n              -----------  %cback%c\n            /    %cup%c     /|  %c5%c\n           /     %c1%c     / | %c" + e("back") + "%c\n          /%c" + e("up", 1, 11) + "%c/  |\n  %cleft%c    -----------   %cright%c\n   %c4%c     |           |   %c2%c\n%c" + e("left", 1, 8) + "%c |   %cfront%c   |  %c" + e("right") + "%c\n         |     %c0%c     |  /\n         |%c" + e("front", 1, 11) + "%c| /\n         |           |/\n          -----------\n               %cdown%c\n                %c3%c\n           %c" +
+                //     e("down", 1, 11) + "%c\n", this.front.color.styleB, "", this.up.color.styleB, "", this.right.color.styleB, "", this.down.color.styleB, "", this.left.color.styleB, "", this.back.color.styleB, "", this.back.color.styleF, "", this.up.color.styleF, "", this.back.color.styleF, "", this.up.color.styleF, "", this.back.color.styleF, "", this.up.color.styleF, "", this.left.color.styleF, "", this.right.color.styleF, "", this.left.color.styleF, "", this.right.color.styleF, "", this.left.color.styleF, "", this.front.color.styleF, "", this.right.color.styleF,
+                //     "", this.front.color.styleF, "", this.front.color.styleF, "", this.down.color.styleF, "", this.down.color.styleF, "", this.down.color.styleF, "")
             },
             hasColor: function(a) {
                 var b;
@@ -259,7 +252,7 @@ function grandCall() {
                     var a = d.x.divide(90).round().subtract(d.xPrevious.divide(90).round()).absolute(),
                         b = d.y.divide(90).round().subtract(d.yPrevious.divide(90).round()).absolute(),
                         e = d.z.divide(90).round().subtract(d.zPrevious.divide(90).round()).absolute();
-                    .9 <= erno.verbosity && console.log("Cublet #" + (10 > d.id ? "0" + d.id : d.id), " |  xRemaps:", a, " yRemaps:", b, " zRemaps:", e, " |  xPrev:", d.xPrevious, " x:", d.x, " |  yPrev:", d.yPrevious, " y:", d.y, " |  zPrev:", d.zPrevious, " z:", d.z);
+                    // .9 <= erno.verbosity && console.log("Cublet #" + (10 > d.id ? "0" + d.id : d.id), " |  xRemaps:", a, " yRemaps:", b, " zRemaps:", e, " |  xPrev:", d.xPrevious, " x:", d.x, " |  yPrev:", d.yPrevious, " y:", d.y, " |  zPrev:", d.zPrevious, " z:", d.z);
                     if (a) {
                         for (; a--;) d.faces =
                             d.x < d.xPrevious ? [d.up, d.back, d.right, d.front, d.left, d.down] : [d.down, d.front, d.right, d.back, d.left, d.up], d.map(), void 0 !== c && (c(d.cube.cubelets.slice()), d.cube.map());
@@ -517,7 +510,7 @@ function grandCall() {
                 if (a instanceof Twist && !cube.isTweening()) {
                     command = a.command;
                     degrees = a.degrees;
-                    .8 <= erno.verbosity && console.log("Executing a twist command to rotate the " + a.group + " " + a.wise + " by", a.degrees, "degrees.");
+                    // .8 <= erno.verbosity && console.log("Executing a twist command to rotate the " + a.group + " " + a.wise + " by", a.degrees, "degrees.");
                     if ("X" !== command || cube.isEngagedY() || cube.isEngagedZ()) "x" !== command || cube.isEngagedY() || cube.isEngagedZ() ? "R" !== command || cube.right.isEngagedY() || cube.right.isEngagedZ() ?
                         "r" !== command || cube.right.isEngagedY() || cube.right.isEngagedZ() ? "M" !== command || cube.middle.isEngagedY() || cube.middle.isEngagedZ() ? "m" !== command || cube.middle.isEngagedY() || cube.middle.isEngagedZ() ? "L" !== command || cube.left.isEngagedY() || cube.left.isEngagedZ() ? "l" !== command || cube.left.isEngagedY() || cube.left.isEngagedZ() || (b = function(c) {
                             cube.cubelets[18] = c[0];
@@ -1241,7 +1234,7 @@ function grandCall() {
                     },
                     function() {
                         b++;
-                        console.log("The cuber demo has completed", b, "loops.");
+                        // console.log("The cuber demo has completed", b, "loops.");
                         a.twistQueue.history = []
                     });
                 this.taskQueue.isLooping = !0;
@@ -1376,7 +1369,7 @@ function grandCall() {
         stateHistory: ["setup"],
         changeStateTo: function(a) {
             if (erno.state !== a) {
-                .3 <= erno.verbosity && (console.log('< Exiting  "' + erno.state + '" state at ' + erno.stateFrames + " frames."), console.log('> Entering "' + a + '" state.'));
+                // .3 <= erno.verbosity && (console.log('< Exiting  "' + erno.state + '" state at ' + erno.stateFrames + " frames."), console.log('> Entering "' + a + '" state.'));
                 var b = erno.states[erno.state + "Teardown"],
                     c = erno.states[a + "Setup"];
                 b instanceof Function && b();
@@ -1389,11 +1382,11 @@ function grandCall() {
         },
         states: {
             setup: function() {
-                console.log("\nCuber",
-                    erno.version);
-                console.log("");
+                // console.log("\nCuber",
+                //     erno.version);
+                // console.log("");
                 window.help = 'This Rubik\'s Cube simulator is run by the "erno" Object.\nType "erno" in this console and hit Enter for a summary.\nHere are some random commands to pique your interest:\n\n  cube.inspect()\n  cube.inspect( true )\n  cube.front\n  cube.front.northWest.inspect()\n  cube.front.northWest.up.color.name\n  cube.standing.setOpacity( 0.5 )\n  cube.corners.setRadius( 90 )\n  cube.hasColors( RED, BLUE ).showIds()\n  cube.solve()\n\nType "help" to view this message again.\n';
-                console.log(help);
+                // console.log(help);
                 window.setupTasks && setupTasks.forEach(function(a) {
                     a()
                 });
@@ -1408,9 +1401,9 @@ function grandCall() {
 
                 erno.changeStateTo("loop");
 
-                console.log(window.cube.cubelets[9]);
+                // console.log(window.cube.cubelets[9]);
                 window.cube.cubelets[9].showIds();
-                console.log(window.cube.cubelets[9]);
+                // console.log(window.cube.cubelets[9]);
 
             },
             loop: function() {
@@ -1421,15 +1414,15 @@ function grandCall() {
             var a = window.performance.memory.totalJSHeapSize.divide(1048576).multiply(10).roundDown().divide(10),
                 b = window.performance.memory.usedJSHeapSize.divide(1048576).multiply(10).roundDown().divide(10),
                 c = window.performance.memory.usedJSHeapSize.divide(window.performance.memory.totalJSHeapSize).multiply(1E3).roundDown().divide(10);
-            console.log("");
-            console.log(now().toDate());
-            console.log("JS heap size total  ", a + " MB  (100.0%)");
-            console.log("JS heap size used   ", b + " MB  (" + c + "%)");
-            console.log("cube.twistQueue     ", cube.twistQueue.history.length + cube.twistQueue.future.length);
-            console.log("cube.taskQueue      ", cube.taskQueue.history.length + cube.taskQueue.future.length);
-            console.log("THREE.Object3D index",
-                THREE.Object3DIdCount);
-            console.log("");
+            // console.log("");
+            // console.log(now().toDate());
+            // console.log("JS heap size total  ", a + " MB  (100.0%)");
+            // console.log("JS heap size used   ", b + " MB  (" + c + "%)");
+            // console.log("cube.twistQueue     ", cube.twistQueue.history.length + cube.twistQueue.future.length);
+            // console.log("cube.taskQueue      ", cube.taskQueue.history.length + cube.taskQueue.future.length);
+            // console.log("THREE.Object3D index",
+            //     THREE.Object3DIdCount);
+            // console.log("");
             return c
         }
     };
@@ -1643,7 +1636,7 @@ function grandCall() {
                     e = b + d;
                 "anticlockwise" === c && (d -= 90,
                     0 === d && (d -= 90), e = b + d);
-                .9 <= erno.verbosity && console.log("Average rotation for this group about the " + a.toUpperCase() + " axis:", b, "\nRotation direction:", c, "\nDistance to next peg:", d, "\nTarget rotation:", e);
+                // .9 <= erno.verbosity && console.log("Average rotation for this group about the " + a.toUpperCase() + " axis:", b, "\nRotation direction:", c, "\nDistance to next peg:", d, "\nTarget rotation:", e);
                 return d.absolute()
             },
             isSolved: function(a) {
@@ -1839,14 +1832,14 @@ function grandCall() {
                 void 0 === b && (b = void 0 !== this.face ? this.face : "front");
                 b instanceof Direction && (b = b.name);
                 b !== this.face && (d = b + "s");
-                a ? console.log("\n" + this.name.capitalize().justifyLeft(10) + "%c " + this.northWest.id.toPaddedString(2) + " %c %c " + this.north.id.toPaddedString(2) + " %c %c " + this.northEast.id.toPaddedString(2) + " %c \n" + d + "\n          %c " + this.west.id.toPaddedString(2) +
-                    " %c %c " + this.origin.id.toPaddedString(2) + " %c %c " + this.east.id.toPaddedString(2) + " %c \n\n          %c " + this.southWest.id.toPaddedString(2) + " %c %c " + this.south.id.toPaddedString(2) + " %c %c " + this.southEast.id.toPaddedString(2) + " %c \n", this.northWest[b].color.styleB, "", this.north[b].color.styleB, "", this.northEast[b].color.styleB, "", this.west[b].color.styleB, "", this.origin[b].color.styleB, "", this.east[b].color.styleB, "", this.southWest[b].color.styleB, "", this.south[b].color.styleB, "", this.southEast[b].color.styleB,
-                    "") : console.log("\n          %c           %c %c           %c %c           %c \n" + this.name.capitalize().justifyLeft(10) + "%c northWest %c %c   north   %c %c northEast %c \n" + d.justifyLeft(10) + "%c " + this.northWest.id.toPaddedString(2).justifyCenter(9) + " %c %c " + this.north.id.toPaddedString(2).justifyCenter(9) + " %c %c " + this.northEast.id.toPaddedString(2).justifyCenter(9) + " %c \n          %c " + c(this.northWest) + " %c %c " + c(this.north) + " %c %c " + c(this.northEast) + " %c \n          %c           %c %c           %c %c           %c \n\n          %c           %c %c           %c %c           %c \n          %c    west   %c %c   origin  %c %c    east   %c \n          %c " +
-                    this.west.id.toPaddedString(2).justifyCenter(9) + " %c %c " + this.origin.id.toPaddedString(2).justifyCenter(9) + " %c %c " + this.east.id.toPaddedString(2).justifyCenter(9) + " %c \n          %c " + c(this.west) + " %c %c " + c(this.origin) + " %c %c " + c(this.east) + " %c \n          %c           %c %c           %c %c           %c \n\n          %c           %c %c           %c %c           %c \n          %c southWest %c %c   south   %c %c southEast %c \n          %c " + this.southWest.id.toPaddedString(2).justifyCenter(9) +
-                    " %c %c " + this.south.id.toPaddedString(2).justifyCenter(9) + " %c %c " + this.southEast.id.toPaddedString(2).justifyCenter(9) + " %c \n          %c " + c(this.southWest) + " %c %c " + c(this.south) + " %c %c " + c(this.southEast) + " %c \n          %c           %c %c           %c %c           %c\n", this.northWest[b].color.styleB, "", this.north[b].color.styleB, "", this.northEast[b].color.styleB, "", this.northWest[b].color.styleB, "", this.north[b].color.styleB, "", this.northEast[b].color.styleB, "", this.northWest[b].color.styleB,
-                    "", this.north[b].color.styleB, "", this.northEast[b].color.styleB, "", this.northWest[b].color.styleB, "", this.north[b].color.styleB, "", this.northEast[b].color.styleB, "", this.northWest[b].color.styleB, "", this.north[b].color.styleB, "", this.northEast[b].color.styleB, "", this.west[b].color.styleB, "", this.origin[b].color.styleB, "", this.east[b].color.styleB, "", this.west[b].color.styleB, "", this.origin[b].color.styleB, "", this.east[b].color.styleB, "", this.west[b].color.styleB, "", this.origin[b].color.styleB, "",
-                    this.east[b].color.styleB, "", this.west[b].color.styleB, "", this.origin[b].color.styleB, "", this.east[b].color.styleB, "", this.west[b].color.styleB, "", this.origin[b].color.styleB, "", this.east[b].color.styleB, "", this.southWest[b].color.styleB, "", this.south[b].color.styleB, "", this.southEast[b].color.styleB, "", this.southWest[b].color.styleB, "", this.south[b].color.styleB, "", this.southEast[b].color.styleB, "", this.southWest[b].color.styleB, "", this.south[b].color.styleB, "", this.southEast[b].color.styleB, "",
-                    this.southWest[b].color.styleB, "", this.south[b].color.styleB, "", this.southEast[b].color.styleB, "", this.southWest[b].color.styleB, "", this.south[b].color.styleB, "", this.southEast[b].color.styleB, "")
+                // a ? console.log("\n" + this.name.capitalize().justifyLeft(10) + "%c " + this.northWest.id.toPaddedString(2) + " %c %c " + this.north.id.toPaddedString(2) + " %c %c " + this.northEast.id.toPaddedString(2) + " %c \n" + d + "\n          %c " + this.west.id.toPaddedString(2) +
+                //     " %c %c " + this.origin.id.toPaddedString(2) + " %c %c " + this.east.id.toPaddedString(2) + " %c \n\n          %c " + this.southWest.id.toPaddedString(2) + " %c %c " + this.south.id.toPaddedString(2) + " %c %c " + this.southEast.id.toPaddedString(2) + " %c \n", this.northWest[b].color.styleB, "", this.north[b].color.styleB, "", this.northEast[b].color.styleB, "", this.west[b].color.styleB, "", this.origin[b].color.styleB, "", this.east[b].color.styleB, "", this.southWest[b].color.styleB, "", this.south[b].color.styleB, "", this.southEast[b].color.styleB,
+                //     "") : console.log("\n          %c           %c %c           %c %c           %c \n" + this.name.capitalize().justifyLeft(10) + "%c northWest %c %c   north   %c %c northEast %c \n" + d.justifyLeft(10) + "%c " + this.northWest.id.toPaddedString(2).justifyCenter(9) + " %c %c " + this.north.id.toPaddedString(2).justifyCenter(9) + " %c %c " + this.northEast.id.toPaddedString(2).justifyCenter(9) + " %c \n          %c " + c(this.northWest) + " %c %c " + c(this.north) + " %c %c " + c(this.northEast) + " %c \n          %c           %c %c           %c %c           %c \n\n          %c           %c %c           %c %c           %c \n          %c    west   %c %c   origin  %c %c    east   %c \n          %c " +
+                //     this.west.id.toPaddedString(2).justifyCenter(9) + " %c %c " + this.origin.id.toPaddedString(2).justifyCenter(9) + " %c %c " + this.east.id.toPaddedString(2).justifyCenter(9) + " %c \n          %c " + c(this.west) + " %c %c " + c(this.origin) + " %c %c " + c(this.east) + " %c \n          %c           %c %c           %c %c           %c \n\n          %c           %c %c           %c %c           %c \n          %c southWest %c %c   south   %c %c southEast %c \n          %c " + this.southWest.id.toPaddedString(2).justifyCenter(9) +
+                //     " %c %c " + this.south.id.toPaddedString(2).justifyCenter(9) + " %c %c " + this.southEast.id.toPaddedString(2).justifyCenter(9) + " %c \n          %c " + c(this.southWest) + " %c %c " + c(this.south) + " %c %c " + c(this.southEast) + " %c \n          %c           %c %c           %c %c           %c\n", this.northWest[b].color.styleB, "", this.north[b].color.styleB, "", this.northEast[b].color.styleB, "", this.northWest[b].color.styleB, "", this.north[b].color.styleB, "", this.northEast[b].color.styleB, "", this.northWest[b].color.styleB,
+                //     "", this.north[b].color.styleB, "", this.northEast[b].color.styleB, "", this.northWest[b].color.styleB, "", this.north[b].color.styleB, "", this.northEast[b].color.styleB, "", this.northWest[b].color.styleB, "", this.north[b].color.styleB, "", this.northEast[b].color.styleB, "", this.west[b].color.styleB, "", this.origin[b].color.styleB, "", this.east[b].color.styleB, "", this.west[b].color.styleB, "", this.origin[b].color.styleB, "", this.east[b].color.styleB, "", this.west[b].color.styleB, "", this.origin[b].color.styleB, "",
+                //     this.east[b].color.styleB, "", this.west[b].color.styleB, "", this.origin[b].color.styleB, "", this.east[b].color.styleB, "", this.west[b].color.styleB, "", this.origin[b].color.styleB, "", this.east[b].color.styleB, "", this.southWest[b].color.styleB, "", this.south[b].color.styleB, "", this.southEast[b].color.styleB, "", this.southWest[b].color.styleB, "", this.south[b].color.styleB, "", this.southEast[b].color.styleB, "", this.southWest[b].color.styleB, "", this.south[b].color.styleB, "", this.southEast[b].color.styleB, "",
+                //     this.southWest[b].color.styleB, "", this.south[b].color.styleB, "", this.southEast[b].color.styleB, "", this.southWest[b].color.styleB, "", this.south[b].color.styleB, "", this.southEast[b].color.styleB, "")
             },
             map: function() {
                 this.origin = this.cubelets[4];
@@ -1897,10 +1890,10 @@ function grandCall() {
         return a.isSolved() ? (.5 <= erno.verbosity && Solver.prototype.explain("I\u2019ve found that the cube is already solved."), !1) : this.logic(a)
     };
     Solver.prototype.hint = function(a) {
-        console.log("%c" + a + "%c\n", "background-color: #EEE; color: #333", "")
+        // console.log("%c" + a + "%c\n", "background-color: #EEE; color: #333", "")
     };
     Solver.prototype.explain = function(a) {
-        console.log("Solver says: %c " + a + " %c\n", "color: #080", "")
+        // console.log("Solver says: %c " + a + " %c\n", "color: #080", "")
     };
 
     function Twist(a, b) {
