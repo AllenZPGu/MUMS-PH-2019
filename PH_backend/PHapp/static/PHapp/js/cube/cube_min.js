@@ -1385,7 +1385,7 @@ function grandCall() {
                 // console.log("\nCuber",
                 //     erno.version);
                 // console.log("");
-                window.help = 'This Rubik\'s Cube simulator is run by the "erno" Object.\nType "erno" in this console and hit Enter for a summary.\nHere are some random commands to pique your interest:\n\n  cube.inspect()\n  cube.inspect( true )\n  cube.front\n  cube.front.northWest.inspect()\n  cube.front.northWest.up.color.name\n  cube.standing.setOpacity( 0.5 )\n  cube.corners.setRadius( 90 )\n  cube.hasColors( RED, BLUE ).showIds()\n  cube.solve()\n\nType "help" to view this message again.\n';
+                window.help = '';
                 // console.log(help);
                 window.setupTasks && setupTasks.forEach(function(a) {
                     a()
