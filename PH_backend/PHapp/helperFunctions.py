@@ -86,7 +86,7 @@ def calcSingleTime(guess, submitTime, releaseTimes):
 def huntFinished(releaseTimes):
 	aest = pytz.timezone("Australia/Melbourne")
 	now = aest.localize(datetime.datetime.now())
-	if (now-releaseTimes[-1]).days < 0:
+	if (now-releaseTimes[-1]).days >= 0:
 		return True
 	else:
 		return False
@@ -95,20 +95,20 @@ def calcNextRelease(releaseTimes):
 	aest = pytz.timezone("Australia/Melbourne")
 	now = aest.localize(datetime.datetime.now())
 
-	for i in releaseTimes[:-4]:
-		if (now-i).days > 0:
-			days = (now-i).days
-			hrs = (now-i).seconds//3600
-			mins = ((now-i).seconds//60)%60
-			secs = (now-i).seconds%60
-			return [True,days,hrs,mins,secs]
+	for i in range(len(releaseTimes)):
+		if (releaseTimes[i]-now).days >= 0:
+			days = (releaseTimes[i]-now).days
+			hrs = (releaseTimes[i]-now).seconds//3600
+			mins = ((releaseTimes[i]-now).seconds//60)%60
+			secs = (releaseTimes[i]-now).seconds%60
+			
+			if i == 0:
+				return [0,"{:02d}d {:02d}h {:02d}m {:02d}s".format(days,hrs,mins,secs),days,hrs,mins,secs]
+			elif i-len(releaseTimes) ==  - 1:
+				return [3,"{:02d}d {:02d}h {:02d}m {:02d}s".format(days,hrs,mins,secs),days,hrs,mins,secs]
+			elif -4 <= i-len(releaseTimes) < -1:
+				return [2,"{:02d}d {:02d}h {:02d}m {:02d}s".format(days,hrs,mins,secs),days,hrs,mins,secs]
+			elif i-len(releaseTimes) < -4:
+				return [1,"{:02d}d {:02d}h {:02d}m {:02d}s".format(days,hrs,mins,secs),days,hrs,mins,secs]
 
-	for i in releaseTimes[-4:-1]:
-		if (now-i).days > 0:
-			days = (now-i).days
-			hrs = (now-i).seconds//3600
-			mins = ((now-i).seconds//60)%60
-			secs = (now-i).seconds%60
-			return [False,days,hrs,mins,secs]
-
-	return None
+	return [4,None,None,None,None,None]

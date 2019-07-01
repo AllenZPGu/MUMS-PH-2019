@@ -24,10 +24,6 @@ class Puzzles(models.Model):
 	hint3 = models.CharField(max_length=200, null=True)
 	releaseStatus = models.IntegerField(null=True, default = -1)
 	cubelet1 = models.ForeignKey(Cubelets, models.DO_NOTHING, db_column='cubelet1', related_name='cubelet1', null=True)
-	cubelet2 = models.ForeignKey(Cubelets, models.DO_NOTHING, db_column='cubelet2', related_name='cubelet2', null=True)
-	cubelet3 = models.ForeignKey(Cubelets, models.DO_NOTHING, db_column='cubelet3', related_name='cubelet3', null=True)
-	cubelet4 = models.ForeignKey(Cubelets, models.DO_NOTHING, db_column='cubelet4', related_name='cubelet4', null=True)
-	cubelet5 = models.ForeignKey(Cubelets, models.DO_NOTHING, db_column='cubelet5', related_name='cubelet5', null=True)
 
 	class Meta:
 		db_table = 'Puzzles'
