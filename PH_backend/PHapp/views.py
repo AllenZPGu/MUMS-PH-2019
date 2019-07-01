@@ -272,7 +272,7 @@ def teamReg(request):
 
 def teamInfo(request, teamId):
 	team = Teams.objects.get(id=teamId)
-	membersList = Individuals.objects.filter(team=team)
+	membersList = sorted([i for i in Individuals.objects.filter(team=team)], key=lambda x:x.name)
 	correctList = [[i, calcSingleTime(i, i.submitTime, releaseTimes)[0], len(SubmittedGuesses.objects.filter(team=team.authClone, correct=False, puzzle=i.puzzle))] for i in SubmittedGuesses.objects.filter(team=team.authClone, correct=True)]
 	correctList = sorted(correctList, key=lambda x:x[0].submitTime)
 	anySolves = True if len(correctList) > 0 else False
