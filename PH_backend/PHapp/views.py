@@ -5,7 +5,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse, FileResponse, Http404
 from django.contrib.auth.models import User
 from django.forms import formset_factory, ValidationError
-from django.core.mail import send_mail
 from .models import Puzzles, Teams, SubmittedGuesses, Individuals, AltAnswers
 from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginForm
 from django.conf import settings
@@ -15,7 +14,9 @@ import pytz
 import random
 import os
 from discord_webhook import DiscordWebhook, DiscordEmbed
+import smtplib, ssl
 from .helperFunctions import *
+
 
 solveBotURL = 'https://discordapp.com/api/webhooks/585024945478696961/WuI0J8wGk-GpOPeTayg0AGjL376DdYgo0LUEJjWgH3yz8HnIOvJp71fnrwjef91zYWSL'
 
@@ -271,14 +272,21 @@ def teamReg(request):
 			newTeam.save()
 
 			#email out 
-			subject = '[PH2019] Team registered'
-			msg_username = 'Username: ' + username + '\n'
-			msg_name = 'Team name: ' + newTeam.teamName + '\n\n'
-			message = message = 'Thank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
-			email_from = settings.EMAIL_HOST_USER
-			if newTeam.teamEmail != '':
-				recipient_list.append(newTeam.teamEmail)
-			send_mail(subject, message, email_from, recipient_list)
+			# subject = '[PH2019] Team registered'
+			# msg_username = 'Username: ' + username + '\n'
+			# msg_name = 'Team name: ' + newTeam.teamName + '\n\n'
+			# message = 'Thank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
+			# email_from = settings.EMAIL_HOST_USER
+			# if newTeam.teamEmail != '':
+			# 	recipient_list.append(newTeam.teamEmail)
+			# send_mail(subject, message, email_from, recipient_list)
+
+			message = 'Subject: [PH2019] Team registered\n\nThank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
+
+			context = ssl.create_default_context()
+			with smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT, context=context) as emailServer:
+				emailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+				emailServer.sendmail(settings.EMAIL_HOST_USER, recipient_list, message)
 
 
 			webhook = DiscordWebhook(url=solveBotURL)
