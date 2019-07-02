@@ -282,13 +282,28 @@ def teamReg(request):
 			# 	recipient_list.append(newTeam.teamEmail)
 			# send_mail(subject, message, email_from, recipient_list)
 
-			message = 'Subject: [PH2019] Team registered\n\nThank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
+
+
+			# message = 'Subject: [PH2019] Team registered\n\nThank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
+
+			# context = ssl.create_default_context()
+			# with smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT, context=context) as emailServer:
+			# 	emailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+			# 	emailServer.sendmail(settings.EMAIL_HOST_USER, recipient_list, message)
+
+
+
+			port = 465  # For SSL
+			smtp_server = "smtp.gmail.com"
+			sender_email = "greenish.blazers@gmail.com"  # Enter your address
+			receiver_email = "zhepu.gu@gmail.com"  # Enter receiver address
+			password = "420blazer"
+			message = "Subject: Sadnessssss\n\nThis message is sent from Python."
 
 			context = ssl.create_default_context()
-			with smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT, context=context) as emailServer:
-				emailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-				emailServer.sendmail(settings.EMAIL_HOST_USER, recipient_list, message)
-
+			with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+			    server.login(sender_email, password)
+			    server.sendmail(sender_email, receiver_email, message)
 
 			webhook = DiscordWebhook(url=solveBotURL)
 			webhookTitle = 'New team: **{}**'.format(newTeam.name)
