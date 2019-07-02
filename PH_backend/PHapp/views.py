@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse, FileResponse, Http404
 from django.contrib.auth.models import User
 from django.forms import formset_factory, ValidationError
+from django.core.mail import send_mail
 from .models import Puzzles, Teams, SubmittedGuesses, Individuals, AltAnswers
 from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginForm
 from django.conf import settings
@@ -248,6 +249,9 @@ def teamReg(request):
 			newTeam.save()
 			newTeam.aussie = False
 			
+			recipient_list = []
+			indivNo = 0
+
 			for indivForm in indivFormSet:
 				if indivForm.cleaned_data.get('name') == None:
 					continue
@@ -261,8 +265,33 @@ def teamReg(request):
 				if newIndiv.aussie:
 					newTeam.aussie = True
 
+				recipient_list.append(newIndiv.email)
+				indivNo += 1
+
 			newTeam.save()
-			return redirect('/')
+
+			#email out 
+			subject = '[PH2019] Team registered'
+			msg_username = 'Username: ' + username + '\n'
+			msg_name = 'Team name: ' + newTeam.teamName + '\n\n'
+			message = "Thank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n" + msg_username + msg_name 
+			+ 'A reminder that you will need your username, and not your team name, to login.\n\n'
+			+ 'Regards,\n'
+			+ 'MUMS Puzzle Hunt Organisers'
+			email_from = settings.EMAIL_HOST_USER
+			if newTeam.teamEmail != '':
+				recipient_list.append(newTeam.teamEmail)
+			send_mail(subject, message, email_from, recipient_list)
+
+
+			webhook = DiscordWebhook(url=solveBotURL)
+			webhookTitle = 'New team: **{}**'.format(newTeam.name)
+			webhookDesc = 'Members: {}\nAustralian: {}'.format(str(indivNo), 'Yes' if newTeam.aussie else 'No')
+			webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=16233769)
+			webhook.add_embed(webhookEmbed)
+			webhook.execute()
+
+			return redirect('/team/{}'.format(str(newTeam.id)))
 	
 	else:
 		userForm = UserCreationForm()
