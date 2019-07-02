@@ -271,10 +271,11 @@ def teamReg(request):
 
 			newTeam.save()
 
+			msg_username = 'Username: ' + username + '\n'
+			msg_name = 'Team name: ' + newTeam.teamName + '\n\n'
+
 			#email out 
 			# subject = '[PH2019] Team registered'
-			# msg_username = 'Username: ' + username + '\n'
-			# msg_name = 'Team name: ' + newTeam.teamName + '\n\n'
 			# message = 'Thank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
 			# email_from = settings.EMAIL_HOST_USER
 			# if newTeam.teamEmail != '':
