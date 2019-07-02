@@ -269,19 +269,23 @@ def teamReg(request):
 
 			newTeam.save()
 
-			msg_username = 'Username: ' + username + '\n'
-			msg_name = 'Team name: ' + newTeam.teamName + '\n\n'
+			try:
+				msg_username = 'Username: ' + username + '\n'
+				msg_name = 'Team name: ' + newTeam.teamName + '\n\n'
 			
-			# message = 'Thank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
-			# subject = '[PH2019] Team registered'
-			# email_from = settings.EMAIL_HOST_USER
-			# send_mail( subject, message, email_from, recipient_list )
+				# message = 'Thank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
+				# subject = '[PH2019] Team registered'
+				# email_from = settings.EMAIL_HOST_USER
+				# send_mail( subject, message, email_from, recipient_list )
 
-			message = 'Subject: [PH2019] Team registered\n\nThank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
-			context = ssl.create_default_context()
-			with smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT, context=context) as emailServer:
-				emailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-				emailServer.sendmail(settings.EMAIL_HOST_USER, recipient_list, message)
+			
+				message = 'Subject: [PH2019] Team registered\n\nThank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
+				context = ssl.create_default_context()
+				with smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT, context=context) as emailServer:
+					emailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+					emailServer.sendmail(settings.EMAIL_HOST_USER, recipient_list, message)
+			except:
+				pass
 
 			webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
 			webhookTitle = 'New team: **{}**'.format(newTeam.teamName)
