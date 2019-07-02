@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse, FileResponse, Http404
 from django.contrib.auth.models import User
 from django.forms import formset_factory, ValidationError
+from django.core.mail import send_mail
 from .models import Puzzles, Teams, SubmittedGuesses, Individuals, AltAnswers
 from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginForm
 from django.conf import settings
@@ -16,9 +17,6 @@ import os
 from discord_webhook import DiscordWebhook, DiscordEmbed
 import smtplib, ssl
 from .helperFunctions import *
-
-
-solveBotURL = 'https://discordapp.com/api/webhooks/585024945478696961/WuI0J8wGk-GpOPeTayg0AGjL376DdYgo0LUEJjWgH3yz8HnIOvJp71fnrwjef91zYWSL'
 
 aest = pytz.timezone("Australia/Melbourne")
 releaseTimes = [aest.localize(datetime.datetime(2019, 8, 7, 12)) + datetime.timedelta(days=i) for i in range(10)]
@@ -143,7 +141,7 @@ def solve(request, title):
 				team.teamPuzzles += 1
 				team.save()
 
-				webhook = DiscordWebhook(url=solveBotURL)
+				webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
 				webhookTitle = '**{}** solved **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
 				webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
 				webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=47872)
@@ -172,7 +170,7 @@ def solve(request, title):
 					displayDouble = True
 					displayGuess = guess
 
-				webhook = DiscordWebhook(url=solveBotURL)
+				webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
 				webhookTitle = '**{}** incorrectly attempted **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
 				webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
 				webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=12255232)
@@ -273,35 +271,19 @@ def teamReg(request):
 
 			msg_username = 'Username: ' + username + '\n'
 			msg_name = 'Team name: ' + newTeam.teamName + '\n\n'
+			
+			message = 'Thank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
+			subject = '[PH2019] Team registered'
+			email_from = settings.EMAIL_HOST_USER
+			send_mail( subject, message, email_from, recipient_list )
 
-			#email out 
-			# subject = '[PH2019] Team registered'
-			# message = 'Thank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
-			# email_from = settings.EMAIL_HOST_USER
-			# if newTeam.teamEmail != '':
-			# 	recipient_list.append(newTeam.teamEmail)
-			# send_mail(subject, message, email_from, recipient_list)
-
-			message = 'Subject: [PH2019] Team registered\n\nThank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
-
-			context = ssl.create_default_context()
-			with smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT, context=context) as emailServer:
-				emailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-				emailServer.sendmail(settings.EMAIL_HOST_USER, recipient_list, message)
-
-			# port = 465  # For SSL
-			# smtp_server = "smtp.gmail.com"
-			# sender_email = "greenish.blazers@gmail.com"  # Enter your address
-			# receiver_email = "zhepu.gu@gmail.com"  # Enter receiver address
-			# password = "420blazer"
-			# message = "Subject: Sadnessssss\n\nThis message is sent from Python."
-
+			# message = 'Subject: [PH2019] Team registered\n\nThank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
 			# context = ssl.create_default_context()
-			# with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
-			#     server.login(sender_email, password)
-			#     server.sendmail(sender_email, receiver_email, message)
+			# with smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT, context=context) as emailServer:
+			# 	emailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+			# 	emailServer.sendmail(settings.EMAIL_HOST_USER, recipient_list, message)
 
-			webhook = DiscordWebhook(url=solveBotURL)
+			webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
 			webhookTitle = 'New team: **{}**'.format(newTeam.teamName)
 			webhookDesc = 'Members: {}\nAustralian: {}'.format(str(indivNo), 'Yes' if newTeam.aussie else 'No')
 			webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=16233769)

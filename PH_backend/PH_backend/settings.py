@@ -173,8 +173,11 @@ CSRF_USE_SESSIONS = True
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 #auto email stuff
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_SSL = True
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'mumspuzzlehunt2019@gmail.com'
 EMAIL_HOST_PASSWORD = '420blazer'
+
+SOLVE_BOT_URL = 'https://discordapp.com/api/webhooks/585024945478696961/WuI0J8wGk-GpOPeTayg0AGjL376DdYgo0LUEJjWgH3yz8HnIOvJp71fnrwjef91zYWSL'
