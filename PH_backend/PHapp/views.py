@@ -248,7 +248,7 @@ def teamReg(request):
 			newTeam.save()
 			newTeam.aussie = False
 			
-			recipient_list = []
+			recipient_list = [] if newTeam.teamEmail == '' else [newTeam.teamEmail]
 			indivNo = 0
 
 			for indivForm in indivFormSet:
