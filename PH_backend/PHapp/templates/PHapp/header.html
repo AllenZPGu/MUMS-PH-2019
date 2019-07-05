@@ -3,12 +3,13 @@
 
 {% load static %}
 <head>
-	<title>Puzzlehunt Sandbox</title>
+	<title>MUMS Puzzle Hunt</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
 
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Ubuntu" />
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
@@ -24,7 +25,7 @@
 	<div class="navbar-container">
 		<div class="navbar-container-inner">
 			<nav class="main-nav">
-				<a class="link-nav" href="/">Home</a></li>
+				<a class="link-nav" href="/">MUMS Puzzle Hunt</a></li>
 				<a class="link-nav" href="/faq/">About / FAQ</a></li>
 				<a class="link-nav" href="/rules/">Rules</a></li>
 				<a class="link-nav" href="/puzzles/">Puzzles</a></li>
@@ -41,31 +42,23 @@
 			</nav>
 		</div>
 	</div>
-
-<br>
-<!--<div class="container col-sm-2"></div>-->
-	<div id="content-wrapper" class="container" >
-		{% block content %}
-		{% endblock %}
+	<br>
+	<!--<div class="container col-sm-2"></div>-->
+		<div id="content-wrapper" class="container" >
+			{% block content %}
+			{% endblock %}
+		</div>
+	<!--<div class="container col-sm-2"></div>-->
+	<br>
 	</div>
-<!--<div class="container col-sm-2"></div>-->
 
-<br>
-</div>
+	<footer class="footer font-small blue">
+		<div class="footer-copyright text-center py-3"><font style="color:white">© 2019 Copyright:</font>
+			<a href='https://www.facebook.com/MelbUniMathsStats/' style="color:white"> Melbourne University Mathematics and Statistics Society</a>
+		</div>
+	</footer>
+<!-- Footer -->
 
-
-<script>
-		$(document).ready(function(){
-	resizeContent();
-	});
-	window.onresize = function(event) {
-	resizeContent();
-	}
-	function resizeContent() {
-		let vph = $(window).height, header_height = $(".navbar-container")[0].clientHeight
-	$("#content-wrapper").css({"top": header_height + "px", "max-height": (vph-header_height) + "px"});
-	}
-	</script>
 </body>
 
 </html>

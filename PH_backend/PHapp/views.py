@@ -5,7 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse, FileResponse, Http404
 from django.contrib.auth.models import User
 from django.forms import formset_factory, ValidationError
-from .models import Puzzles, Teams, SubmittedGuesses, Individuals
+from django.core.mail import send_mail
+from .models import Puzzles, Teams, SubmittedGuesses, Individuals, AltAnswers
 from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginForm
 from django.conf import settings
 import json
@@ -13,28 +14,53 @@ import datetime
 import pytz
 import random
 import os
+from discord_webhook import DiscordWebhook, DiscordEmbed
+import smtplib, ssl
 from .helperFunctions import *
 
 aest = pytz.timezone("Australia/Melbourne")
-
-#releaseTimes = [aest.localize(datetime.datetime(2019, 4, 24, 12)) + datetime.timedelta(days=i) for i in range(10)]
-releaseTimes = [aest.localize(datetime.datetime(2019, 3, 1, 12)) + datetime.timedelta(days=i) for i in range(10)]
+releaseTimes = [aest.localize(datetime.datetime(2019, 8, 7, 12)) + datetime.timedelta(days=i) for i in range(10)]
+#releaseTimes = [aest.localize(datetime.datetime(2019, 6, 24, 12)) + datetime.timedelta(days=i) for i in range(10)]
 
 def index(request):
 	huntOver = False if releaseStage(releaseTimes) < len(releaseTimes) else True
 	return render(request, 'PHapp/home.html', {'huntOver':huntOver})
+
+def colourCube(request):
+	huntOver = False if releaseStage(releaseTimes) < len(releaseTimes) else True
+	coloured = []
+	if request.user.is_authenticated or huntOver:
+		if huntOver:
+			puzzlesRight = [i for i in Puzzles.objects.all()]
+		else:
+			puzzlesRight = [i.puzzle for i in SubmittedGuesses.objects.filter(team=request.user, correct=True)]
+		
+		for rightPuzz in puzzlesRight:
+			if rightPuzz.act in range(1,7):
+				coloured.append({'cubeletId':rightPuzz.cubelet1.cubeletId, 'cubeface':rightPuzz.cubelet1.cubeface, 'colour':rightPuzz.cubelet1.colour})
+
+	data={'coloured':coloured}
+	return JsonResponse(data)
 
 @login_required
 def puzzles(request):
 	puzzleList = []
 	for puzzle in Puzzles.objects.filter(releaseStatus__lte = releaseStage(releaseTimes)):
 		allGuesses = [i.correct for i in SubmittedGuesses.objects.filter(puzzle=puzzle)]
-		if len(SubmittedGuesses.objects.filter(puzzle=puzzle, team=request.user, correct=True)) == 0:
+
+		guesses = SubmittedGuesses.objects.filter(puzzle=puzzle, team=request.user)
+
+		if True not in [i.correct for i in guesses]:
 			puzzleList.append([puzzle, False, sum(allGuesses), len(allGuesses)-sum(allGuesses), calcWorth(puzzle, releaseTimes)])
 		else:
-			puzzleList.append([puzzle, True, sum(allGuesses), len(allGuesses)-sum(allGuesses), calcWorth(puzzle, releaseTimes)])
+			correctGuess = guesses.filter(correct = True)[0]
+			puzzleList.append([puzzle, True, sum(allGuesses), len(allGuesses)-sum(allGuesses), correctGuess.pointsAwarded])
 	puzzleList = sorted(puzzleList, key=lambda x:x[0].id)
-	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList})
+
+	nextRelease = calcNextRelease(releaseTimes)
+	print(nextRelease)
+
+	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList, 'nextRelease':nextRelease})
 
 @login_required
 def puzzleInfo(request, title):
@@ -77,10 +103,15 @@ def solve(request, title):
 		raise Http404()
 	
 	team = Teams.objects.get(authClone = request.user)
-
-	if True in [i.correct for i in SubmittedGuesses.objects.filter(team = request.user, puzzle = puzzle)]:
-		points = SubmittedGuesses.objects.filter(team=request.user, correct=True, puzzle=puzzle)[0].pointsAwarded
-		return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle, 'points':points, 'team':team})
+	guesses = SubmittedGuesses.objects.filter(team = request.user, puzzle = puzzle)
+	if True in [i.correct for i in guesses]:
+		correctGuess = guesses.filter(correct=True)[0]
+		points = correctGuess.pointsAwarded
+		if correctGuess.guess != puzzle.answer:
+			altAns = correctGuess.guess
+		else:
+			altAns = None
+		return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle, 'points':points, 'team':team, 'altAns':altAns})
 
 	if team.guesses <= 0:
 		return render(request, 'PHapp/noGuesses.html')
@@ -89,13 +120,15 @@ def solve(request, title):
 		solveform = SolveForm(request.POST)
 		if solveform.is_valid():
 			guess = stripToLetters(solveform.cleaned_data['guess'])
+			altAnswersList = [i.altAnswer for i in AltAnswers.objects.filter(puzzle=puzzle)]
 			
-			if guess == puzzle.answer:
+
+			if guess == puzzle.answer or guess in altAnswersList:
 				newSubmit = SubmittedGuesses()
 				newSubmit.team = request.user
 				newSubmit.puzzle = puzzle
 				newSubmit.guess = guess
-				newSubmit.submitTime = datetime.datetime.now()
+				newSubmit.submitTime = aest.localize(datetime.datetime.now())
 				newSubmit.correct = True
 				newSubmit.pointsAwarded = calcWorth(puzzle, releaseTimes)
 				newSubmit.save()
@@ -108,6 +141,13 @@ def solve(request, title):
 				team.teamPuzzles += 1
 				team.save()
 
+				webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+				webhookTitle = '**{}** solved **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
+				webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+				webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=47872)
+				webhook.add_embed(webhookEmbed)
+				webhook.execute()
+
 				return redirect('/solve/{}/'.format(title))
 
 			else:
@@ -116,7 +156,7 @@ def solve(request, title):
 					newSubmit.team = request.user
 					newSubmit.puzzle = puzzle
 					newSubmit.guess = guess
-					newSubmit.submitTime = datetime.datetime.now()
+					newSubmit.submitTime = aest.localize(datetime.datetime.now())
 					newSubmit.correct = False
 					newSubmit.save()
 					team.guesses -= 1
@@ -124,10 +164,20 @@ def solve(request, title):
 					displayWrong = True
 					displayDouble = False
 					displayGuess = None
+
 				else:
 					displayWrong = False
 					displayDouble = True
 					displayGuess = guess
+
+				webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+				webhookTitle = '**{}** incorrectly attempted **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
+				webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+				webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=12255232)
+				webhook.add_embed(webhookEmbed)
+				webhook.execute()
+
+				solveform = SolveForm()
 
 	else:
 		solveform = SolveForm()
@@ -142,6 +192,9 @@ def solve(request, title):
 		{'solveform':solveform, 'displayWrong':displayWrong, 'displayDouble':displayDouble, 'displayGuess':displayGuess, 'puzzle':puzzle, 'team':team, 'previousGuesses':previousGuesses})
 
 def teams(request):
+	if len(Teams.objects.all()) == 0:
+		return render(request, 'PHapp/teams.html', {'teamsExist':False})
+
 	allTeams = []
 	totRank = 1
 	ausRank = 1
@@ -171,7 +224,7 @@ def teams(request):
 	if request.user.is_authenticated:
 		teamName = Teams.objects.get(authClone = request.user).teamName
 	
-	return render(request, 'PHapp/teams.html', {'allTeams':allTeams, 'teamName':teamName})
+	return render(request, 'PHapp/teams.html', {'allTeams':allTeams, 'teamName':teamName, 'teamsExist':True})
 
 def teamReg(request):
 	if request.user.is_authenticated:
@@ -195,6 +248,9 @@ def teamReg(request):
 			newTeam.save()
 			newTeam.aussie = False
 			
+			recipient_list = [] if newTeam.teamEmail == '' else [newTeam.teamEmail]
+			indivNo = 0
+
 			for indivForm in indivFormSet:
 				if indivForm.cleaned_data.get('name') == None:
 					continue
@@ -208,8 +264,37 @@ def teamReg(request):
 				if newIndiv.aussie:
 					newTeam.aussie = True
 
+				recipient_list.append(newIndiv.email)
+				indivNo += 1
+
 			newTeam.save()
-			return redirect('/')
+
+			try:
+				msg_username = 'Username: ' + username + '\n'
+				msg_name = 'Team name: ' + newTeam.teamName + '\n\n'
+			
+				# message = 'Thank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
+				# subject = '[PH2019] Team registered'
+				# email_from = settings.EMAIL_HOST_USER
+				# send_mail( subject, message, email_from, recipient_list )
+
+			
+				message = 'Subject: [PH2019] Team registered\n\nThank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
+				context = ssl.create_default_context()
+				with smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT, context=context) as emailServer:
+					emailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+					emailServer.sendmail(settings.EMAIL_HOST_USER, recipient_list, message)
+			except:
+				pass
+
+			webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+			webhookTitle = 'New team: **{}**'.format(newTeam.teamName)
+			webhookDesc = 'Members: {}\nAustralian: {}'.format(str(indivNo), 'Yes' if newTeam.aussie else 'No')
+			webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=16233769)
+			webhook.add_embed(webhookEmbed)
+			webhook.execute()
+
+			return redirect('/team/{}'.format(str(newTeam.id)))
 	
 	else:
 		userForm = UserCreationForm()
@@ -219,11 +304,11 @@ def teamReg(request):
 
 def teamInfo(request, teamId):
 	team = Teams.objects.get(id=teamId)
-	membersList = Individuals.objects.filter(team=team)
-	correctList = [[i, calcSingleTime(i, i.submitTime, releaseTimes)[0], len(SubmittedGuesses.objects.filter(team=team.authClone, correct=False))] for i in SubmittedGuesses.objects.filter(team=team.authClone, correct=True)]
+	membersList = sorted([i for i in Individuals.objects.filter(team=team)], key=lambda x:x.name)
+	correctList = [[i, calcSingleTime(i, i.submitTime, releaseTimes)[0], len(SubmittedGuesses.objects.filter(team=team.authClone, correct=False, puzzle=i.puzzle))] for i in SubmittedGuesses.objects.filter(team=team.authClone, correct=True)]
 	correctList = sorted(correctList, key=lambda x:x[0].submitTime)
 	anySolves = True if len(correctList) > 0 else False
-	avSolveTime = "{:02d}h {:02d}m {:02d}s".format(team.avHr, team.avMin, team.avSec) if anySolves else '-'
+	avSolveTime = "{:02d}h {:02d}m {:02d}s".format(team.avHr, team.avMin, team.avSec) if anySolves else 'N/A'
 	return render(request, 'PHapp/teamInfo.html', {'team':team, 'members':membersList, 'correctList':correctList, 'anySolves':anySolves, 'avSolveTime':avSolveTime})
 
 @login_required
@@ -255,6 +340,12 @@ def faq(request):
 
 def rules(request):
 	return render(request, 'PHapp/rules.html')
+
+def debrief(request):
+	if not huntFinished(releaseTimes):
+		raise Http404()
+	else:
+		return render(request, 'PHapp/home.html')
 
 def loginCustom(request):
 	if request.user.is_authenticated:

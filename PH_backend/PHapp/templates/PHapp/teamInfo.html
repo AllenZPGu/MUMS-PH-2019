@@ -5,33 +5,33 @@
 <div class="outer-container">
 <div class="inner-container">
 <center>
-<h6>Team information</h6>
+	<h6>Team information</h6>
 
-{% if team.aussie %}
-	<h1>🇦🇺 {{team.teamName}} 🇦🇺</h1>
-{% else %}
-	<h1>{{team.teamName}}</h1>
-{% endif %}
+	{% if team.aussie %}
+		<h1>🇦🇺 {{team.teamName}} 🇦🇺</h1>
+	{% else %}
+		<h1>{{team.teamName}}</h1>
+	{% endif %}
 
-<br>
-<h4>Points: {{team.teamPoints}}</h4>
-<h4>Puzzles solved: {{team.teamPuzzles}}</h4>
-<h4>Average solve time: {{avSolveTime}}</h4>
-{% if team.authClone == user %}
-	<h4>Guesses remaining: {{team.guesses}}</h4>
-{% endif %}
-<br>
+	<br>
+	<h4>Points: <font style='color:green'><b>{{team.teamPoints}}</b></font></h4>
+	<h4>Puzzles solved: <font style='color:green'><b>{{team.teamPuzzles}}</b></font></h4>
+	<h4>Average solve time: <font style='color:green'><b>{{avSolveTime}}</b></font></h4>
+	{% if team.authClone == user %}
+		<h4>Guesses remaining: <font style='color:green'><b>{{team.guesses}}</b></font></h4>
+	{% endif %}
+	<br>
 
-<h4>Members:</h4>
-{% for member in members %}
-	<h6>{{member.name}}</h6>
-{% endfor %}
-<br>
+	<h4>Members:</h4>
+	{% for member in members %}
+		<h6>{{member.name}}</h6>
+	{% endfor %}
+	<br>
 </center>
 
 {% if anySolves %}
 	<center>
-		<h5>Solve history</h5>
+		<h4>Solve history:</h4>
 	</center>
 	<table class="table table-bordered">
 		<thead>
@@ -39,10 +39,10 @@
 				<td>Puzzle</td>
 				<td>Solve time</td>
 				<td>Time taken</td>
+				<td>Points awarded</td>
 				{% if team.authClone == user %}
 					<td>Incorrect guesses </td>
 				{% endif %}
-				<td>Points awarded</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -51,17 +51,17 @@
 					<td><a href='/puzzle/{{correct.puzzle.pdfPath}}.pdf'>{{correct.puzzle.act}}.{{correct.puzzle.scene}} {{correct.puzzle.title}}</a></td>
 					<td>{{correct.submitTime|date:"d M, h:i:s a"}}</td>
 					<td>{{timeTaken}}</td>
+					<td>{{correct.pointsAwarded}}</td>
 					{% if team.authClone == user %}
 						<td>{{incorrect}}</td>
 					{% endif %}
-					<td>{{correct.pointsAwarded}}</td>
 				</tr>
 			{% endfor %}
 		</tbody>
 	</table>
 {% else %}
 	<center>
-		<h5>This team has not solved any puzzles yet.</h5>
+		<h4>This team has not solved any puzzles yet.</h4>
 	</center>
 {% endif %}
 </div>

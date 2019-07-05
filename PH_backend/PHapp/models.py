@@ -1,6 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Cubelets(models.Model):
+	id = models.AutoField(primary_key=True)
+	cubeletId = models.IntegerField(null=True)
+	cubeface = models.IntegerField(null=True)
+	colour = models.CharField(max_length=1, null=True)
+
+	class Meta:
+		db_table = 'Cubelets'
+
 class Puzzles(models.Model):
 	id = models.AutoField(primary_key=True)
 	title = models.CharField(max_length=200, null=True)
@@ -14,6 +23,7 @@ class Puzzles(models.Model):
 	hint2 = models.CharField(max_length=200, null=True)
 	hint3 = models.CharField(max_length=200, null=True)
 	releaseStatus = models.IntegerField(null=True, default = -1)
+	cubelet1 = models.ForeignKey(Cubelets, models.DO_NOTHING, db_column='cubelet1', related_name='cubelet1', null=True)
 
 	class Meta:
 		db_table = 'Puzzles'
@@ -56,3 +66,11 @@ class SubmittedGuesses(models.Model):
 
 	class Meta:
 		db_table = 'SubmittedGuesses'
+
+class AltAnswers(models.Model):
+	id = models.AutoField(primary_key=True)
+	puzzle = models.ForeignKey(Puzzles, models.DO_NOTHING, db_column = 'puzzle', null=True)
+	altAnswer = models.CharField(max_length=500, null=True)
+
+	class Meta:
+		db_table = 'AltAnswers'

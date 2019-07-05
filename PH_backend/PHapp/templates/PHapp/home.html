@@ -17,9 +17,19 @@
 {% endblock %}
 
 {% block content %}
+
+<div class="home-heading">
+	<h1>MUMS Puzzle Hunt 2019</h1>
+	<h3>7th Aug 2019 - 16th Aug 2019</h3>
+</div>
+
 <div class="fill graydient" id="outer-container">
 	<div id="cube-container">
-		<h1 class="heading">MUMS Puzzle Hunt 2019</h1></div>
+		<div class="heading">
+			<br><br><br><br>
+			<h4 id="loading-message">Cube loading: may take a few seconds.</h4>
+		</div>
+	</div>
 <div id="controlsOpen">
 	<div class="pad">
 		<a href="." onclick="$('#controls').fadeIn( 500 );$('#controlsOpen').fadeOut( 500 );return false">Cube Control</a>
@@ -53,5 +63,18 @@
 	</div>
 </div>
 </div>
+
+	<script>
+		$(document).ready(function(){
+			resizeContent();
+		});
+		window.onresize = function(event) {
+			resizeContent();
+		}
+		function resizeContent() {
+			let vph = $(window).height, header_height = $(".navbar-container")[0].clientHeight
+		$("#content-wrapper").css({"top": header_height + "px", "max-height": (vph-header_height) + "px"});
+		}
+	</script>
 
 {% endblock %}

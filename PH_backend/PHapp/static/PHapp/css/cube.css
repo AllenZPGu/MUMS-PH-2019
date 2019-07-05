@@ -1,4 +1,18 @@
+body {
+	overflow: hidden;
+}
 
+.navbar-container {
+	position: absolute;
+}
+
+#fullscreen-wrapper {
+	position: absolute;
+}
+
+#content-wrapper {
+	position: absolute;
+}
 
 
 
@@ -8,48 +22,6 @@
  /*          */
 /************/
 
-html, body {
-	
-	width:  100%;
-	height: 100%;
-}
-body {
-	vertical-align: top;
-	overflow: hidden;
-}
-body, h1, h2 {
-
-	margin:  0;
-	border:  0;
-	padding: 0;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-h2 {
-	font-size:   12px;
-	line-height: 15px;
-	color: rgba( 255, 255, 255, 0.7 );
-}
-h1 {
-	color: red;
-}
-/*a {
-
-	color: rgba( 255, 255, 255, 0.7 );
-	text-decoration: none;
-	border-bottom: 1px dotted #FFF;
-}
-a:hover {
-
-	color: #FFF;
-	border-bottom: 1px solid #FFF;
-}*/
-table, td, tr {
-
-	margin: 0;
-	border: none;
-	border-collapse: collapse;
-	padding: 0;
-}
 .pad {
 
 	padding: 8px;
@@ -309,15 +281,16 @@ table, td, tr {
 */
 .id {
 
-	display: none;
+	/*display: none*/;
 	position: absolute;
 	z-index: 1000;
 	width:  100%;
 	height: 100%;
-	font-size:   30px;
+	font-size: 60px;
 	line-height: 135px;
 	text-align: center;
 	color: #000;
+	font-weight: bold;
 }
 .id .underline {
 
@@ -601,7 +574,11 @@ textarea#texts {
 
 
 .heading {
-	position: absolute;top: 50px; left: 0; right: 0;text-align: center;
+	position: absolute;
+	top: 50px; 
+	left: 0; 
+	right: 0;
+	text-align: center;
 	color: red;
 }
 
