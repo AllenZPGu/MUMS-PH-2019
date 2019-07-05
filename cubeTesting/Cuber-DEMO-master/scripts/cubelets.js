@@ -52,8 +52,11 @@
 
 
 
-function Cubelet( cube, id, colors ){
+function Cubelet( cube, id, data ){
 
+	let colors = data.colors
+	let texts = data.text
+	let links = data.links
 
 	//  Our Cube can directly address its Cubelet children,
 	//  only fair the Cubelet can address their parent Cube!
@@ -195,7 +198,6 @@ function Cubelet( cube, id, colors ){
 
 
 
-
 	//  We're about to loop through our colors[] Array
 	//  to build the six faces of our Cubelet.
 	//  Here's our overhead for that:
@@ -315,6 +317,14 @@ function Cubelet( cube, id, colors ){
 				var stickerElement = document.createElement( 'div' )
 				stickerElement.classList.add( 'sticker' )			
 				stickerElement.style.backgroundColor = color.hex
+				let href = links[i]
+				if (href) {
+					let linkElement = document.createElement('a')
+					linkElement.href = href
+					linkElement.target = "_blank"
+					linkElement.style = "width:100%;height:100%"
+					stickerElement.appendChild(linkElement)
+				}
 				faceElement.appendChild( stickerElement )
 
 
@@ -323,7 +333,7 @@ function Cubelet( cube, id, colors ){
 
 				var textElement = document.createElement( 'div' )
 				textElement.classList.add( 'text' )
-				textElement.innerText = i
+				textElement.innerText = texts[i]
 				this.faces[ i ].text = textElement
 				faceElement.appendChild( textElement )
 			}

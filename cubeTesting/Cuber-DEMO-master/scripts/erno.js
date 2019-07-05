@@ -308,6 +308,7 @@ function setupThree(){
 	camera.lookAt( scene.position )
 	scene.add( camera )
 
+	window.raycaster = new THREE.Raycaster()
 
 	//  We need a projector to map 2D clicks and touches
 	//  to 3D points in space!
@@ -341,6 +342,7 @@ function setupThree(){
 	//  Readjust on window resize.
 
 	document.getElementById('outer-container').addEventListener( 'resize', onWindowResize, false )
+	document.getElementById('outer-container').addEventListener( 'click', onClick, false )
 }
 function setupControls(){
 
@@ -370,7 +372,7 @@ function setupControls(){
 }
 function onWindowResize(){
 	
-	var
+	let
 	WIDTH         = document.getElementById('outer-container').offsetWidth,
 	HEIGHT        = document.getElementById('outer-container').offsetHeight
 
@@ -380,12 +382,32 @@ function onWindowResize(){
 	renderer.setSize( WIDTH, HEIGHT )
 	render()
 }
+function onClick(e){
+
+	let
+	mouse = new THREE.Vector2(),
+	WIDTH         = document.getElementById('outer-container').offsetWidth,
+	HEIGHT        = document.getElementById('outer-container').offsetHeight
+
+	mouse.x = ( event.clientX / WIDTH ) * 2 - 1;
+	mouse.y = - ( event.clientY / HEIGHT ) * 2 + 1;
+	console.log("Clicked at (" + mouse.x + "," + mouse.y + ")")
+
+	raycaster.setFromCamera(mouse, camera);
+	let plastics = []
+	for (let i = 0; i < 27; i++) {if (cube.cubelets[i].plastic) plastics = plastics.concat(window.cube.cubelets[i].plastic)}
+	let intersects = raycaster.intersectObjects(plastics)
+	
+	if (intersects.length > 0) {
+		console.log("Intersected " + intersects[0].object.parent.name + " on face (" + intersects[0].face.a + ',' + intersects[0].face.b + ',' + intersects[0].face.c + ')');
+	}
+}
 function animate(){
 	//console.log("Animate loop");
 	TWEEN.update()
 	if( window.controls && window.controls instanceof THREE.TrackballControls ){
 
-		var 
+		let 
 		cameraPositionX = camera.position.x,
 		cameraPositionY = camera.position.y,
 		cameraPositionZ = camera.position.z,
