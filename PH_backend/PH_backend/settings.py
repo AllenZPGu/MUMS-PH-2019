@@ -13,10 +13,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ag9d18mr6#u@^00@_xs$mnpw6)mf%cdsa&2hs7#wfq0--%-$t&'
 
-
-
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -63,18 +60,21 @@ TEMPLATES = [
 WSGI_APPLICATION = 'PH_backend.wsgi.application'
 
 
+###### THE FOLLOWING STUFF NEED TO BE CHANGED ON DEPLOYMENT!!!!!!!!!!
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 #########################deployment checks
-# SECURE_SSL_REDIRECT = True
-# SESSION_COOKIE_SECURE = True
-# SECURE_BROWSER_XSS_FILTER = True
-# SECURE_CONTENT_TYPE_NOSNIFF = True
-# X_FRAME_OPTIONS = 'DENY'
-# SECURE_HSTS_SECONDS = 10  
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# SECURE_HSTS_PRELOAD = True
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_HSTS_SECONDS = 10  
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -119,6 +119,14 @@ DATABASES = {
         'PORT': '5432',
     },
 }
+
+
+
+
+
+
+
+
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'

@@ -143,12 +143,15 @@ def solve(request, title):
 				team.teamPuzzles += 1
 				team.save()
 
-				webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
-				webhookTitle = '**{}** solved **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
-				webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
-				webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=47872)
-				webhook.add_embed(webhookEmbed)
-				webhook.execute()
+				try:
+					webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+					webhookTitle = '**{}** solved **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
+					webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+					webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=47872)
+					webhook.add_embed(webhookEmbed)
+					webhook.execute()
+				except:
+					pass
 
 				return redirect('/solve/{}/'.format(title))
 
@@ -172,12 +175,15 @@ def solve(request, title):
 					displayDouble = True
 					displayGuess = guess
 
-				webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
-				webhookTitle = '**{}** incorrectly attempted **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
-				webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
-				webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=12255232)
-				webhook.add_embed(webhookEmbed)
-				webhook.execute()
+				try:
+					webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+					webhookTitle = '**{}** incorrectly attempted **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
+					webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+					webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=12255232)
+					webhook.add_embed(webhookEmbed)
+					webhook.execute()
+				except:
+					pass
 
 				solveform = SolveForm()
 
@@ -289,12 +295,15 @@ def teamReg(request):
 			except:
 				pass
 
-			webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
-			webhookTitle = 'New team: **{}**'.format(newTeam.teamName)
-			webhookDesc = 'Members: {}\nAustralian: {}'.format(str(indivNo), 'Yes' if newTeam.aussie else 'No')
-			webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=16233769)
-			webhook.add_embed(webhookEmbed)
-			webhook.execute()
+			try:
+				webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+				webhookTitle = 'New team: **{}**'.format(newTeam.teamName)
+				webhookDesc = 'Members: {}\nAustralian: {}'.format(str(indivNo), 'Yes' if newTeam.aussie else 'No')
+				webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=16233769)
+				webhook.add_embed(webhookEmbed)
+				webhook.execute()
+			except:
+				pass
 
 			return redirect('/team/{}'.format(str(newTeam.id)))
 	
