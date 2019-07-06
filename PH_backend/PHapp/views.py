@@ -39,7 +39,9 @@ def colourCube(request):
 			if rightPuzz.act in range(1,7):
 				coloured.append({'cubeletId':rightPuzz.cubelet1.cubeletId, 'cubeface':rightPuzz.cubelet1.cubeface, 'colour':rightPuzz.cubelet1.colour})
 
-	data={'coloured':coloured}
+	cubeMap = cubeTestRelease(releaseTimes)
+
+	data={'coloured':coloured, 'cubeMap':cubeMap}
 	return JsonResponse(data)
 
 @login_required

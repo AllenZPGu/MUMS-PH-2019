@@ -87,6 +87,8 @@ $.ajax({
             globalColourMap[data.coloured[i].cubeletId][data.coloured[i].cubeface]=colDict[data.coloured[i].colour];
         };
 
+        cubeletPuzzleMap = data.cubeMap;
+
         grandCall();
 
         loadingMsg = document.getElementById("loading-message");
