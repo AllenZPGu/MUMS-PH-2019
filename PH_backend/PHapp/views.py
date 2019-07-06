@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import JsonResponse, FileResponse, Http404
 from django.contrib.auth.models import User
 from django.forms import formset_factory, ValidationError
+from django.core.mail import send_mail
 from .models import Puzzles, Teams, SubmittedGuesses, Individuals, AltAnswers
 from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginForm
 from django.conf import settings
@@ -14,9 +15,8 @@ import pytz
 import random
 import os
 from discord_webhook import DiscordWebhook, DiscordEmbed
+import smtplib, ssl
 from .helperFunctions import *
-
-solveBotURL = 'https://discordapp.com/api/webhooks/585024945478696961/WuI0J8wGk-GpOPeTayg0AGjL376DdYgo0LUEJjWgH3yz8HnIOvJp71fnrwjef91zYWSL'
 
 aest = pytz.timezone("Australia/Melbourne")
 releaseTimes = [aest.localize(datetime.datetime(2019, 8, 7, 12)) + datetime.timedelta(days=i) for i in range(10)]
@@ -39,7 +39,9 @@ def colourCube(request):
 			if rightPuzz.act in range(1,7):
 				coloured.append({'cubeletId':rightPuzz.cubelet1.cubeletId, 'cubeface':rightPuzz.cubelet1.cubeface, 'colour':rightPuzz.cubelet1.colour})
 
-	data={'coloured':coloured}
+	cubeMap = cubeTestRelease(releaseTimes)
+
+	data={'coloured':coloured, 'cubeMap':cubeMap}
 	return JsonResponse(data)
 
 @login_required
@@ -141,12 +143,15 @@ def solve(request, title):
 				team.teamPuzzles += 1
 				team.save()
 
-				webhook = DiscordWebhook(url=solveBotURL)
-				webhookTitle = '**{}** solved **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
-				webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
-				webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=47872)
-				webhook.add_embed(webhookEmbed)
-				webhook.execute()
+				try:
+					webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+					webhookTitle = '**{}** solved **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
+					webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+					webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=47872)
+					webhook.add_embed(webhookEmbed)
+					webhook.execute()
+				except:
+					pass
 
 				return redirect('/solve/{}/'.format(title))
 
@@ -170,12 +175,15 @@ def solve(request, title):
 					displayDouble = True
 					displayGuess = guess
 
-				webhook = DiscordWebhook(url=solveBotURL)
-				webhookTitle = '**{}** incorrectly attempted **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
-				webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
-				webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=12255232)
-				webhook.add_embed(webhookEmbed)
-				webhook.execute()
+				try:
+					webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+					webhookTitle = '**{}** incorrectly attempted **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
+					webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+					webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=12255232)
+					webhook.add_embed(webhookEmbed)
+					webhook.execute()
+				except:
+					pass
 
 				solveform = SolveForm()
 
@@ -248,6 +256,9 @@ def teamReg(request):
 			newTeam.save()
 			newTeam.aussie = False
 			
+			recipient_list = [] if newTeam.teamEmail == '' else [newTeam.teamEmail]
+			indivNo = 0
+
 			for indivForm in indivFormSet:
 				if indivForm.cleaned_data.get('name') == None:
 					continue
@@ -261,8 +272,40 @@ def teamReg(request):
 				if newIndiv.aussie:
 					newTeam.aussie = True
 
+				recipient_list.append(newIndiv.email)
+				indivNo += 1
+
 			newTeam.save()
-			return redirect('/')
+
+			try:
+				msg_username = 'Username: ' + username + '\n'
+				msg_name = 'Team name: ' + newTeam.teamName + '\n\n'
+			
+				# message = 'Thank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
+				# subject = '[PH2019] Team registered'
+				# email_from = settings.EMAIL_HOST_USER
+				# send_mail( subject, message, email_from, recipient_list )
+
+			
+				message = 'Subject: [PH2019] Team registered\n\nThank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
+				context = ssl.create_default_context()
+				with smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT, context=context) as emailServer:
+					emailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+					emailServer.sendmail(settings.EMAIL_HOST_USER, recipient_list, message)
+			except:
+				pass
+
+			try:
+				webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+				webhookTitle = 'New team: **{}**'.format(newTeam.teamName)
+				webhookDesc = 'Members: {}\nAustralian: {}'.format(str(indivNo), 'Yes' if newTeam.aussie else 'No')
+				webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=16233769)
+				webhook.add_embed(webhookEmbed)
+				webhook.execute()
+			except:
+				pass
+
+			return redirect('/team/{}'.format(str(newTeam.id)))
 	
 	else:
 		userForm = UserCreationForm()

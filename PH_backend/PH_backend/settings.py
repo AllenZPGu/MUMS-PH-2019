@@ -1,6 +1,7 @@
 import os
 import django_heroku
 import dj_database_url
+import smtplib, ssl
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -12,11 +13,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ag9d18mr6#u@^00@_xs$mnpw6)mf%cdsa&2hs7#wfq0--%-$t&'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -42,27 +39,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
-# #deployment checks
-SECURE_SSL_REDIRECT = True
-
-SESSION_COOKIE_SECURE = True
-
-SECURE_BROWSER_XSS_FILTER = True
-
-SECURE_CONTENT_TYPE_NOSNIFF = True
-
-X_FRAME_OPTIONS = 'DENY'
-
-SECURE_HSTS_SECONDS = 10  
-
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-
-SECURE_HSTS_PRELOAD = True
-
-
-
-
 ROOT_URLCONF = 'PH_backend.urls'
 
 TEMPLATES = [
@@ -83,6 +59,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'PH_backend.wsgi.application'
 
+
+###### THE FOLLOWING STUFF NEED TO BE CHANGED ON DEPLOYMENT!!!!!!!!!!
+
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+#########################deployment checks
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_HSTS_SECONDS = 10  
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -127,6 +119,14 @@ DATABASES = {
         'PORT': '5432',
     },
 }
+
+
+
+
+
+
+
+
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
@@ -179,3 +179,13 @@ STATICFILES_DIRS = [
 CSRF_USE_SESSIONS = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+#auto email stuff
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_SSL = True
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'mumspuzzlehunt2019@gmail.com'
+EMAIL_HOST_PASSWORD = '420blazer'
+
+SOLVE_BOT_URL = 'https://discordapp.com/api/webhooks/585024945478696961/WuI0J8wGk-GpOPeTayg0AGjL376DdYgo0LUEJjWgH3yz8HnIOvJp71fnrwjef91zYWSL'
