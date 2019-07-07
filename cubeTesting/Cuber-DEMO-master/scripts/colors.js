@@ -107,5 +107,5 @@ COLORLESS = new Color(
 	'color: #DDD'
 )
 
-
+var COLORMAP = {'W': W, 'O': O, 'B': B, 'R': R, 'G': G, 'Y': Y, 'A': A, 'P': P, '': COLORLESS}
 

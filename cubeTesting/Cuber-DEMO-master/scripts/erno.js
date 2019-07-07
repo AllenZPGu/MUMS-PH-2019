@@ -182,7 +182,6 @@ var erno = {
 				s += '\n  cube.front.northWest.up.color.name'
 				s += '\n  cube.standing.setOpacity( 0.5 )'
 				s += '\n  cube.corners.setRadius( 90 )'
-				s += '\n  cube.hasColors( RED, BLUE ).showIds()'
 				s += '\n  cube.solve()'
 				s += '\n\nType "help" to view this message again.'
 				return s + '\n'
@@ -217,6 +216,7 @@ var erno = {
 			//  (Update: that's not entirely true...)
 
 			window.cube = new Cube( hash )
+
 
 			//  Let's enable our Cube Control keyboard commands.
 
