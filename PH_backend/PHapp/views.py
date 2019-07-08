@@ -60,7 +60,6 @@ def puzzles(request):
 	puzzleList = sorted(puzzleList, key=lambda x:x[0].id)
 
 	nextRelease = calcNextRelease(releaseTimes)
-	print(nextRelease)
 
 	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList, 'nextRelease':nextRelease})
 

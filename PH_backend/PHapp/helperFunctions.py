@@ -148,7 +148,6 @@ def cubeTestRelease(releaseTimes):
 
 	for i in range(len(textMap)):
 		for j in range(stage, 6):
-			print(i,j)
 			textMap[i][j] = ''
 
 	return textMap
