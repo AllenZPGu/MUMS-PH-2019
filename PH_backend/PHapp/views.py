@@ -1,3 +1,4 @@
+from django import forms
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -7,7 +8,7 @@ from django.contrib.auth.models import User
 from django.forms import formset_factory, ValidationError
 from django.core.mail import send_mail
 from .models import Puzzles, Teams, SubmittedGuesses, Individuals, AltAnswers
-from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginForm
+from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginForm, BaseIndivRegFormSet
 from django.conf import settings
 import json
 import datetime
@@ -286,7 +287,7 @@ def teamReg(request):
 				# send_mail( subject, message, email_from, recipient_list )
 
 			
-				message = 'Subject: [PH2019] Team registered\n\nThank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
+				message = 'Subject: [MPH 2019] Team registered\n\nThank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
 				context = ssl.create_default_context()
 				with smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT, context=context) as emailServer:
 					emailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
@@ -297,7 +298,7 @@ def teamReg(request):
 			try:
 				webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
 				webhookTitle = 'New team: **{}**'.format(newTeam.teamName)
-				webhookDesc = 'Members: {}\nAustralian: {}'.format(str(indivNo), 'Yes' if newTeam.aussie else 'No')
+				webhookDesc = 'Usename: {}\nMembers: {}\nAustralian: {}'.format(username, str(indivNo), 'Yes' if newTeam.aussie else 'No')
 				webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=16233769)
 				webhook.add_embed(webhookEmbed)
 				webhook.execute()
@@ -312,6 +313,42 @@ def teamReg(request):
 		indivFormSet = IndivRegFormSet()
 	return render(request, 'PHapp/teamReg.html', {'userForm':userForm, 'regForm':regForm, 'indivFormSet':indivFormSet})
 
+
+@login_required
+def editTeamMembers(request):
+	team = Teams.objects.get(authClone = request.user)
+	existing = len(Individuals.objects.filter(team=team))
+	if existing >= 10:
+		return render(request, 'PHapp/editTeam.html', {'canEdit':False, 'team':team})
+
+	EditFormSet = forms.formset_factory(IndivRegForm, formset=BaseIndivRegFormSet, extra=10-existing)
+
+	if request.method == 'POST':
+		indivFormSet = EditFormSet(request.POST)
+
+		if indivFormSet.is_valid():
+			for indivForm in indivFormSet:
+				if indivForm.cleaned_data.get('name') == None:
+					continue
+				newIndiv = Individuals()
+				newIndiv.name = indivForm.cleaned_data.get('name')
+				newIndiv.email = indivForm.cleaned_data.get('email')
+				newIndiv.aussie = indivForm.cleaned_data.get('aussie')
+				newIndiv.melb = indivForm.cleaned_data.get('melb')
+				newIndiv.team = team
+				newIndiv.save()
+				if newIndiv.aussie:
+					team.aussie = True
+
+			team.save()
+
+			return redirect('/team/{}'.format(str(team.id)))
+	
+	else:
+		indivFormSet = EditFormSet()
+	return render(request, 'PHapp/editTeam.html', {'canEdit':True, 'indivFormSet':indivFormSet, 'team':team, 'extra':10-existing})
+
+
 def teamInfo(request, teamId):
 	team = Teams.objects.get(id=teamId)
 	membersList = sorted([i for i in Individuals.objects.filter(team=team)], key=lambda x:x.name)
@@ -319,7 +356,7 @@ def teamInfo(request, teamId):
 	correctList = sorted(correctList, key=lambda x:x[0].submitTime)
 	anySolves = True if len(correctList) > 0 else False
 	avSolveTime = "{:02d}h {:02d}m {:02d}s".format(team.avHr, team.avMin, team.avSec) if anySolves else 'N/A'
-	return render(request, 'PHapp/teamInfo.html', {'team':team, 'members':membersList, 'correctList':correctList, 'anySolves':anySolves, 'avSolveTime':avSolveTime})
+	return render(request, 'PHapp/teamInfo.html', {'team':team, 'members':membersList, 'donation':str(len(membersList)*2),'correctList':correctList, 'anySolves':anySolves, 'avSolveTime':avSolveTime})
 
 @login_required
 def hints(request, title):

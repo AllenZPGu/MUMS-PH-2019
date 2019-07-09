@@ -1,0 +1,66 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+<h2>Add team members to {{team.teamName}}</h2>
+
+{% if canEdit %}
+	<div>
+		<form method="post">
+			<div class="form-group">
+				{% csrf_token %}
+				{{ indivFormSet.management_form }}
+
+				{% if indivFormSet.non_form_errors %}
+					<div class="alert alert-danger" role="alert">
+						{{ indivFormSet.non_form_errors }}
+					</div>
+				{% endif %}
+				<h6>Please enter details for up to {{extra}} team members. Unused fields may be left blank. Please note that names will be publicly displayed, but email addresses and residency/student statuses will be confidential.</h6>			
+				<div class="form-row">
+					<div class="col">Name</div>
+					<div class="col">Email</div>
+					<div class="col col-md-2">Australian resident</div>
+					<div class="col col-md-2">Current University of Melbourne student</div>
+				</div>
+
+				<div id="indivRegForm">
+				</div>
+
+				{% for memberForm in indivFormSet.forms %}
+					<div class="form-row formset_row">
+						<div class="col">
+							{{ memberForm.name|as_crispy_field }}
+						</div>
+						<div class="col">
+							{{ memberForm.email|as_crispy_field }}
+						</div>
+						<div class="col col-md-2">
+							{{ memberForm.aussie|as_crispy_field }}
+						</div>
+						<div class="col col-md-2">
+							{{ memberForm.melb|as_crispy_field }}
+						</div>
+					</div>
+				{% endfor %}
+
+				<script src="{% static 'PHapp/js/registration.js'%}"></script>
+
+				<br>
+				<button type="submit" class="btn btn-success btn-block">Submit</button>
+			</div>
+		</form>
+		
+	</div>
+	</div>
+	</div>
+{% else %}
+	<div class="alert alert-danger" role="alert">
+		Your team already has 10 registered members.
+	</div>
+{% endif %}
+
+{% endblock %}

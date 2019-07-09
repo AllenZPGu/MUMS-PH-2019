@@ -18,6 +18,7 @@ urlpatterns = [
 	path('registration/', views.teamReg),
 	path('teams/', views.teams),
 	path('team/<int:teamId>/', views.teamInfo),
+	path('teamEdit/', views.editTeamMembers),
 	path('faq/', views.faq),
 	path('rules/', views.rules),
 	path('login/', views.loginCustom),
