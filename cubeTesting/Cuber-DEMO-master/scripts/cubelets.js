@@ -204,7 +204,7 @@ function Cubelet( cube, id, data ){
 
 	var extrovertedFaces = 0
 	if( colors === undefined ) colors = [ W, O,  ,  , G, ]
-	this.faces = []
+	this.faces = [];
 
 
 	//  Now let's map one color per side based on colors[].
@@ -212,7 +212,7 @@ function Cubelet( cube, id, data ){
 	//  We need to loop through the colors[] Array "manually"
 	//  because Array.forEach() would skip the undefined entries.
 
-	for( var i = 0; i < 6; i ++ ){
+	([0,1,2,3,4,5]).forEach(i => {
 
 
 		//  Before we create our face's THREE object
@@ -375,7 +375,7 @@ function Cubelet( cube, id, data ){
 				//console.log(' ' )
 			}
 		}
-	}
+	})
 
 
 	//  Now that we've run through our colors[] Array

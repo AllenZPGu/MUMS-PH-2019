@@ -72,9 +72,9 @@ G = GREEN = new Color(
 
 	'green',
 	'G',
-	'#0A0',
-	'font-weight: bold; color: #0A0',
-	'background-color: #0A0; color: rgba( 255, 255, 255, 0.9 )'
+	'#33CC33',
+	'font-weight: bold; color: #33CC33',
+	'background-color: #33CC33; color: rgba( 255, 255, 255, 0.9 )'
 ),
 Y = YELLOW = new Color(
 
