@@ -64,41 +64,41 @@ WSGI_APPLICATION = 'PH_backend.wsgi.application'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 #########################deployment checks
-# SECURE_SSL_REDIRECT = True
-# SESSION_COOKIE_SECURE = True
-# SECURE_BROWSER_XSS_FILTER = True
-# SECURE_CONTENT_TYPE_NOSNIFF = True
-# X_FRAME_OPTIONS = 'DENY'
-# SECURE_HSTS_SECONDS = 10  
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# SECURE_HSTS_PRELOAD = True
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_HSTS_SECONDS = 10  
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
     #development server
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd8na88rhs2t5r4',
-        'USER': 'ttmvgtyolplhwc',
-        'PASSWORD': 'f9ce4469fd0ea78794ad32d909285180e91e929044510f2742d5e9d0fc7b5184',
-        'HOST': 'ec2-50-19-249-121.compute-1.amazonaws.com',
-        'PORT': '5432',
-    },
-
-    #live server
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'd5ifh5ejt8k1ua',
-    #     'USER': 'wrzxfbzdnebchw',
-    #     'PASSWORD': 'f97d2a161123c415c5eef52c1a76009c7584847a3d80cb4efb0558de71f94ffa',
-    #     'HOST': 'ec2-75-101-147-226.compute-1.amazonaws.com',
+    #     'NAME': 'd8na88rhs2t5r4',
+    #     'USER': 'ttmvgtyolplhwc',
+    #     'PASSWORD': 'f9ce4469fd0ea78794ad32d909285180e91e929044510f2742d5e9d0fc7b5184',
+    #     'HOST': 'ec2-50-19-249-121.compute-1.amazonaws.com',
     #     'PORT': '5432',
     # },
+
+    #live server
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd5ifh5ejt8k1ua',
+        'USER': 'wrzxfbzdnebchw',
+        'PASSWORD': 'f97d2a161123c415c5eef52c1a76009c7584847a3d80cb4efb0558de71f94ffa',
+        'HOST': 'ec2-75-101-147-226.compute-1.amazonaws.com',
+        'PORT': '5432',
+    },
 
     'development': {
         'ENGINE': 'django.db.backends.postgresql',
