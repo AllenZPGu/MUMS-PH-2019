@@ -126,7 +126,7 @@ table, td, tr {
 	font-size:    60px;
 	line-height: 420px;
 	text-align: center;	
-	font-family: "RubikExtended";
+	font-family: sans-serif;
 	text-shadow: 0 0 24px rgba( 0, 0, 0, 0.3 );
 	color: #FFF;
 }
@@ -289,9 +289,7 @@ table, td, tr {
 }
 .stickerLogo {
 
-/*	background-image: url( "../media/rubiksLogoClassic.png" );	
-	background-size: 120px 120px;
-	background-repeat: none;*/
+
 }
 
 
