@@ -91,7 +91,7 @@ def cubeDataLastModified(request):
 		# hunt is over; check that this time is kosher
 		return RELEASETIMES[-1]
 	# Default case
-	return AEST.localize(datetime.datetime(2019, 7, 9))
+	return AEST.localize(datetime.datetime(2020, 7, 9))
 		
 @last_modified(cubeDataLastModified)
 def cubeData(request):
