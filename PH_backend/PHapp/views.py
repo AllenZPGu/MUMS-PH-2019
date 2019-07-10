@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.http import JsonResponse, FileResponse, Http404
+from django.http import JsonResponse, FileResponse, Http404, HttpResponse
 from django.contrib.auth.models import User
 from django.forms import formset_factory, ValidationError
 from django.core.mail import send_mail
@@ -27,8 +27,11 @@ def index(request):
 	huntOver = False if releaseStage(releaseTimes) < len(releaseTimes) else True
 	return render(request, 'PHapp/home.html', {'huntOver':huntOver})
 
-def colourCube(request):
-	huntOver = False if releaseStage(releaseTimes) < len(releaseTimes) else True
+def cubeData(request):
+	data="window.rawcubedata=[{'colors':['R','G',,,'B',],'text':['1','','','','','',],'links':['hello_world.html','','','','','',]},{'colors':['A','A',,,,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':['R','G','B',,,],'text':['II','IV','I','','',],'links':['a','b','c','d','e','f',]},{'colors':['A',,,,'A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':['A',,,,,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':['A',,'A',,,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':['R',,,'G','B',],'text':['1','','','2','3','',],'links':['a','','','d','b','c',]},{'colors':['A',,,'A',,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':['R',,'G','B',,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,'A',,,'A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,'A',,,,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,'A','A',,,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,,,'A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,,,,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,'A',,,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,,'A','A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,,'A',,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,'A','A',,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,'R',,,'G','B',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,'A',,,,'A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,'R','G',,,'B',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,,,'A','A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,,,,'A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,'A',,,'A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,,'R','G','B',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,,'A',,'A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,'R','G',,'B',],'text':['','','','','','',],'links':['','','','','','',]},]"
+	return HttpResponse(content=data, content_type='application/javascript')
+
+	'''huntOver = False if releaseStage(releaseTimes) < len(releaseTimes) else True
 	coloured = []
 	if request.user.is_authenticated or huntOver:
 		if huntOver:
@@ -43,7 +46,7 @@ def colourCube(request):
 	cubeMap = cubeTestRelease(releaseTimes)
 
 	data={'coloured':coloured, 'cubeMap':cubeMap}
-	return JsonResponse(data)
+	return JsonResponse(data)'''
 
 @login_required
 def puzzles(request):

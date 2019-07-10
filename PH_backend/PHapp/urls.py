@@ -24,6 +24,6 @@ urlpatterns = [
 	path('login/', views.loginCustom),
 	path('logout/', views.logoutCustom),
 	path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type='text/plain')),
-	path('ajax/colourCube/', views.colourCube),
+	path('dynamic/cubedata.js', views.cubeData),
 	path('debrief/', views.debrief),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
