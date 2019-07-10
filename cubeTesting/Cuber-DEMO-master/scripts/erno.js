@@ -342,7 +342,7 @@ function setupThree(){
 
 	//  Readjust on window resize.
 
-	document.getElementById('body').addEventListener( 'resize', onWindowResize, false )
+	document.getElementById('outer-container').addEventListener( 'resize', onWindowResize, false )
 }
 function setupControls(){
 
