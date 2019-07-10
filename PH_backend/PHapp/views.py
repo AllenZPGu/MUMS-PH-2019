@@ -96,9 +96,7 @@ def cubeDataLastModified(request):
 @last_modified(cubeDataLastModified)
 def cubeData(request):
 	huntOver = (releaseStage(RELEASETIMES) > len(RELEASETIMES))
-	responseData = []
-	for i in range(27):
-		responseData += {'colors': PUZZLECOLOURSBLANK[i], 'text': ['']*6, 'links': ['']*6}
+	responseData = [{'colors': PUZZLECOLOURSBLANK[i], 'text': ['']*6, 'links': ['']*6} for i in range(27)]
 	if request.user.is_authenticated:
 		puzzlesRight = [i.puzzle for i in SubmittedGuesses.objects.filter(team=request.user, correct=True)]
 
