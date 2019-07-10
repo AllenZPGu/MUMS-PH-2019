@@ -7,6 +7,7 @@ from django.http import JsonResponse, FileResponse, Http404, HttpResponse
 from django.contrib.auth.models import User
 from django.forms import formset_factory, ValidationError
 from django.core.mail import send_mail
+from django.views.decorators.http import last_modified
 from .models import Puzzles, Teams, SubmittedGuesses, Individuals, AltAnswers
 from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginForm, BaseIndivRegFormSet
 from django.conf import settings
@@ -19,51 +20,151 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 import smtplib, ssl
 from .helperFunctions import *
 
-aest = pytz.timezone("Australia/Melbourne")
-releaseTimes = [aest.localize(datetime.datetime(2019, 8, 7, 12)) + datetime.timedelta(days=i) for i in range(10)]
+AEST = pytz.timezone("Australia/Melbourne")
+RELEASETIMES = [AEST.localize(datetime.datetime(2019, 8, 7, 12)) + datetime.timedelta(days=i) for i in range(10)]
+PUZZLECOLOURS = [
+	['W','O','','','G','',], ['O','W','','','','',], ['W','O','B','','','',],
+	['Y','','','','O','',],  ['R','','','','','',],  ['G','','O','','','',],
+	['B','','','Y','R','',], ['G','','','Y','','',], ['W','','R','G','','',],
+	['','W','','','B','',],  ['','B','','','','',],  ['','B','R','','','',],
+	['','','','','W','',],   ['','','','','','',],   ['','','Y','','','',],
+	['','','','R','Y','',],  ['','','','G','','',],  ['','','B','O','','',],
+	['','Y','','','O','G',], ['','G','','','','R',], ['','W','R','','','B',],
+	['','','','','G','W',],  ['','','','','','O',],  ['','','W','','','R',],
+	['','','','O','B','Y',], ['','','','B','','Y',], ['','','Y','R','','G',],
+]
+PUZZLECOLOURSBLANK = [
+	['A','A','','','A','',], ['A','A','','','','',], ['A','A','A','','','',],
+	['A','','','','A','',],  ['A','','','','','',],  ['A','','A','','','',],
+	['A','','','A','A','',], ['A','','','A','','',], ['A','','A','A','','',],
+	['','A','','','A','',],  ['','A','','','','',],  ['','A','A','','','',],
+	['','','','','A','',],   ['','','','','','',],   ['','','A','','','',],
+	['','','','A','A','',],  ['','','','A','','',],  ['','','A','A','','',],
+	['','A','','','A','A',], ['','A','','','','A',], ['','A','A','','','A',],
+	['','','','','A','A',],  ['','','','','','A',],  ['','','A','','','A',],
+	['','','','A','A','A',], ['','','','A','','A',], ['','','A','A','','A',],
+]
+PUZZLETEXTS = [
+	['1','3','','','2','',], ['','','','','','',],   ['2','4','1','','','',],
+	['','','','','','',],    ['I','','','','','',],  ['','','','','','',],
+	['3','','','1','4','',], ['','','','','','',],   ['4','','3','2','','',],
+	['','','','','','',],    ['','V','','','','',],  ['','','','','','',],
+	['','','','','VI',''],   ['','','','','','',],   ['','','III','','','',],
+	['','','','','','',],    ['','','','IV','','',], ['','','','','','',],
+	['','1','','','1','2',], ['','','','','','',],   ['','2','2','','','1',],
+	['','','','','','',],    ['','','','','','II',], ['','','','','','',],
+	['','','','3','3','4',], ['','','','','','',],   ['','','4','4','','2',],
+]
+
 #releaseTimes = [aest.localize(datetime.datetime(2019, 6, 24, 12)) + datetime.timedelta(days=i) for i in range(10)]
 
 def index(request):
-	huntOver = False if releaseStage(releaseTimes) < len(releaseTimes) else True
+	huntOver = (releaseStage(RELEASETIMES) > len(RELEASETIMES))
 	return render(request, 'PHapp/home.html', {'huntOver':huntOver})
 
-def cubeData(request):
-	data="window.rawcubedata=[{'colors':['R','G',,,'B',],'text':['1','','','','','',],'links':['hello_world.html','','','','','',]},{'colors':['A','A',,,,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':['R','G','B',,,],'text':['II','IV','I','','',],'links':['a','b','c','d','e','f',]},{'colors':['A',,,,'A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':['A',,,,,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':['A',,'A',,,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':['R',,,'G','B',],'text':['1','','','2','3','',],'links':['a','','','d','b','c',]},{'colors':['A',,,'A',,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':['R',,'G','B',,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,'A',,,'A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,'A',,,,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,'A','A',,,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,,,'A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,,,,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,'A',,,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,,'A','A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,,'A',,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,'A','A',,],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,'R',,,'G','B',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,'A',,,,'A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,'R','G',,,'B',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,,,'A','A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,,,,'A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,'A',,,'A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,,'R','G','B',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,,'A',,'A',],'text':['','','','','','',],'links':['','','','','','',]},{'colors':[,,'R','G',,'B',],'text':['','','','','','',],'links':['','','','','','',]},]"
-	return HttpResponse(content=data, content_type='application/javascript')
+def IsMeta(puzzle):
+	return (puzzle.act == 7)
 
-	'''huntOver = False if releaseStage(releaseTimes) < len(releaseTimes) else True
-	coloured = []
-	if request.user.is_authenticated or huntOver:
-		if huntOver:
-			puzzlesRight = [i for i in Puzzles.objects.all()]
-		else:
-			puzzlesRight = [i.puzzle for i in SubmittedGuesses.objects.filter(team=request.user, correct=True)]
+def IsMetaOrMiniMeta(puzzle):
+	return (IsMeta(puzzle) or puzzle.scene == 5)
+
+def cubeDataColourCell(puzzle):
+	if IsMeta(puzzle):
+		return None
+	return ((),
+			((),  (0, 0),  (2, 0),  (6, 0),  (8, 0),  (4, 0)),
+			((), (20, 5), (18, 5), (26, 5), (24, 5), (22, 5)),
+			((),  (2, 2), (20, 2),  (8, 2), (26, 2), (14, 2)),
+			((),  (6, 3),  (8, 3), (24, 3), (26, 3), (16, 3)),
+			((), (18, 1), (20, 1),  (0, 1),  (2, 1), (10, 1)),
+			((), (18, 4),  (0, 4), (24, 4),  (6, 4), (12, 4)))[puzzle.act][puzzle.scene]
+
+
+def cubeDataLastModified(request):
+	
+	# TODO: test this
+	if request.user.is_authenticated:
+		guesses = SubmittedGuesses.objects.filter(team=request.user).filter(correct=True)
+		if guesses: 
+			return guesses.latest.submitTime
+	elif releaseStage(RELEASETIMES) > len(RELEASETIMES):
+		# hunt is over; check that this time is kosher
+		return RELEASETIMES[-1]
+	# Default case
+	return AEST.localize(datetime.datetime(2019, 7, 9))
 		
+@last_modified(cubeDataLastModified)
+def cubeData(request):
+	huntOver = (releaseStage(RELEASETIMES) > len(RELEASETIMES))
+	responseData = []
+	for i in range(27):
+		responseData += {'colors': PUZZLECOLOURSBLANK[i], 'text': ['']*6, 'links': ['']*6}
+	if request.user.is_authenticated:
+		puzzlesRight = [i.puzzle for i in SubmittedGuesses.objects.filter(team=request.user, correct=True)]
+
+		metascomplete = [False] * 8
+
+		# colour the response
 		for rightPuzz in puzzlesRight:
-			if rightPuzz.act in range(1,7):
-				coloured.append({'cubeletId':rightPuzz.cubelet1.cubeletId, 'cubeface':rightPuzz.cubelet1.cubeface, 'colour':rightPuzz.cubelet1.colour})
+			if IsMetaOrMiniMeta(puzzle):
+				metascomplete[puzzle.scene] = True
+			if not IsMeta(puzzle):
+				colourcell = cubeDataColourCell(puzzle)
+				if colourcell:
+					responseData[colourcell[0]]['colors'][colourcell[1]] = PUZZLECOLOURS[colourcell[0]][colourcell[1]]
+		if metascomplete[7]:
+			# Meta 1 is done (and maybe 2, but we'll check that now)
+			if puzzlesRight.filter(puzzle__act=7).filter(puzzle__scene=2):
+				# Meta 2 is done; set up to colour the whole cube
+				metascomplete = [True] * 8
+			if metascomplete[1]:
+				for i in range(9):
+					responseData[i]['colors'][0] = PUZZLECOLOURS[i][0]
+			if metascomplete[2]:
+				for i in range(18, 27):
+					responseData[i]['colors'][5] = PUZZLECOLOURS[i][5]
+			if metascomplete[3]:
+				for i in range(2, 27, 3):
+					responseData[i]['colors'][2] = PUZZLECOLOURS[i][2]
+			if metascomplete[4]:
+				for i in range(6,9):
+					for j in range(3):
+						k = i + 9*j
+						responseData[k]['colors'][3] = PUZZLECOLOURS[k][3]
+			if metascomplete[5]:
+				for i in range(3):
+					for j in range(3):
+						k = i + 9*j
+						responseData[k]['colors'][1] = PUZZLECOLOURS[k][1]
+			if metascomplete[6]:
+				for i in range(0, 25, 3):
+					responseData[i]['colors'][4] = PUZZLECOLOURS[i][4]
+	availablePuzzles = Puzzles.objects.filter(releaseStage__lte = releaseStage(RELEASETIMES))
+	for puzzle in availablePuzzles:
+		if not IsMeta(puzzle):
+			colourcell = cubeDataColourCell(puzzle)
+			responseData[colourcell[0]]['links'][colourcell[1]] = puzzle.pdfPath
+			responseData[colourcell[0]]['text'][colourcell[1]] = PUZZLETEXTS[colourcell[0]][colourcell[1]]
 
-	cubeMap = cubeTestRelease(releaseTimes)
-
-	data={'coloured':coloured, 'cubeMap':cubeMap}
-	return JsonResponse(data)'''
+	return HttpResponse(json.dumps(responseData,separators=(',', ':')), content_type='application/javascript')
 
 @login_required
 def puzzles(request):
 	puzzleList = []
-	for puzzle in Puzzles.objects.filter(releaseStatus__lte = releaseStage(releaseTimes)):
+	for puzzle in Puzzles.objects.filter(releaseStatus__lte = releaseStage(RELEASETIMES)):
 		allGuesses = [i.correct for i in SubmittedGuesses.objects.filter(puzzle=puzzle)]
 
 		guesses = SubmittedGuesses.objects.filter(puzzle=puzzle, team=request.user)
 
 		if True not in [i.correct for i in guesses]:
-			puzzleList.append([puzzle, False, sum(allGuesses), len(allGuesses)-sum(allGuesses), calcWorth(puzzle, releaseTimes)])
+			puzzleList.append([puzzle, False, sum(allGuesses), len(allGuesses)-sum(allGuesses), calcWorth(puzzle, RELEASETIMES)])
 		else:
 			correctGuess = guesses.filter(correct = True)[0]
 			puzzleList.append([puzzle, True, sum(allGuesses), len(allGuesses)-sum(allGuesses), correctGuess.pointsAwarded])
 	puzzleList = sorted(puzzleList, key=lambda x:x[0].id)
 
-	nextRelease = calcNextRelease(releaseTimes)
+	nextRelease = calcNextRelease(RELEASETIMES)
+	print(nextRelease)
 
 	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList, 'nextRelease':nextRelease})
 
@@ -73,25 +174,24 @@ def puzzleInfo(request, title):
 		puzzle = Puzzles.objects.get(pdfPath=title)
 	except:
 		raise Http404()
-	if releaseStage(releaseTimes) < puzzle.releaseStatus:
+	if releaseStage(RELEASETIMES) < puzzle.releaseStatus:
 		raise Http404()
 
 	allGuesses = SubmittedGuesses.objects.filter(puzzle=puzzle)
-	allSolves = sorted([[i, calcSingleTime(i, i.submitTime, releaseTimes)[0]] for i in allGuesses if i.correct], key=lambda x:x[0].submitTime)
+	allSolves = sorted([[i, calcSingleTime(i, i.submitTime, RELEASETIMES)[0]] for i in allGuesses if i.correct], key=lambda x:x[0].submitTime)
 	
 	totalRight = len(allSolves)
 	totalWrong = len(allGuesses) - totalRight
 
 	return render(request, 'PHapp/puzzleStats.html', 
-		{'puzzle':puzzle, 'allSolves':allSolves, 'totalWrong':totalWrong, 'totalRight':totalRight, 'avTime':calcPuzzleTime(puzzle, releaseTimes)[0]})
+		{'puzzle':puzzle, 'allSolves':allSolves, 'totalWrong':totalWrong, 'totalRight':totalRight, 'avTime':calcPuzzleTime(puzzle, RELEASETIMES)[0]})
 
-@login_required
 def showPuzzle(request, puzzleURL):
 	try:
 		puzzle = Puzzles.objects.get(pdfPath=puzzleURL.replace('.pdf', ''))
 	except:
 		raise Http404()
-	if releaseStage(releaseTimes) < puzzle.releaseStatus:
+	if releaseStage(RELEASETIMES) < puzzle.releaseStatus:
 		raise Http404()
 	try:
 		return FileResponse(open(os.path.join(settings.BASE_DIR, 'PHapp/puzzleFiles/', puzzleURL), 'rb'), content_type='application/pdf')
@@ -104,7 +204,7 @@ def solve(request, title):
 		puzzle = Puzzles.objects.get(pdfPath=title)
 	except:
 		raise Http404()
-	if releaseStage(releaseTimes) < puzzle.releaseStatus:
+	if releaseStage(RELEASETIMES) < puzzle.releaseStatus:
 		raise Http404()
 	
 	team = Teams.objects.get(authClone = request.user)
@@ -133,16 +233,16 @@ def solve(request, title):
 				newSubmit.team = request.user
 				newSubmit.puzzle = puzzle
 				newSubmit.guess = guess
-				newSubmit.submitTime = aest.localize(datetime.datetime.now())
+				newSubmit.submitTime = AEST.localize(datetime.datetime.now())
 				newSubmit.correct = True
-				newSubmit.pointsAwarded = calcWorth(puzzle, releaseTimes)
+				newSubmit.pointsAwarded = calcWorth(puzzle, RELEASETIMES)
 				newSubmit.save()
 
-				solveTime = calcSolveTime(team, releaseTimes)
+				solveTime = calcSolveTime(team, RELEASETIMES)
 				team.avHr = solveTime[1]
 				team.avMin = solveTime[2]
 				team.avSec = solveTime[3]
-				team.teamPoints += calcWorth(puzzle, releaseTimes)
+				team.teamPoints += calcWorth(puzzle, RELEASETIMES)
 				team.teamPuzzles += 1
 				team.save()
 
@@ -164,7 +264,7 @@ def solve(request, title):
 					newSubmit.team = request.user
 					newSubmit.puzzle = puzzle
 					newSubmit.guess = guess
-					newSubmit.submitTime = aest.localize(datetime.datetime.now())
+					newSubmit.submitTime = AEST.localize(datetime.datetime.now())
 					newSubmit.correct = False
 					newSubmit.save()
 					team.guesses -= 1
@@ -355,7 +455,7 @@ def editTeamMembers(request):
 def teamInfo(request, teamId):
 	team = Teams.objects.get(id=teamId)
 	membersList = sorted([i for i in Individuals.objects.filter(team=team)], key=lambda x:x.name)
-	correctList = [[i, calcSingleTime(i, i.submitTime, releaseTimes)[0], len(SubmittedGuesses.objects.filter(team=team.authClone, correct=False, puzzle=i.puzzle))] for i in SubmittedGuesses.objects.filter(team=team.authClone, correct=True)]
+	correctList = [[i, calcSingleTime(i, i.submitTime, RELEASETIMES)[0], len(SubmittedGuesses.objects.filter(team=team.authClone, correct=False, puzzle=i.puzzle))] for i in SubmittedGuesses.objects.filter(team=team.authClone, correct=True)]
 	correctList = sorted(correctList, key=lambda x:x[0].submitTime)
 	anySolves = True if len(correctList) > 0 else False
 	avSolveTime = "{:02d}h {:02d}m {:02d}s".format(team.avHr, team.avMin, team.avSec) if anySolves else 'N/A'
@@ -367,20 +467,20 @@ def hints(request, title):
 		puzzle = Puzzles.objects.get(pdfPath=title)
 	except:
 		raise Http404()
-	if releaseStage(releaseTimes) < puzzle.releaseStatus:
+	if releaseStage(RELEASETIMES) < puzzle.releaseStatus:
 		raise Http404()
 
 	toRender = []
 	anyHints = False
-	nextHint = releaseTimes[puzzle.releaseStatus]
-	if releaseStage(releaseTimes) - puzzle.releaseStatus >= 1:
+	nextHint = RELEASETIMES[puzzle.releaseStatus]
+	if releaseStage(RELEASETIMES) - puzzle.releaseStatus >= 1:
 		toRender.append([1, puzzle.hint1])
 		anyHints = True
-		nextHint = releaseTimes[puzzle.releaseStatus + 1]
-	if releaseStage(releaseTimes) - puzzle.releaseStatus >= 2:
+		nextHint = RELEASETIMES[puzzle.releaseStatus + 1]
+	if releaseStage(RELEASETIMES) - puzzle.releaseStatus >= 2:
 		toRender.append([2, puzzle.hint2])
-		nextHint = releaseTimes[puzzle.releaseStatus + 2]
-	if releaseStage(releaseTimes) - puzzle.releaseStatus >= 3:
+		nextHint = RELEASETIMES[puzzle.releaseStatus + 2]
+	if releaseStage(RELEASETIMES) - puzzle.releaseStatus >= 3:
 		toRender.append([3, puzzle.hint3])
 		nextHint = None
 	return render(request, 'PHapp/hints.html', {'toRender':toRender, 'anyHints':anyHints, 'nextHint':nextHint, 'puzzle':puzzle})
@@ -392,7 +492,7 @@ def rules(request):
 	return render(request, 'PHapp/rules.html')
 
 def debrief(request):
-	if not huntFinished(releaseTimes):
+	if not huntFinished(RELEASETIMES):
 		raise Http404()
 	else:
 		return render(request, 'PHapp/home.html')
