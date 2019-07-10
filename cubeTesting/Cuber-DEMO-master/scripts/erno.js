@@ -478,8 +478,8 @@ function loop(){
 		var state = erno.states[ erno.state ]
 		if( state instanceof Function ) state()
 	}
+	requestAnimationFrame(loop)
 }
-setInterval( loop, 16 )
 
 
 
