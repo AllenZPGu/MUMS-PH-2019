@@ -144,7 +144,7 @@ def cubeData(request):
 			responseData[colourcell[0]]['links'][colourcell[1]] = puzzle.pdfPath
 			responseData[colourcell[0]]['text'][colourcell[1]] = PUZZLETEXTS[colourcell[0]][colourcell[1]]
 
-	return HttpResponse(json.dumps(responseData,separators=(',', ':')), content_type='application/javascript')
+	return HttpResponse('window.rawcubedata=' + json.dumps(responseData,separators=(',', ':')), content_type='application/javascript')
 
 @login_required
 def puzzles(request):
