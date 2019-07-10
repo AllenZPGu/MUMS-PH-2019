@@ -139,7 +139,7 @@ def cubeData(request):
 			if metascomplete[6]:
 				for i in range(0, 25, 3):
 					responseData[i]['colors'][4] = PUZZLECOLOURS[i][4]
-	availablePuzzles = Puzzles.objects.filter(releaseStage__lte = releaseStage(RELEASETIMES))
+	availablePuzzles = Puzzles.objects.filter(releaseStatus__lte = releaseStage(RELEASETIMES))
 	for puzzle in availablePuzzles:
 		if not IsMeta(puzzle):
 			colourcell = cubeDataColourCell(puzzle)
