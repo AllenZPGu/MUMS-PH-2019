@@ -12,4 +12,8 @@ Implement cube colours, text and links
 - Fix text rotation
 
 **Todo**
-
+Remove requirement to login to view puzzles. Views to change:
+- puzzles
+- puzzleInfo
+- showPuzzle
+- hints
