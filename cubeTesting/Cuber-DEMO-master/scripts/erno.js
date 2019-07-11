@@ -472,10 +472,10 @@ function assessTrueFalseMixed( id, count ){
 
 function loop(){
 	
+	var state = erno.states[ erno.state ]
 	if( document.readyState === 'complete' ){
 
 		erno.stateFrames ++
-		var state = erno.states[ erno.state ]
 		if( state instanceof Function ) state()
 	}
 	requestAnimationFrame(loop)

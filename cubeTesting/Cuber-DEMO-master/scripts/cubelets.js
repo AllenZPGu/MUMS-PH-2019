@@ -332,6 +332,9 @@ function Cubelet( cube, id, data ){
 				let name = texts[i]
 				let textDiv = document.createElement( 'div' )
 				textDiv.classList.add( 'id' )
+				if (i >= 3) {
+					textDiv.classList.add( Direction.getNameById( i ) + 'Face')
+				}
 				let textElement = document.createElement('span')
 				textElement.innerText = name
 				this.faces[ i ].text = textElement

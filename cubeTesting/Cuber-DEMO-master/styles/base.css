@@ -312,7 +312,7 @@ table, td, tr {
 	font-size:   60px;
 	line-height: 135px;
 	text-align: center;
-	/*color: #000;*/
+	color: #000;
 	font-weight: bold;
 }
 .puzzlelink {
@@ -601,5 +601,15 @@ textarea#texts {
 	font-size: 24px;
 }
 
+.id.downFace {
+	transform: rotate(-90deg)
+}
 
+.id.leftFace {
+	transform: rotate(90deg)
+}
+
+.id.backFace {
+	transform: rotate(90deg)
+}
 
