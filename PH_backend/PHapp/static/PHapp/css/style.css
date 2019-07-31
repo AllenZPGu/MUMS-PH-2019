@@ -29,11 +29,12 @@ body {
 
 .link-nav {
 	text-decoration: none;
-	padding-right: 0.8rem;
-	padding-left: 0.8rem;
+	padding-right: 12px;
+	padding-left: 12px;
 	color: white;
 	font-weight: bold;
-	font-size: 1.2rem;
+	font-size: 18px;
+	white-space: nowrap;
 }
 
 .link-nav:hover {
