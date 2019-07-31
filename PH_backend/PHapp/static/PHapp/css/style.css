@@ -29,15 +29,16 @@ body {
 
 .link-nav {
 	text-decoration: none;
-	padding-right: 1.5rem;
-	padding-left: 1.5rem;
+	padding-right: 0.8rem;
+	padding-left: 0.8rem;
 	color: white;
 	font-weight: bold;
+	font-size: 1.2rem;
 }
 
 .link-nav:hover {
 	color: red;
-	text-decoration: none;
+	text-decoration: underline;
 }
 
 .outer-container {
