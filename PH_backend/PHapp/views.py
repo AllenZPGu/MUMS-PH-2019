@@ -84,6 +84,11 @@ def puzzleInfo(request, title):
 
 @login_required
 def showPuzzle(request, puzzleURL):
+	if puzzleURL == "Prologue.pdf":
+		try:
+			return FileResponse(open(os.path.join(settings.BASE_DIR, 'PHapp/puzzleFiles/', puzzleURL), 'rb'), content_type='application/pdf')
+		except FileNotFoundError:
+			raise Http404("PDF file not found at "+os.path.join(settings.BASE_DIR, 'PHapp/puzzleFiles/', puzzleURL))
 	try:
 		puzzle = Puzzles.objects.get(pdfPath=puzzleURL.replace('.pdf', ''))
 	except:
@@ -393,6 +398,9 @@ def debrief(request):
 		raise Http404()
 	else:
 		return render(request, 'PHapp/home.html')
+
+def announcements(request):
+	return render(request, 'PHapp/announcements.html')
 
 def loginCustom(request):
 	if request.user.is_authenticated:

@@ -26,19 +26,20 @@
 	<div class="navbar-container">
 		<div class="navbar-container-inner">
 			<nav class="main-nav">
-				<a class="link-nav" href="/"><img src="{% static 'PHapp/img/logoLightFont.png' %}" alt="MUMS Logo" style="width:50px;padding:5px">  MUMS Puzzle Hunt</a></li>
-				<a class="link-nav" href="/faq/">About / FAQ</a></li>
-				<a class="link-nav" href="/rules/">Rules</a></li>
-				<a class="link-nav" href="/puzzles/">Puzzles</a></li>
-				<a class="link-nav" href="/teams/">Teams</a></li>
-				<a class="link-nav" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3HUMG3RCWHH8N&item_name=MUMS+Puzzle+Hunt&currency_code=AUD&source=url">Donate</a></li>
+				<a class="link-nav" href="/"><img src="{% static 'PHapp/img/logoLightFont.png' %}" alt="MUMS Logo" style="width:50px;padding:5px">  MUMS Puzzle Hunt</a>
+				<a class="link-nav" href="/announcements/">Announcements</a>
+				<a class="link-nav" href="/faq/">About / FAQ</a>
+				<a class="link-nav" href="/rules/">Rules</a>
+				<a class="link-nav" href="/puzzles/">Puzzles</a>
+				<a class="link-nav" href="/teams/">Teams</a>
+				<a class="link-nav" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3HUMG3RCWHH8N&item_name=MUMS+Puzzle+Hunt&currency_code=AUD&source=url">Donate</a>
 
 				{% if user.is_authenticated %}
-					<a class="link-nav" style="color:yellow" href="/team/{{user.teams_set.all.0.id}}/">{{user.teams_set.all.0.teamName}}</a></li>
-					<a class="link-nav" href="/logout/">Logout</a></li>
+					<a class="link-nav" style="color:yellow" href="/team/{{user.teams_set.all.0.id}}/">{{user.teams_set.all.0.teamName}}</a>
+					<a class="link-nav" href="/logout/">Logout</a>
 				{% else %}
-				<a class="link-nav" href="/registration/">Registration</a></li>
-					<a class="link-nav" href="/login/">Login</a></li>
+					<a class="link-nav" href="/registration/">Registration</a>
+					<a class="link-nav" href="/login/">Login</a>
 				{% endif %}
 
 			</nav>

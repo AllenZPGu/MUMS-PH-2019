@@ -26,4 +26,5 @@ urlpatterns = [
 	path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type='text/plain')),
 	path('ajax/colourCube/', views.colourCube),
 	path('debrief/', views.debrief),
+	path('announcements/', views.announcements)
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -4,18 +4,26 @@
 {% block content %}
 <div class="outer-container">
 <div class="inner-container">
-	{% if nextRelease.0 != 0 %}
-		<table class="table table-bordered">
-			<thead>
-				<tr>
-					<td></td>
-					<td>Puzzle</td>
-					<td>Points</td>
-					<td>Solve / Solution</td>
-					<td>Hints</td>
-					<td>Solves / Incorrect guesses</td>
-				</tr>
-			<tbody>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<td></td>
+				<td>Puzzle</td>
+				<td>Points</td>
+				<td>Solve</td>
+				<td>Hints</td>
+				<td>Solves / Incorrect guesses</td>
+			</tr>
+		<tbody>
+			<tr>
+				<td>Prologue</td>
+				<td><a href='/puzzle/Prologue.pdf'>Prologue</a></td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+			</tr>
+			{% if nextRelease.0 != 0 %}
 				{% for puzzle, solved, correct, incorrect, worth in puzzleList %}
 					<tr>
 						<td>Act {{puzzle.act}}, Scene {{puzzle.scene}}</td>
@@ -34,9 +42,9 @@
 						<td><a href='/puzzlestats/{{puzzle.pdfPath}}'>{{correct}}/{{incorrect}}</a></td>
 					</tr>
 				{% endfor %}
-			</tbody>
-		</table>
-	{% endif %}
+			{% endif %}
+		</tbody>
+	</table>
 
 	{% if nextRelease.0 == 0 %}
 		<h4>Puzzles will be released in {{nextRelease.1}}.</h4>
