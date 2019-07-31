@@ -352,7 +352,10 @@ def editTeamMembers(request):
 
 
 def teamInfo(request, teamId):
-	team = Teams.objects.get(id=teamId)
+	try:
+		team = Teams.objects.get(id=teamId)
+	except:
+		raise Http404()
 	membersList = sorted([i for i in Individuals.objects.filter(team=team)], key=lambda x:x.name)
 	correctList = [[i, calcSingleTime(i, i.submitTime, releaseTimes)[0], len(SubmittedGuesses.objects.filter(team=team.authClone, correct=False, puzzle=i.puzzle))] for i in SubmittedGuesses.objects.filter(team=team.authClone, correct=True)]
 	correctList = sorted(correctList, key=lambda x:x[0].submitTime)
