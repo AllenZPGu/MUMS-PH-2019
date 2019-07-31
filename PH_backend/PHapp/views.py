@@ -45,7 +45,6 @@ def colourCube(request):
 	data={'coloured':coloured, 'cubeMap':cubeMap}
 	return JsonResponse(data)
 
-@login_required
 def puzzles(request):
 	puzzleList = []
 	for puzzle in Puzzles.objects.filter(releaseStatus__lte = releaseStage(releaseTimes)):
@@ -64,7 +63,6 @@ def puzzles(request):
 
 	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList, 'nextRelease':nextRelease})
 
-@login_required
 def puzzleInfo(request, title):
 	try:
 		puzzle = Puzzles.objects.get(pdfPath=title)
@@ -82,7 +80,6 @@ def puzzleInfo(request, title):
 	return render(request, 'PHapp/puzzleStats.html', 
 		{'puzzle':puzzle, 'allSolves':allSolves, 'totalWrong':totalWrong, 'totalRight':totalRight, 'avTime':calcPuzzleTime(puzzle, releaseTimes)[0]})
 
-@login_required
 def showPuzzle(request, puzzleURL):
 	if puzzleURL == "Prologue.pdf":
 		try:
