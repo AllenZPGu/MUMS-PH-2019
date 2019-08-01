@@ -20,16 +20,6 @@ body {
 	vertical-align: top;
 	overflow: hidden;
 }
-body, h1, h2 {
-
-	margin:  0;
-	border:  0;
-	padding: 0;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size:   12px;
-	line-height: 15px;
-	color: rgba( 255, 255, 255, 0.7 );
-}
 #content-wrapper a {
 
 	color: rgba( 0, 0, 0 );
@@ -463,12 +453,6 @@ table, td, tr {
 	color: rgba( 255, 255, 255, 0.4 );
 	overflow: auto;
 }
-#controlsClose {
-
-	position: absolute;
-	top: 20px;
-	right: 10px;
-}
 #controls {
 
 	height: 100%;
@@ -484,9 +468,9 @@ table, td, tr {
 
 	padding: 20px 5px 20px 20px;
 }
-#controls h2 {
+#controls h4 {
 
-	margin: 20px 0 5px 0;
+	margin: px 0 0px 0;
 	color: rgba( 0, 0, 0, 0.9 );
 }
 #controls a {
@@ -614,5 +598,16 @@ textarea#texts {
 	font-size: 24px;
 }
 
+#controlsClose {
+
+	position: absolute;
+	top: 20px;
+	right: 10px;
+	color: rgba( 255, 255, 255, 0.1 );
+	font-size: 30px
+}
+#controlsClose:hover {
+	background-color: rgba(0,0,0,1);
+}
 
 

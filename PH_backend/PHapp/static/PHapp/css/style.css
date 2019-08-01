@@ -1,7 +1,7 @@
 body {
 	background-color: black;
 	color: text;
-	font-family: "Ubuntu";
+	font-family: 'Ubuntu';
 	font-style: normal; 
 	font-variant: normal; 
 	font-weight: medium;
@@ -77,4 +77,20 @@ body {
 	right: 0;
 	text-align: center;
 	color: red;
+}
+
+table th.shrink {
+	white-space:nowrap;
+	width: 1px;
+}
+table th.expand {
+    width: 99%;
+}
+
+table td.shrink {
+	white-space:nowrap;
+	width: 1px;
+}
+table td.expand {
+    width: 99%;
 }
