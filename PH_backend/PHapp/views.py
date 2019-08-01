@@ -165,6 +165,9 @@ def puzzleInfoMiniMeta(request, act):
 def puzzleInfoMeta(request):
 	return puzzleInfo(request, 7, 2)
 
+def showPrologue(request):
+    return FileResponse(open(os.path.join(settings.BASE_DIR, 'PHapp/puzzleFiles/Prologue.pdf'), 'rb'), content_type='application/pdf')
+
 def showPuzzle(request, act, scene, puzzleName):
 	if act == 7:
 		actNumber = 7

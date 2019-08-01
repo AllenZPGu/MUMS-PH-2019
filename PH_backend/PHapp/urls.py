@@ -22,6 +22,7 @@ urlpatterns = [
 	path('puzzles/<str:act>.S <str:puzzleName>.pdf', views.showPuzzleMiniMeta),
 	path('puzzles/meta/', lambda req: redirect(views.showPuzzleMeta, permanent=True)),
 	path('puzzles/Meta.pdf', views.showPuzzleMeta),
+    path('puzzles/Prologue.pdf', views.showPrologue),
 	path('solve/<int:act>/<int:scene>/', lambda req, act, scene: redirect(views.solve, act=IntToRoman(act), scene=scene, permanent=True)),
 	path('solve/<int:act>/S/', lambda req, act: redirect(views.solveMiniMeta, act=IntToRoman(act), permanent=True)),
 	path('solve/<str:act>/<int:scene>/', views.solve),
