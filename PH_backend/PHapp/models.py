@@ -129,4 +129,4 @@ class AltAnswers(models.Model):
 	altAnswer = models.CharField(max_length=500, null=True)
 
 	class Meta:
-db_table = 'AltAnswers'
+        db_table = 'AltAnswers'
