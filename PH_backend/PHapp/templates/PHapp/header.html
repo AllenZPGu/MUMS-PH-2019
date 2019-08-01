@@ -57,7 +57,7 @@
 	<footer class="footer font-small blue">
 		<div class="footer-copyright text-center py-3"><font style="color:white">© 2019: </font>
             <a href='https://www.facebook.com/MelbUniMathsStats/' style="color:white"> Melbourne University Mathematics and Statistics Society</a>
-        {% if request.path == "/" %}
+        {% if request.path != "/" %}
 			<br>
 			<br>
 			<img src="{% static 'PHapp/img/MUMSLogo.png' %}" alt="MUMS Logo" style="height:120px; padding:10px">
