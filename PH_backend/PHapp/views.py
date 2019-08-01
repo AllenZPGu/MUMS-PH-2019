@@ -17,7 +17,7 @@ import datetime
 import pytz
 import random
 import os
-#from discord_webhook import DiscordWebhook, DiscordEmbed
+from discord_webhook import DiscordWebhook, DiscordEmbed
 import smtplib, ssl
 from .helperFunctions import *
 from .globals import *
@@ -47,7 +47,7 @@ def cubeDataLastModified(request):
 	# Default case
 	return None
 
-@last_modified(cubeDataLastModified)
+#@last_modified(cubeDataLastModified)
 def cubeData(request):
 	huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
 	responseData = [{'colors': PUZZLE_COLOURS_BLANK[i], 'text': ['']*6, 'links': ['']*6} for i in range(27)]
@@ -355,15 +355,15 @@ def solve(request, act, scene):
 				puzzle.solveCount = puzzle.solveCount + 1
 				puzzle.save()
 
-			#	try:
-			#	webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
-			#		webhookTitle = '**{}** solved **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
-			#		webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
-			#		webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=47872)
-			#		webhook.add_embed(webhookEmbed)
-			#		webhook.execute()
-			#	except:
-			#		pass
+				try:
+			    	webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+					webhookTitle = '**{}** solved **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
+					webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+					webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=47872)
+					webhook.add_embed(webhookEmbed)
+					webhook.execute()
+				except:
+					pass
 
 				return redirect(f'/solve/{act}/{scene}')
 
@@ -389,15 +389,15 @@ def solve(request, act, scene):
 				puzzle.guessCount = puzzle.guessCount + 1
 				puzzle.save()
 
-			#	try:
-			#		webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
-			#		webhookTitle = '**{}** incorrectly attempted **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
-			#		webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
-			#		webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=12255232)
-			#		webhook.add_embed(webhookEmbed)
-			#		webhook.execute()
-			#	except:
-			#		pass
+				try:
+					webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+					webhookTitle = '**{}** incorrectly attempted **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
+					webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+					webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=12255232)
+					webhook.add_embed(webhookEmbed)
+					webhook.execute()
+				except:
+					pass
 
 	# Reset solve form
 	solveform = SolveForm()
@@ -501,10 +501,10 @@ def teamReg(request):
 				msg_username = 'Username: ' + username + '\n'
 				msg_name = 'Team name: ' + newTeam.teamName + '\n\n'
 			
-				# message = 'Thank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
-				# subject = '[PH2019] Team registered'
-				# email_from = settings.EMAIL_HOST_USER
-				# send_mail( subject, message, email_from, recipient_list )
+				message = 'Thank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
+				subject = '[PH2019] Team registered'
+				email_from = settings.EMAIL_HOST_USER
+				send_mail( subject, message, email_from, recipient_list )
 
 			
 				message = 'Subject: [MPH 2019] Team registered\n\nThank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
@@ -515,15 +515,15 @@ def teamReg(request):
 			except:
 				pass
 
-		#	try:
-		#		webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
-		#		webhookTitle = 'New team: **{}**'.format(newTeam.teamName)
-		#		webhookDesc = 'Usename: {}\nMembers: {}\nAustralian: {}'.format(username, str(indivNo), 'Yes' if newTeam.aussie else 'No')
-		#		webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=16233769)
-		#		webhook.add_embed(webhookEmbed)
-		#		webhook.execute()
-		#	except:
-		#		pass
+			try:
+				webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+				webhookTitle = 'New team: **{}**'.format(newTeam.teamName)
+				webhookDesc = 'Usename: {}\nMembers: {}\nAustralian: {}'.format(username, str(indivNo), 'Yes' if newTeam.aussie else 'No')
+				webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=16233769)
+				webhook.add_embed(webhookEmbed)
+				webhook.execute()
+			except:
+				pass
 
 			return redirect('/team/{}'.format(str(newTeam.id)))
 	
