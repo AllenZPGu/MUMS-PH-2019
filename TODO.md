@@ -36,10 +36,17 @@ List of tasks (so that we avoid overlap etc)
 - Fix last modified tag for cube data
 
 - End of hunt
-    - Solve page still accessible
-    - etc....
+    - DATABASE DOES NOT CHANGE
+    - All solve pages accessible
+        - Don't affect database, but give correct/incorrect
+        - Login not required
+        - If logged in, give past guesses
+    - Solutions become accessible
+    - "This puzzle hunt is over" everywhere
+    - Unavailable pages
+        - Registration
+        - Edit team
+- Fix edit team members page
 
-- Policy question: on edit team members page, show whole form including currently added members?
-- Unconvinced about 'AU' next to team name; could we replace this by an AUS flag emoji?
 - Remove show/hide previous guesses?
     - (why not just show them...)
