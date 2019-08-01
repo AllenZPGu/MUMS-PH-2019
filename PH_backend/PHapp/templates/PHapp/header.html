@@ -45,7 +45,10 @@
 
 			</nav>
 		</div>
-	</div>
+    </div>
+    {% if request.path != "/" %}
+    <br>
+    {% endif %}
 	<!--<div class="container col-sm-2"></div>-->
 		<div id="content-wrapper" class="container" >
 			{% block content %}
