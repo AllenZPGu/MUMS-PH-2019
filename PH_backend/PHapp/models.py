@@ -118,7 +118,7 @@ class SubmittedGuesses(models.Model):
 	guess = models.CharField(max_length=200, null=True)
 	correct = models.BooleanField(default = False)
 	pointsAwarded = models.IntegerField(null=True)
-	submitTime = models.DateTimeField(auto_now_add=True)
+	submitTime = models.DateTimeField(auto_now_add=True, null=True)
 
 	class Meta:
 		db_table = 'SubmittedGuesses'
