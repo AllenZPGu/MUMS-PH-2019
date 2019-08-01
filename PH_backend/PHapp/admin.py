@@ -1,10 +1,11 @@
 from django.contrib import admin
-from . import models
+from .models import Puzzles, Teams, SubmittedGuesses, Individuals, AltAnswers
 
 # Register your models here.
-admin.site.register(models.AltAnswers)
-admin.site.register(models.Cubelets)
-admin.site.register(models.Individuals)
-admin.site.register(models.Puzzles)
-admin.site.register(models.SubmittedGuesses)
-admin.site.register(models.Teams)
+
+admin.site.register(Puzzles)
+admin.site.register(Teams)
+admin.site.register(SubmittedGuesses)
+admin.site.register(Individuals)
+admin.site.register(AltAnswers)
+

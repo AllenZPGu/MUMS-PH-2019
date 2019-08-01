@@ -126,6 +126,7 @@ def puzzles(request):
 
 	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList, 'nextRelease':nextRelease})
 
+
 def puzzleInfo(request, act, scene):
 	if act == 7:
 		actNumber = act
@@ -632,6 +633,9 @@ def debrief(request):
 		raise Http404()
 	else:
 		return render(request, 'PHapp/home.html')
+
+def announcements(request):
+	return render(request, 'PHapp/announcements.html')
 
 def loginCustom(request):
 	if request.user.is_authenticated:

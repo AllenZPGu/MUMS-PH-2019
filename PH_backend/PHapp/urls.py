@@ -48,4 +48,5 @@ urlpatterns = [
 	path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type='text/plain')),
 	path('dynamic/cubedata.js', views.cubeData),
 	path('debrief/', views.debrief),
+	path('announcements/', views.announcements)
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

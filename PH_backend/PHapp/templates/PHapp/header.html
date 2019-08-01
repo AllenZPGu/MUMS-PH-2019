@@ -5,7 +5,7 @@
 <head>
 	<title>MUMS Puzzle Hunt</title>
 	<meta charset="utf-8" />
-	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
+	<meta name="Description" content="The Melbourne University Mathematics and Statistics Society is pleased to announce the return of the Puzzle Hunt in 2019. It will be held during 7th - 16th August 2019; entry is free and open to all.">
 
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -15,6 +15,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 	<!-- My own custom CSS -->
 	<link rel="stylesheet" type="text/css" href="{% static 'PHapp/css/style.css'%}">
+	<link rel="shortcut icon" type="image/png" href="{% static 'PHapp/img/logo.png' %}"/>	
 
 	{% block header %}
 	{% endblock %}
@@ -25,19 +26,21 @@
 	<div class="navbar-container">
 		<div class="navbar-container-inner">
 			<nav class="main-nav">
-				<a class="link-nav" href="/">MUMS Puzzle Hunt</a></li>
-				<a class="link-nav" href="/faq/">About / FAQ</a></li>
-				<a class="link-nav" href="/rules/">Rules</a></li>
-				<a class="link-nav" href="/puzzles/">Puzzles</a></li>
-				<a class="link-nav" href="/teams/">Teams</a></li>
-				<a class="link-nav" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3HUMG3RCWHH8N&item_name=MUMS+Puzzle+Hunt&currency_code=AUD&source=url">Donate</a></li>
+				<a class="link-nav" href="/"><img src="{% static 'PHapp/img/logoLightFont.png' %}" alt="MUMS Logo" style="width:50px;padding:5px">  MUMS Puzzle Hunt</a>
+				<a class="link-nav" href="/announcements/">Announcements</a>
+				<a class="link-nav" href="/faq/">About / FAQ</a>
+				<a class="link-nav" href="/rules/">Rules</a>
+				<a class="link-nav" href="/puzzles/">Puzzles</a>
+				<a class="link-nav" href="/teams/">Teams</a>
 
 				{% if user.is_authenticated %}
-					<a class="link-nav" style="color:yellow" href="/team/{{user.teams.id}}/">{{user.teams.teamName}}</a></li>
-					<a class="link-nav" href="/logout/">Logout</a></li>
+          <a class="link-nav" style="color:yellow" href="/team/{{user.teams.id}}/">{{user.teams.teamName}}</a>
+					<a class="link-nav" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3HUMG3RCWHH8N&item_name=MUMS+Puzzle+Hunt&currency_code=AUD&source=url">Donate</a>
+					<a class="link-nav" href="/logout/">Logout</a>
 				{% else %}
-				<a class="link-nav" href="/registration/">Registration</a></li>
-					<a class="link-nav" href="/login/">Login</a></li>
+					<a class="link-nav" href="/registration/">Registration</a>
+					<a class="link-nav" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3HUMG3RCWHH8N&item_name=MUMS+Puzzle+Hunt&currency_code=AUD&source=url">Donate</a>
+					<a class="link-nav" href="/login/">Login</a>
 				{% endif %}
 
 			</nav>
@@ -52,8 +55,13 @@
 	</div>
 
 	<footer class="footer font-small blue">
-		<div class="footer-copyright text-center py-3"><font style="color:white">© 2019 Copyright:</font>
+		<div class="footer-copyright text-center py-3"><font style="color:white">© 2019: </font>
 			<a href='https://www.facebook.com/MelbUniMathsStats/' style="color:white"> Melbourne University Mathematics and Statistics Society</a>
+			<br>
+			<br>
+			<img src="{% static 'PHapp/img/MUMSLogo.png' %}" alt="MUMS Logo" style="height:120px; padding:10px">
+			<img src="{% static 'PHapp/img/logoLightFont.png' %}" alt="MUMS Logo" style="height:120px; padding:10px">
+			<img src="{% static 'PHapp/img/UMSU.png' %}" alt="MUMS Logo" style="height:120px; padding:10px">
 		</div>
 	</footer>
 <!-- Footer -->
