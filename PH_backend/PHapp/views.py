@@ -22,6 +22,7 @@ import smtplib, ssl
 from .helperFunctions import *
 from .globals import *
 
+# Force rebuild
 
 SOLVE_WRONG = 0
 SOLVE_DUPLICATE = 1
