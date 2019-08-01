@@ -1,7 +1,7 @@
 {% extends "PHapp/header.html" %}
 {% load static %}
 
-{% block content %}
+{% block content %}<br>
 <div class="outer-container">
 <div class="inner-container">
 <center>
@@ -52,9 +52,9 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for correct, timeTaken, incorrect in correctList %}
+			{% for correctString, correct, timeTaken, incorrect in correctList %}
 				<tr>
-					<td><a href='/puzzle/{{correct.puzzle.pdfPath}}.pdf'>{{correct.puzzle.act}}.{{correct.puzzle.scene}} {{correct.puzzle.title}}</a></td>
+					<td><a href='/{{correct.puzzle.pdfURI}}'>{{correctString}}</a></td>
 					<td>{{correct.submitTime|date:"d M, h:i:s a"}}</td>
 					<td>{{timeTaken}}</td>
 					<td>{{correct.pointsAwarded}}</td>

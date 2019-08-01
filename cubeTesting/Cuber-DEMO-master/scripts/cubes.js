@@ -168,29 +168,8 @@ function Cube( preset ){
 	//  so that's going to be 27 Cubelets in total to create a Cube.
 
 	this.cubelets = []
-	;([
-
-		//  Front slice
-
-		{'colors': [ G, A,  ,  , A,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ 'hello_world.html', '', '', '', '', '', ]},    {'colors': [ A, A,  ,  ,  ,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [ G, A, A,  ,  ,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},  //   0,  1,  2
-		{'colors': [ A,  ,  ,  , A,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [ A,  ,  ,  ,  ,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [ A,  , A,  ,  ,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},  //   3,  4,  5
-		{'colors': [ G,  ,  , A, A,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [ A,  ,  , A,  ,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [ G,  , A, A,  ,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},  //   6,  7,  8
-
-
-		//  Standing, slice
-
-		{'colors': [  , A,  ,  , A,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [  , A,  ,  ,  ,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [  , A, A,  ,  ,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},  //   9, 10, 11
-		{'colors': [  ,  ,  ,  , A,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [  ,  ,  ,  ,  ,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [  ,  , A,  ,  ,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},  //  12, XX, 14
-		{'colors': [  ,  ,  , A, A,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [  ,  ,  , A,  ,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [  ,  , A, A,  ,   ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},  //  15, 16, 17
-
-
-		//  Back slice
-
-		{'colors': [  , A,  ,  , A, A, ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [  , A,  ,  ,  , A, ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [  , A, A,  ,  , A, ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},  //  18, 19, 20
-		{'colors': [  ,  ,  ,  , A, A, ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [  ,  ,  ,  ,  , A, ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [  ,  , A,  ,  , A, ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},  //  21, 22, 23
-		{'colors': [  ,  ,  , A, A, A, ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [  ,  ,  , A,  , A, ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},    {'colors': [  ,  , A, A,  , A, ], 'text': [ '', '', '', '', '', '', ], 'links': [ '', '', '', '', '', '', ]},  //  24, 25, 26
-
-	]).forEach( function( cubeletDataMap, cubeletId ){
+	;
+	rawcubedata.forEach( function( cubeletDataMap, cubeletId ){
 
 		cube.cubelets.push( new Cubelet( cube, cubeletId, cubeletDataMap ))
 	})
@@ -231,12 +210,12 @@ function Cube( preset ){
 
 	//  Enable some "Hero" text for this Cube.
 	
-	if( erno.renderMode === 'css' ){
+	/*if( erno.renderMode === 'css' ){
 
 		this.setText( 'ABCDEFGHIJKLMNOPQR', 0 )
 		this.setText( 'STUVWXYZ stuvwxyz ', 1 )
 		this.setText( 'abcedefhijklmnopqr', 2 )
-	}
+	}*/
 
 
 	//  Shall we load some presets here?
@@ -1164,7 +1143,6 @@ setupTasks.push( function(){
 			this.showStickers()
 			this.hideTexts()
 			this.hideWireframes()
-			this.hideIds()
 			this.setOpacity()
 			this.setRadius()
 			updateControls( this )
@@ -1182,7 +1160,6 @@ setupTasks.push( function(){
 				cube.show()
 				cube.hidePlastics()
 				cube.hideStickers()
-				cube.hideIds()
 				cube.hideIntroverts()
 				cube.showTexts()
 				cube.hideWireframes()
@@ -1433,7 +1410,6 @@ setupTasks.push( function(){
 					included.setOpacity( 1 )
 
 					cube.back.setRadius()
-					cube.showIds()
 					cube.taskQueue.isReady = false
 					setTimeout( function(){ cube.taskQueue.isReady = true }, (6).seconds() )
 				},
@@ -1466,7 +1442,6 @@ setupTasks.push( function(){
 				},
 				function(){
 					
-					cube.showIds()
 					cube.taskQueue.isReady = false
 					setTimeout( function(){ cube.taskQueue.isReady = true }, (2).seconds() )	
 				},
@@ -1514,7 +1489,6 @@ setupTasks.push( function(){
 						.hidePlastics()
 						.hideStickers()
 						.showWireframes()
-						.showIds()
 						.setOpacity( 1 )
 					cube.taskQueue.isReady = false
 					setTimeout( function(){ cube.taskQueue.isReady = true }, SECOND )
@@ -1531,7 +1505,6 @@ setupTasks.push( function(){
 						.hidePlastics()
 						.hideStickers()
 						.showWireframes()
-						.showIds()
 						.setOpacity( 1 )
 					cube.taskQueue.isReady = false
 					setTimeout( function(){ cube.taskQueue.isReady = true }, SECOND )
@@ -1548,7 +1521,6 @@ setupTasks.push( function(){
 						.hidePlastics()
 						.hideStickers()
 						.showWireframes()
-						.showIds()
 						.setOpacity( 1 )
 					cube.taskQueue.isReady = false
 					setTimeout( function(){ cube.taskQueue.isReady = true }, SECOND )
@@ -1573,7 +1545,6 @@ setupTasks.push( function(){
 						.hidePlastics()
 						.hideStickers()
 						.hideWireframes()
-						.hideIds()
 						.showTexts()
 						.setOpacity( 1 )
 					cube.taskQueue.isReady = false
@@ -1591,7 +1562,6 @@ setupTasks.push( function(){
 						.hidePlastics()
 						.hideStickers()
 						.hideWireframes()
-						.hideIds()
 						.showTexts()
 						.setOpacity( 1 )
 					cube.taskQueue.isReady = false
@@ -1609,7 +1579,6 @@ setupTasks.push( function(){
 						.hidePlastics()
 						.hideStickers()
 						.hideWireframes()
-						.hideIds()
 						.showTexts()
 						.setOpacity( 1 )
 					cube.taskQueue.isReady = false

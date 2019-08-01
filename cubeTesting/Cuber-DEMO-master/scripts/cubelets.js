@@ -54,7 +54,7 @@
 
 function Cubelet( cube, id, data ){
 
-	let colors = data.colors
+	let colors = data.colors.map(x => COLORMAP[x])
 	let texts = data.text
 	let links = data.links
 
@@ -204,7 +204,7 @@ function Cubelet( cube, id, data ){
 
 	var extrovertedFaces = 0
 	if( colors === undefined ) colors = [ W, O,  ,  , G, ]
-	this.faces = []
+	this.faces = [];
 
 
 	//  Now let's map one color per side based on colors[].
@@ -212,7 +212,7 @@ function Cubelet( cube, id, data ){
 	//  We need to loop through the colors[] Array "manually"
 	//  because Array.forEach() would skip the undefined entries.
 
-	for( var i = 0; i < 6; i ++ ){
+	([0,1,2,3,4,5]).forEach(i => {
 
 
 		//  Before we create our face's THREE object
@@ -264,14 +264,14 @@ function Cubelet( cube, id, data ){
 			//  For debugging we want the ability to display this Cubelet's ID number
 			//  with an underline (to make numbers like 6 and 9 legible upside-down).
 
-			var idElement = document.createElement( 'div' )
+			/*var idElement = document.createElement( 'div' )
 			idElement.classList.add( 'id' )
 			faceElement.appendChild( idElement )
 			
 			var underlineElement = document.createElement( 'span' )
 			underlineElement.classList.add( 'underline' )
 			underlineElement.innerText = this.id
-			idElement.appendChild( underlineElement )
+			idElement.appendChild( underlineElement )*/
 		}
 
 
@@ -318,24 +318,34 @@ function Cubelet( cube, id, data ){
 				stickerElement.classList.add( 'sticker' )			
 				stickerElement.style.backgroundColor = color.hex
 				let href = links[i]
+				let linkElement = null
 				if (href) {
-					let linkElement = document.createElement('a')
+					linkElement = document.createElement('a')
 					linkElement.href = href
 					linkElement.target = "_blank"
-					linkElement.style = "width:100%;height:100%"
-					stickerElement.appendChild(linkElement)
+					linkElement.classList.add('puzzlelink')
+					linkElement.appendChild(stickerElement)
 				}
-				faceElement.appendChild( stickerElement )
-
-
 				//  TEXT.
 				//  One character per face, mostly for our branding.
 
-				var textElement = document.createElement( 'div' )
-				textElement.classList.add( 'text' )
-				textElement.innerText = texts[i]
+				let name = texts[i]
+				let textDiv = document.createElement( 'div' )
+				textDiv.classList.add( 'id' )
+				if (i >= 3) {
+					textDiv.classList.add( Direction.getNameById( i ) + 'Face')
+				}
+				let textElement = document.createElement('span')
+				textElement.innerText = name
 				this.faces[ i ].text = textElement
-				faceElement.appendChild( textElement )
+				textDiv.append(textElement)
+				if (linkElement) {
+					linkElement.append(textDiv)
+				}
+
+				faceElement.appendChild( linkElement ? linkElement : stickerElement )
+
+
 			}
 			else {
 
@@ -368,7 +378,7 @@ function Cubelet( cube, id, data ){
 				//console.log(' ' )
 			}
 		}
-	}
+	})
 
 
 	//  Now that we've run through our colors[] Array
@@ -427,7 +437,6 @@ function Cubelet( cube, id, data ){
 	this.showPlastics()
 	this.showIntroverts()
 	this.showStickers()
-	this.hideIds()
 	this.hideTexts()
 	this.hideWireframes()
 
@@ -946,16 +955,6 @@ setupTasks.push( function(){
 			if( erno.renderMode === 'css' ) $( '.cubeletId-'+ this.id + ' .wireframe' ).hide()
 			else this.wireframe.material.opacity = 0
 			this.showingWireframes = false
-		},
-		showIds: function(){
-
-			$( '.cubeletId-'+ this.id + ' .id' ).show()
-			this.showingIds = true
-		},
-		hideIds: function(){
-
-			$( '.cubeletId-'+ this.id + ' .id' ).hide()
-			this.showingIds = false
 		},
 		showTexts: function(){
 

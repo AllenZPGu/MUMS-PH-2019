@@ -3,10 +3,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.http import JsonResponse, FileResponse, Http404
+from django.http import JsonResponse, FileResponse, Http404, HttpResponse
 from django.contrib.auth.models import User
 from django.forms import formset_factory, ValidationError
 from django.core.mail import send_mail
+from django.views.decorators.http import last_modified
+from django.urls import reverse
 from .models import Puzzles, Teams, SubmittedGuesses, Individuals, AltAnswers
 from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginForm, BaseIndivRegFormSet
 from django.conf import settings
@@ -15,230 +17,443 @@ import datetime
 import pytz
 import random
 import os
-from discord_webhook import DiscordWebhook, DiscordEmbed
+#from discord_webhook import DiscordWebhook, DiscordEmbed
 import smtplib, ssl
 from .helperFunctions import *
+from .globals import *
 
-aest = pytz.timezone("Australia/Melbourne")
-releaseTimes = [aest.localize(datetime.datetime(2019, 8, 7, 12)) + datetime.timedelta(days=i) for i in range(10)]
+# Force rebuild
+
+SOLVE_WRONG = 0
+SOLVE_DUPLICATE = 1
+SOLVE_METAHALF = 2
+SOLVE_METAHALFDUPLICATE = 3
+
 #releaseTimes = [aest.localize(datetime.datetime(2019, 6, 24, 12)) + datetime.timedelta(days=i) for i in range(10)]
 
 def index(request):
-	huntOver = False if releaseStage(releaseTimes) < len(releaseTimes) else True
+	huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
 	return render(request, 'PHapp/home.html', {'huntOver':huntOver})
 
-def colourCube(request):
-	huntOver = False if releaseStage(releaseTimes) < len(releaseTimes) else True
-	coloured = []
-	if request.user.is_authenticated or huntOver:
-		if huntOver:
-			puzzlesRight = [i for i in Puzzles.objects.all()]
-		else:
-			puzzlesRight = [i.puzzle for i in SubmittedGuesses.objects.filter(team=request.user, correct=True)]
-		
-		for rightPuzz in puzzlesRight:
-			if rightPuzz.act in range(1,7):
-				coloured.append({'cubeletId':rightPuzz.cubelet1.cubeletId, 'cubeface':rightPuzz.cubelet1.cubeface, 'colour':rightPuzz.cubelet1.colour})
+def cubeDataLastModified(request):
+	# TODO: test this
+	if request.user.is_authenticated:
+		guesses = SubmittedGuesses.objects.filter(team=request.user).filter(correct=True)
+		if guesses: 
+			return max(guesses.latest('submitTime').submitTime, RELEASE_TIMES[releaseStage(RELEASE_TIMES)])
+	if releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES):
+		# hunt is over; check that this time is kosher
+		return RELEASE_TIMES[-1]
+	# Default case
+	return None
 
-	cubeMap = cubeTestRelease(releaseTimes)
+@last_modified(cubeDataLastModified)
+def cubeData(request):
+	huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
+	responseData = [{'colors': PUZZLE_COLOURS_BLANK[i], 'text': ['']*6, 'links': ['']*6} for i in range(27)]
+	if request.user.is_authenticated:
+		correctGuesses = SubmittedGuesses.objects.filter(team=request.user, correct=True)
 
-	data={'coloured':coloured, 'cubeMap':cubeMap}
-	return JsonResponse(data)
+		metascomplete = [False] * 8
+
+		# colour the response
+		for guess in correctGuesses:
+			puzzle = guess.puzzle
+			if IsMetaOrMiniMeta(puzzle):
+				metascomplete[puzzle.act] = True
+			if not IsMeta(puzzle):
+				colourcell = cubeDataColourCell(puzzle)
+				if colourcell:
+					responseData[colourcell[0]]['colors'][colourcell[1]] = PUZZLE_COLOURS[colourcell[0]][colourcell[1]]
+		if metascomplete[7]:
+			# Meta 1 is done (and maybe 2, but we'll check that now)
+			if correctGuesses.filter(puzzle__act=7).filter(puzzle__scene=2):
+				# Meta 2 is done; set up to colour the whole cube
+				metascomplete = [True] * 8
+			if metascomplete[1]:
+				for i in range(9):
+					responseData[i]['colors'][0] = PUZZLE_COLOURS[i][0]
+			if metascomplete[2]:
+				for i in range(18, 27):
+					responseData[i]['colors'][5] = PUZZLE_COLOURS[i][5]
+			if metascomplete[3]:
+				for i in range(2, 27, 3):
+					responseData[i]['colors'][2] = PUZZLE_COLOURS[i][2]
+			if metascomplete[4]:
+				for i in range(6,9):
+					for j in range(3):
+						k = i + 9*j
+						responseData[k]['colors'][3] = PUZZLE_COLOURS[k][3]
+			if metascomplete[5]:
+				for i in range(3):
+					for j in range(3):
+						k = i + 9*j
+						responseData[k]['colors'][1] = PUZZLE_COLOURS[k][1]
+			if metascomplete[6]:
+				for i in range(0, 25, 3):
+					responseData[i]['colors'][4] = PUZZLE_COLOURS[i][4]
+	availablePuzzles = Puzzles.objects.filter(releaseStatus__lte = releaseStage(RELEASE_TIMES))
+	for puzzle in availablePuzzles:
+		if not IsMeta(puzzle):
+			colourcell = cubeDataColourCell(puzzle)
+			responseData[colourcell[0]]['links'][colourcell[1]] = reverse(showPuzzle, kwargs={'act': IntToRoman(puzzle.act), 'scene': puzzle.scene, 'puzzleName': puzzle.title})
+			responseData[colourcell[0]]['text'][colourcell[1]] = PUZZLE_TEXTS[colourcell[0]][colourcell[1]]
+
+	return HttpResponse('window.rawcubedata=' + json.dumps(responseData,separators=(',', ':')), content_type='application/javascript')
 
 def puzzles(request):
 	puzzleList = []
-	for puzzle in Puzzles.objects.filter(releaseStatus__lte = releaseStage(releaseTimes)):
-		allGuesses = [i.correct for i in SubmittedGuesses.objects.filter(puzzle=puzzle)]
+	if request.user.is_authenticated:
+		userCorrectGuesses = SubmittedGuesses.objects.filter(correct=True).filter(team=request.user)
+	else:
+		userCorrectGuesses = None
+	for puzzle in Puzzles.objects.filter(releaseStatus__lte = releaseStage(RELEASE_TIMES)):
+		if IsMetaPart1(puzzle):
+			continue
 
-		guesses = SubmittedGuesses.objects.filter(puzzle=puzzle, team=request.user)
+		thisPuzzleCorrect = userCorrectGuesses.filter(puzzle=puzzle) if userCorrectGuesses else None
 
-		if True not in [i.correct for i in guesses]:
-			puzzleList.append([puzzle, False, sum(allGuesses), len(allGuesses)-sum(allGuesses), calcWorth(puzzle, releaseTimes)])
+		if thisPuzzleCorrect:
+			correctGuess = thisPuzzleCorrect[0]
+			puzzleList.append( (puzzle, True, puzzle.solveCount, puzzle.guessCount, correctGuess.pointsAwarded) )
 		else:
-			correctGuess = guesses.filter(correct = True)[0]
-			puzzleList.append([puzzle, True, sum(allGuesses), len(allGuesses)-sum(allGuesses), correctGuess.pointsAwarded])
-	puzzleList = sorted(puzzleList, key=lambda x:x[0].id)
+			puzzleList.append((puzzle, False, puzzle.solveCount, puzzle.guessCount, calcWorth(puzzle, RELEASE_TIMES)))
+			
+	puzzleList = sorted(puzzleList, key=lambda x:(x[0].act, x[0].scene))
 
-	nextRelease = calcNextRelease(releaseTimes)
+	nextRelease = calcNextRelease(RELEASE_TIMES)
+	print(nextRelease)
 
 	return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList, 'nextRelease':nextRelease})
 
-def puzzleInfo(request, title):
+
+def puzzleInfo(request, act, scene):
+	if act == 7:
+		actNumber = act
+	else:
+		actNumber = RomanToInt(act)
+		if not actNumber:
+			raise Http404()
 	try:
-		puzzle = Puzzles.objects.get(pdfPath=title)
+		puzzle = Puzzles.objects.get(act=actNumber,scene=scene)
 	except:
 		raise Http404()
-	if releaseStage(releaseTimes) < puzzle.releaseStatus:
+	if releaseStage(RELEASE_TIMES) < puzzle.releaseStatus:
 		raise Http404()
 
-	allGuesses = SubmittedGuesses.objects.filter(puzzle=puzzle)
-	allSolves = sorted([[i, calcSingleTime(i, i.submitTime, releaseTimes)[0]] for i in allGuesses if i.correct], key=lambda x:x[0].submitTime)
+	allSolves = sorted([[guess, calcSingleTime(guess, RELEASE_TIMES)] for guess in SubmittedGuesses.objects.filter(correct=True, puzzle=puzzle)], key=lambda x:x[1])
+	if allSolves:
+		avgTime = allSolves[0][1]
+		for guess, time in allSolves[1:]:
+			avgTime += guess
+		avgTime /= len(allSolves)
+		averageTimeString = prettyPrintDateTime(avgTime)
+	else:
+		averageTimeString = '-'
+	for i in range(len(allSolves)):
+		allSolves[i][1] = prettyPrintDateTime(allSolves[i][1])
 	
-	totalRight = len(allSolves)
-	totalWrong = len(allGuesses) - totalRight
+	totalRight = puzzle.solveCount
+	totalWrong = puzzle.guessCount
 
 	return render(request, 'PHapp/puzzleStats.html', 
-		{'puzzle':puzzle, 'allSolves':allSolves, 'totalWrong':totalWrong, 'totalRight':totalRight, 'avTime':calcPuzzleTime(puzzle, releaseTimes)[0]})
+		{'puzzle':puzzle, 'allSolves':allSolves, 'totalWrong':totalWrong, 'totalRight':totalRight, 'avTime':averageTimeString})
 
-def showPuzzle(request, puzzleURL):
-	if puzzleURL == "Prologue.pdf":
-		try:
-			return FileResponse(open(os.path.join(settings.BASE_DIR, 'PHapp/puzzleFiles/', puzzleURL), 'rb'), content_type='application/pdf')
-		except FileNotFoundError:
-			raise Http404("PDF file not found at "+os.path.join(settings.BASE_DIR, 'PHapp/puzzleFiles/', puzzleURL))
+def puzzleInfoMiniMeta(request, act):
+	return puzzleInfo(request, act, 5)
+
+def puzzleInfoMeta(request):
+	return puzzleInfo(request, 7, 2)
+
+def showPuzzle(request, act, scene, puzzleName):
+	if act == 7:
+		actNumber = 7
+	else:
+		actNumber = RomanToInt(act)
+		if not actNumber:
+			raise Http404()
 	try:
-		puzzle = Puzzles.objects.get(pdfPath=puzzleURL.replace('.pdf', ''))
+		puzzle = Puzzles.objects.get(act=actNumber,scene=scene)
 	except:
 		raise Http404()
-	if releaseStage(releaseTimes) < puzzle.releaseStatus:
+	if releaseStage(RELEASE_TIMES) < puzzle.releaseStatus:
 		raise Http404()
+	if puzzleName != puzzle.title and not IsMeta(puzzle):
+		if IsMetaOrMiniMeta(puzzle):
+			return redirect(showPuzzleMiniMeta, act=act, puzzleName=puzzle.title, permanent=True)
+		else:
+			return redirect(showPuzzle, act=act, scene=scene, puzzleName=puzzle.title, permanent=True)
 	try:
-		return FileResponse(open(os.path.join(settings.BASE_DIR, 'PHapp/puzzleFiles/', puzzleURL), 'rb'), content_type='application/pdf')
+		return FileResponse(open(os.path.join(settings.BASE_DIR, 'PHapp/puzzleFiles/', puzzle.pdfPath + '.pdf'), 'rb'), content_type='application/pdf')
 	except FileNotFoundError:
-		raise Http404("PDF file not found at "+os.path.join(settings.BASE_DIR, 'PHapp/puzzleFiles/', puzzleURL))
+		raise Http404("PDF file not found!")
+
+def showPuzzleMiniMeta(request, act, puzzleName):
+	return showPuzzle(request, act, 5, puzzleName)
+
+def showPuzzleMeta(request):
+	return showPuzzle(request, 7, 2, '')
+
+def noGuessesLeft(request, team):
+	# Login implicity required. This function only works if the hunt is not over!
+	nextGuess = calcNextGuess(RELEASE_TIMES)
+	return render(request, 'PHapp/noGuesses.html', {'huntStage': nextGuess[0], 'nextGuesses': nextGuess[1]})
 
 @login_required
-def solve(request, title):
-	try:
-		puzzle = Puzzles.objects.get(pdfPath=title)
-	except:
-		raise Http404()
-	if releaseStage(releaseTimes) < puzzle.releaseStatus:
+def solveMeta(request):
+	huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
+	if huntOver:
+		return render(request, 'PHapp/huntOver.html')
+	meta1 = Puzzles.objects.get(act=7, scene=1)
+	meta2 = Puzzles.objects.get(act=7, scene=2)
+	if releaseStage(RELEASE_TIMES) < meta1.releaseStatus:
 		raise Http404()
 	
 	team = Teams.objects.get(authClone = request.user)
+	meta2Guesses = SubmittedGuesses.objects.filter(team=request.user,puzzle=meta2)
+	correctGuesses = meta2Guesses.filter(correct=True)
+	if correctGuesses:
+		correctMeta2Answers = [meta2.answer] + list(AltAnswers.objects.filter(puzzle=meta2))
+		correctFinalGuesses = correctGuesses.filter(guess__in=correctMeta2Answers)
+		if correctFinalGuesses:
+			points = correctFinalGuesses[0].pointsAwarded
+			altAns = correctFinalGuesses[0].guess if correctFinalGuesses[0].guess != meta2.answer else None
+			return render(request, 'PHapp/solveCorrect.html', {'puzzle':meta2, 'points':points, 'team':team, 'altAns': altAns})
+	
+	if not team.guesses:
+		return noGuessesLeft(request, team)
+
+	solveType = -1
+	displayGuess = None
+	altAns = None
+
+	if request.method == 'POST':
+		solveForm = SolveForm(request.POST)
+		if solveForm.is_valid():
+			guess = stripToLetters(solveform.cleaned_data['guess'])
+			alreadySeen = correctGuesses.filter(guess=guess)
+			if alreadySeen:
+				# Seen it before, but it's only Meta part 1 (if it were Meta 2 it would have been caught above)
+				alreadySeenCorrect = alreadySeen.filter(correct=True)
+				if alreadySeenCorrect:
+					solveType = SOLVE_METAHALFDUPLICATE
+					# Check for alternate answers
+					altAns = alreadySeenCorrect[0].guess if alreadySeenCorrect[0].guess != meta1.answer else None
+				else:
+					solveType = SOLVE_DUPLICATE
+				displayGuess = guess
+			elif guess == meta1.answer or AltAnswers.objects.filter(puzzle=meta1).filter(altAnswer=guess):
+				# This is a Meta 1 answer
+				SubmittedGuesses.objects.create(
+					team = request.user,
+					puzzle = meta1,
+					guess = guess,
+					correct = True,
+					pointsAwarded = calcWorth(meta1, RELEASE_TIMES)
+				)
+				team.teamPoints += calcWorth(meta1, RELEASE_TIMES)
+				team.save()
+
+				solveType = SOLVE_METAHALF
+				altAns = guess if guess != meta1.answer else None
+			elif guess == meta2.answer or AltAnswers.objects.filter(puzzle=meta2,altAnswer=guess):
+				# This is a meta 2 answer
+				SubmittedGuesses.objects.create(
+					team = request.user,
+					puzzle = meta2,
+					guess = guess,
+					correct = True,
+					pointsAwarded = calcWorth(meta2, RELEASE_TIMES)
+				)
+
+				solveTime = calcSolveTime(team, RELEASE_TIMES)
+				team.avHr = solveTime[1]
+				team.avMin = solveTime[2]
+				team.avSec = solveTime[3]
+				team.teamPoints += calcWorth(meta2, RELEASE_TIMES)
+				team.teamPuzzles += 1
+				team.save()
+
+				meta2.solveCount = meta2.solveCount + 1
+				meta2.save()
+
+				return redirect(f'/solve/meta')
+			else:
+				solveType = SOLVE_WRONG
+				displayGuess = guess
+				meta2.guessCount = meta2.guessCount + 1
+				meta2.save()
+	
+	solveForm = SolveForm()
+	previousGuesses = SubmittedGuesses.objects.filter(puzzle=puzzle, team=request.user, correct=False).values_list('guess', flat=True)
+	# I feel like reverse chronological order of guess submission is more intuitive?
+	# previousGuesses = sorted(previousGuesses)
+	previousGuesses = previousGuesses[::-1]
+
+	return render(request, 'PHapp/solve.html', 
+		{'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':puzzle, 'team':team, 'previousGuesses':previousGuesses, 'altAns': altAns})
+
+@login_required
+def solve(request, act, scene):
+	# sanity check; we're not dealing with the Meta
+	actNumber = RomanToInt(act)
+	if not actNumber:
+		raise Http404()
+	try:
+		puzzle = Puzzles.objects.get(act=actNumber,scene=scene)
+	except:
+		raise Http404()
+	if releaseStage(RELEASE_TIMES) < puzzle.releaseStatus:
+		raise Http404()
+	
+	huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
+	if huntOver:
+		return render(request, 'PHapp/huntOver.html')
+
+	team = Teams.objects.get(authClone = request.user)
 	guesses = SubmittedGuesses.objects.filter(team = request.user, puzzle = puzzle)
-	if True in [i.correct for i in guesses]:
-		correctGuess = guesses.filter(correct=True)[0]
+	correctGuessList = guesses.filter(correct=True)
+	if correctGuessList:
+		correctGuess = correctGuessList[0]
 		points = correctGuess.pointsAwarded
-		if correctGuess.guess != puzzle.answer:
-			altAns = correctGuess.guess
-		else:
-			altAns = None
+		altAns = correctGuess.guess if correctGuess.guess != puzzle.answer else None
 		return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle, 'points':points, 'team':team, 'altAns':altAns})
 
-	if team.guesses <= 0:
-		return render(request, 'PHapp/noGuesses.html')
+	if not team.guesses:
+		return noGuessesLeft(request, team)
+
+	# Default value
+	solveType = -1
+	displayGuess = None
 
 	if request.method == 'POST':
 		solveform = SolveForm(request.POST)
 		if solveform.is_valid():
 			guess = stripToLetters(solveform.cleaned_data['guess'])
-			altAnswersList = [i.altAnswer for i in AltAnswers.objects.filter(puzzle=puzzle)]
-			
 
-			if guess == puzzle.answer or guess in altAnswersList:
-				newSubmit = SubmittedGuesses()
-				newSubmit.team = request.user
-				newSubmit.puzzle = puzzle
-				newSubmit.guess = guess
-				newSubmit.submitTime = aest.localize(datetime.datetime.now())
-				newSubmit.correct = True
-				newSubmit.pointsAwarded = calcWorth(puzzle, releaseTimes)
-				newSubmit.save()
+			if guess == puzzle.answer or AltAnswers.objects.filter(puzzle=puzzle).filter(altAnswer=guess):
+				# Correct guess!
+				pointsAwarded = calcWorth(puzzle, RELEASE_TIMES)
+				SubmittedGuesses.objects.create(
+					team = request.user,
+					puzzle = puzzle,
+					guess = guess,
+					correct = True,
+					pointsAwarded = pointsAwarded,
+				)
 
-				solveTime = calcSolveTime(team, releaseTimes)
+				solveTime = calcSolveTime(team, RELEASE_TIMES)
 				team.avHr = solveTime[1]
 				team.avMin = solveTime[2]
 				team.avSec = solveTime[3]
-				team.teamPoints += calcWorth(puzzle, releaseTimes)
+				team.teamPoints += pointsAwarded
 				team.teamPuzzles += 1
 				team.save()
+				puzzle.solveCount = puzzle.solveCount + 1
+				puzzle.save()
 
-				try:
-					webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
-					webhookTitle = '**{}** solved **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
-					webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
-					webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=47872)
-					webhook.add_embed(webhookEmbed)
-					webhook.execute()
-				except:
-					pass
+			#	try:
+			#	webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+			#		webhookTitle = '**{}** solved **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
+			#		webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+			#		webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=47872)
+			#		webhook.add_embed(webhookEmbed)
+			#		webhook.execute()
+			#	except:
+			#		pass
 
-				return redirect('/solve/{}/'.format(title))
+				return redirect(f'/solve/{act}/{scene}')
+
+			elif SubmittedGuesses.objects.filter(guess=guess, puzzle=puzzle, team=request.user):
+				# Duplicate guess
+				solveType = SOLVE_DUPLICATE
+				displayGuess = guess
 
 			else:
-				if len(SubmittedGuesses.objects.filter(guess=guess, puzzle=puzzle, team=team.authClone)) == 0:
-					newSubmit = SubmittedGuesses()
-					newSubmit.team = request.user
-					newSubmit.puzzle = puzzle
-					newSubmit.guess = guess
-					newSubmit.submitTime = aest.localize(datetime.datetime.now())
-					newSubmit.correct = False
-					newSubmit.save()
-					team.guesses -= 1
-					team.save()
-					displayWrong = True
-					displayDouble = False
-					displayGuess = None
+				# Incorrect guess
+				SubmittedGuesses.objects.create(
+					team = request.user,
+					puzzle = puzzle,
+					guess = guess,
+					correct = False,
+					pointsAwarded = calcWorth(puzzle, RELEASE_TIMES),
+				)
+				team.guesses -= 1
+				team.save()
+				solveType = SOLVE_WRONG
+				displayGuess = None
 
-				else:
-					displayWrong = False
-					displayDouble = True
-					displayGuess = guess
+				puzzle.guessCount = puzzle.guessCount + 1
+				puzzle.save()
 
-				try:
-					webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
-					webhookTitle = '**{}** incorrectly attempted **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
-					webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
-					webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=12255232)
-					webhook.add_embed(webhookEmbed)
-					webhook.execute()
-				except:
-					pass
+			#	try:
+			#		webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+			#		webhookTitle = '**{}** incorrectly attempted **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
+			#		webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+			#		webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=12255232)
+			#		webhook.add_embed(webhookEmbed)
+			#		webhook.execute()
+			#	except:
+			#		pass
 
-				solveform = SolveForm()
+	# Reset solve form
+	solveform = SolveForm()
 
-	else:
-		solveform = SolveForm()
-		displayWrong = False
-		displayDouble = False
-		displayGuess = None
-
-	previousGuesses = [i.guess for i in SubmittedGuesses.objects.filter(puzzle=puzzle, team=team.authClone, correct=False)]
-	previousGuesses = sorted(previousGuesses)
+	previousGuesses = SubmittedGuesses.objects.filter(puzzle=puzzle, team=request.user, correct=False).values_list('guess', flat=True)
+	# I feel like reverse chronological order of guess submission is more intuitive?
+	# previousGuesses = sorted(previousGuesses)
+	previousGuesses = previousGuesses[::-1]
 
 	return render(request, 'PHapp/solve.html', 
-		{'solveform':solveform, 'displayWrong':displayWrong, 'displayDouble':displayDouble, 'displayGuess':displayGuess, 'puzzle':puzzle, 'team':team, 'previousGuesses':previousGuesses})
+		{'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':puzzle, 'team':team, 'previousGuesses':previousGuesses})
+
+@login_required
+def solveMiniMeta(request, act):
+	# Just prettifies the URLs a bit
+	return solve(request, act, 5)
 
 def teams(request):
-	if len(Teams.objects.all()) == 0:
+	if not Teams.objects.all():
 		return render(request, 'PHapp/teams.html', {'teamsExist':False})
 
 	allTeams = []
 	totRank = 1
 	ausRank = 1
 
-	teamsWithSolves = Teams.objects.filter(teamPoints__gt=0)
-	for team in teamsWithSolves:
-		allTeams.append([team, "{:02d}h {:02d}m {:02d}s".format(team.avHr, team.avMin, team.avSec), team.avHr, team.avMin, team.avSec])
+	for team in Teams.objects.all():
+		if team.teamPuzzles:
+			allTeams.append([team, "{:02d}h {:02d}m {:02d}s".format(team.avHr, team.avMin, team.avSec), team.avHr, team.avMin, team.avSec])
+		else:
+			allTeams.append([team, '-', 0, 0, 0])
 
-	allTeams = sorted(allTeams, key=lambda x:x[0].id) #sort by ID
-	allTeams = sorted(allTeams, key=lambda x:3600*x[2]+60*x[3]+x[4]) #sort by average solve time
-	allTeams = sorted(allTeams, key=lambda x:-x[0].teamPuzzles) #sort by team puzzles
-	allTeams = sorted(allTeams, key=lambda x:-x[0].teamPoints) #sort by team points
+	# Sort by points, then # of puzzles solved, then average solve time, then ID
+	allTeams = sorted(allTeams, key=lambda x:(-x[0].teamPoints, -x[0].teamPuzzles, 3600*x[2]+60*x[3]+x[4], x[0].id) )
 
 	for i in range(len(allTeams)):
-		allTeams[i].append(totRank)
-		totRank += 1
-		if allTeams[i][0].aussie:
-			allTeams[i].append(ausRank)
-			ausRank += 1
+		if allTeams[i][0].teamPuzzles:
+			allTeams[i].append(i + 1)
+			if allTeams[i][0].aussie:
+				allTeams[i].append(ausRank)
+			else:
+				allTeams[i].append('-')
 		else:
-			allTeams[i].append('-')
-
-	teamsWithoutSolves = Teams.objects.filter(teamPoints=0)
-	allTeams += sorted([[team, '-', None, None, None, '-', '-'] for team in teamsWithoutSolves], key=lambda x:x[0].id)
+			allTeams[i] += ['-', '-']
+		if allTeams[i][0].aussie:
+			ausRank = ausRank + 1
 
 	teamName = None
 	if request.user.is_authenticated:
-		teamName = Teams.objects.get(authClone = request.user).teamName
+		teamName = request.user.teams.teamName
 	
 	return render(request, 'PHapp/teams.html', {'allTeams':allTeams, 'teamName':teamName, 'teamsExist':True})
 
 def teamReg(request):
 	if request.user.is_authenticated:
 		return redirect('/')
+
+	huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
+	if huntOver:
+		return render(request, 'PHapp/huntOver.html')
 
 	if request.method == 'POST':
 		userForm = UserCreationForm(request.POST)
@@ -297,15 +512,15 @@ def teamReg(request):
 			except:
 				pass
 
-			try:
-				webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
-				webhookTitle = 'New team: **{}**'.format(newTeam.teamName)
-				webhookDesc = 'Usename: {}\nMembers: {}\nAustralian: {}'.format(username, str(indivNo), 'Yes' if newTeam.aussie else 'No')
-				webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=16233769)
-				webhook.add_embed(webhookEmbed)
-				webhook.execute()
-			except:
-				pass
+		#	try:
+		#		webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+		#		webhookTitle = 'New team: **{}**'.format(newTeam.teamName)
+		#		webhookDesc = 'Usename: {}\nMembers: {}\nAustralian: {}'.format(username, str(indivNo), 'Yes' if newTeam.aussie else 'No')
+		#		webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=16233769)
+		#		webhook.add_embed(webhookEmbed)
+		#		webhook.execute()
+		#	except:
+		#		pass
 
 			return redirect('/team/{}'.format(str(newTeam.id)))
 	
@@ -318,6 +533,10 @@ def teamReg(request):
 
 @login_required
 def editTeamMembers(request):
+	huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
+	if huntOver:
+		return render(request, 'PHapp/huntOver.html')
+
 	team = Teams.objects.get(authClone = request.user)
 	existing = len(Individuals.objects.filter(team=team))
 	if existing >= 10:
@@ -356,36 +575,52 @@ def teamInfo(request, teamId):
 		team = Teams.objects.get(id=teamId)
 	except:
 		raise Http404()
-	membersList = sorted([i for i in Individuals.objects.filter(team=team)], key=lambda x:x.name)
-	correctList = [[i, calcSingleTime(i, i.submitTime, releaseTimes)[0], len(SubmittedGuesses.objects.filter(team=team.authClone, correct=False, puzzle=i.puzzle))] for i in SubmittedGuesses.objects.filter(team=team.authClone, correct=True)]
-	correctList = sorted(correctList, key=lambda x:x[0].submitTime)
-	anySolves = True if len(correctList) > 0 else False
-	avSolveTime = "{:02d}h {:02d}m {:02d}s".format(team.avHr, team.avMin, team.avSec) if anySolves else 'N/A'
+	membersList = sorted(list(Individuals.objects.filter(team=team)), key=lambda x: x.name)
+	correctGuesses = SubmittedGuesses.objects.filter(team=team.authClone, correct=True)
+	correctList = []
+	for guess in correctGuesses:
+		if IsMetaPart1(guess.puzzle):
+			continue
+		correctList += [(str(guess.puzzle), guess, prettyPrintDateTime(calcSingleTime(guess, RELEASE_TIMES)), SubmittedGuesses.objects.filter(team=team.authClone, correct=False, puzzle=guess.puzzle).count())]
+	correctList.sort(key=lambda x:x[1].submitTime)
+	anySolves = bool(correctList)
+	avSolveTime = "{:02d}h {:02d}m {:02d}s".format(team.avHr, team.avMin, team.avSec) if anySolves else '-'
 	return render(request, 'PHapp/teamInfo.html', {'team':team, 'members':membersList, 'donation':str(len(membersList)*2),'correctList':correctList, 'anySolves':anySolves, 'avSolveTime':avSolveTime})
 
-@login_required
-def hints(request, title):
+def hints(request, act, scene):
+	if act == 7:
+		actNumber = 7
+	else:
+		actNumber = RomanToInt(act)
+		if not actNumber:
+			raise Http404()
 	try:
-		puzzle = Puzzles.objects.get(pdfPath=title)
+		puzzle = Puzzles.objects.get(act=actNumber,scene=scene)
 	except:
 		raise Http404()
-	if releaseStage(releaseTimes) < puzzle.releaseStatus:
+	if releaseStage(RELEASE_TIMES) < puzzle.releaseStatus:
 		raise Http404()
 
 	toRender = []
 	anyHints = False
-	nextHint = releaseTimes[puzzle.releaseStatus]
-	if releaseStage(releaseTimes) - puzzle.releaseStatus >= 1:
+	nextHint = RELEASE_TIMES[puzzle.releaseStatus]
+	if releaseStage(RELEASE_TIMES) - puzzle.releaseStatus >= 1:
 		toRender.append([1, puzzle.hint1])
 		anyHints = True
-		nextHint = releaseTimes[puzzle.releaseStatus + 1]
-	if releaseStage(releaseTimes) - puzzle.releaseStatus >= 2:
+		nextHint = RELEASE_TIMES[puzzle.releaseStatus + 1]
+	if releaseStage(RELEASE_TIMES) - puzzle.releaseStatus >= 2:
 		toRender.append([2, puzzle.hint2])
-		nextHint = releaseTimes[puzzle.releaseStatus + 2]
-	if releaseStage(releaseTimes) - puzzle.releaseStatus >= 3:
+		nextHint = RELEASE_TIMES[puzzle.releaseStatus + 2]
+	if releaseStage(RELEASE_TIMES) - puzzle.releaseStatus >= 3:
 		toRender.append([3, puzzle.hint3])
 		nextHint = None
 	return render(request, 'PHapp/hints.html', {'toRender':toRender, 'anyHints':anyHints, 'nextHint':nextHint, 'puzzle':puzzle})
+
+def hintsMiniMeta(request, act):
+	return hints(request, act, 5)
+
+def hintsMeta(request):
+	return hints(request, 7, 2)
 
 def faq(request):
 	return render(request, 'PHapp/faq.html')
@@ -394,7 +629,7 @@ def rules(request):
 	return render(request, 'PHapp/rules.html')
 
 def debrief(request):
-	if not huntFinished(releaseTimes):
+	if not huntFinished(RELEASE_TIMES):
 		raise Http404()
 	else:
 		return render(request, 'PHapp/home.html')

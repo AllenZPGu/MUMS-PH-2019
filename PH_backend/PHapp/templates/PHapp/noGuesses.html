@@ -1,0 +1,26 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}<br>
+<div class="outer-container">
+<div class="inner-container">
+	<center>
+		{% if huntStage == 0 %}
+		<!-- Hunt is yet to start -->
+		<h4 style='color: red'>The puzzle hunt has not started.</h4>
+		<h4>100 guesses will be released when the puzzle hunt starts in {{ nextGuesses }}</h4>
+		{% elif huntStage == 1 %}
+		<h4 style='color: red'>You have no more guesses remaining for now.</h4>
+		<h4>Your next 100 guesses will be released in {{ nextGuesses }}</h4>
+		{% elif huntStage == 2 %}
+		<h4>You have no more guesses remaining for the hunt.</h4>
+		{% elif huntStage == 3 %}
+		<h4>The puzzle hunt is over. You now have unlimited guesses, so you should not be seeing this message. Please contact the hunt organisers.</h4> 
+		{% endif %}
+		
+		
+	</center>
+	
+</div>
+</div>
+{% endblock %}

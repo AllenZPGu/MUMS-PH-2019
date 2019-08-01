@@ -12,22 +12,19 @@
 		<script charset="utf-8" src="{% static 'PHapp/js/cube/vendor/jquery.js'%}"></script>
   	<script charset="utf-8" src="{% static 'PHapp/js/cube/vendor/skip.js'%}"></script>		
     <script charset="utf-8" src="{% static 'PHapp/js/cube/vendor/Projector.js'%}"></script>		
-        
+		
+		<script src="/dynamic/cubedata.js"></script>
 		<script charset="utf-8" src="{% static 'PHapp/js/cube/cube_min.js'%}"></script>
 {% endblock %}
 
 {% block content %}
 
-<div class="home-heading">
-	<h1>MUMS Puzzle Hunt 2019</h1>
-	<h3>7th Aug 2019 - 16th Aug 2019</h3>
-</div>
 
 <div class="fill graydient" id="outer-container">
 	<div id="cube-container">
-		<div class="heading">
-			<br><br><br><br>
-			<h4 id="loading-message">Cube loading: may take a few seconds.</h4>
+		<div class="home-heading">
+			<h1>MUMS Puzzle Hunt 2019</h1>
+			<h3>7th Aug 2019 - 16th Aug 2019</h3>
 		</div>
 	</div>
 <div id="controlsOpen">
@@ -37,10 +34,10 @@
 </div>
 <div id="controls">
 	<div class="pad">
-		<a id="controlsClose" class="key" href="." onclick="$('#controls').fadeOut( 500 );$('#controlsOpen').fadeIn( 500 );return false">&uarr;</a>
 
 		<div id="commands">
-			<h2>Keyboard commands</h2>
+			<a id="controlsClose" href="." onclick="$('#controls').fadeOut( 500 );$('#controlsOpen').fadeIn( 500 );return false">&times;</a>
+			<h4>Keyboard commands</h4>
 			<div class="keyBundle">
 				<a class="key" href="javascript:cube.twistQueue.add('X')">X</a><a class="key" href="javascript:cube.twistQueue.add('x')">x</a> whole cube<br>
 				<a class="key" href="javascript:cube.twistQueue.add('L')">L</a><a class="key" href="javascript:cube.twistQueue.add('l')">l</a> left face<br>
@@ -72,8 +69,11 @@
 			resizeContent();
 		}
 		function resizeContent() {
-			let vph = $(window).height, header_height = $(".navbar-container")[0].clientHeight
-		$("#content-wrapper").css({"top": header_height + "px", "max-height": (vph-header_height) + "px"});
+			let vph = $(window).height(), header_height = $(".navbar-container")[0].clientHeight, footerheight = $(".footer")[0].clientHeight
+			$("#content-wrapper").css({"top": header_height + "px", "height": (vph-header_height-footerheight) + "px"});
+			if (!erno.stateFrames) {
+				loop()
+			}
 		}
 	</script>
 

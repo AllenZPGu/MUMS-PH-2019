@@ -2,23 +2,33 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block content %}
+{% block content %}<br>
 <div class="outer-container">
 <div class="inner-container">
 	<center>
-		<h4>Enter a guess for <a href='/puzzle/{{puzzle.pdfPath}}.pdf'>Act {{puzzle.act}} Scene {{puzzle.scene}}: {{puzzle.title}}</a></h4>
+		<h4>Enter a guess for <a href='{{puzzle.pdfURI}}'>{{puzzle.hyperlinkText}}: {{puzzle.title}}</a></h4>
 		<br>
 
-		{% if displayWrong %}
+		{% if solveType == 0 %}
 			<h4 style='color:red'>Incorrect!</h4>
 			<h4 style='color:red'>{{puzzle.losePun}}</h4>
 			<br>
-		{% endif %}
-
-		{% if displayDouble %}
+		{% elif solveType == 1 %}
 			<h4 style='color:red'>You have already guessed "{{displayGuess}}"!</h4>
-			<h4 style='color:red'>For the record, it was incorrect. This does not affect your remaining incorrect guesses.</h4>
+			<h5>For the record, it was incorrect. This does not affect your remaining guesses.</h5>
 			<br>
+		{% elif solveType == 2 %}
+			<h4 style='color:green'>Correct!</h4>
+			{% if altAns %}
+				<h5>Your solution of <font style='color:green'><b>{{altAns}}</b></font> is acceptable, but the actual solution is:</h5>
+				<h4 style='color:green'>{{puzzle.answer}}</h4>
+				<br>
+			{% endif %}
+			<h4 style='color:green'>{{puzzle.winPun}}</h4>
+			<br>
+		{% elif solveType == 3 %}
+			<h4 style='color:green'>You have already guessed "{{displayGuess}}"!</h4>
+			<h4 style='color:green'>For the record, it was correct. This does not affect your remaining guesses.</h4>
 		{% endif %}
 
 		<h6>You have {{team.guesses}} guesses remaining.</h6>
@@ -35,7 +45,7 @@
 	</div>
 
 	<br>
-	<button class="btn btn-info btn-block" type="button" data-toggle="collapse" data-target="#guessCollapse" aria-expanded="false" aria-controls="guessCollapse">
+	<button class="btn btn-info btn-block" type="button" data-toggle="collapse" data-target="#guessCollapse" aria-expanded="true" aria-controls="guessCollapse">
 		Click to display / hide your previous incorrect guesses.
 	</button>
 
@@ -43,7 +53,8 @@
 		<div class="card card-body">
 			<center>
 				{% for previousGuess in previousGuesses %}
-					<p>{{previousGuess}}</p>
+				<p {% if previousGuess.correct %} style="color:green; font-weight: bolder" {% endif %}>
+					{{previousGuess}}</p>
 				{% endfor %}
 			</center>
 		</div>

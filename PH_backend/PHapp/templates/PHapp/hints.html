@@ -1,11 +1,11 @@
 {% extends "PHapp/header.html" %}
 {% load static %}
 
-{% block content %}
+{% block content %}<br>
 <div class="outer-container">
 <div class="inner-container">
 	<center>
-	<h4>Hints for <a href='/puzzle/{{puzzle.pdfPath}}.pdf'>Act {{puzzle.act}} Scene {{puzzle.scene}}: {{puzzle.title}}</a>:</h4>
+	<h4>Hints for <a href='/{{puzzle.pdfURI}}'>{{puzzle.hyperlinkText}}: {{puzzle.title}}</a>:</h4>
 	<br>
 	{% if anyHints %}
 		{% for hintNo, hint in toRender %}

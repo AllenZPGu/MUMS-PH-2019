@@ -8,3 +8,4 @@ admin.site.register(Teams)
 admin.site.register(SubmittedGuesses)
 admin.site.register(Individuals)
 admin.site.register(AltAnswers)
+
