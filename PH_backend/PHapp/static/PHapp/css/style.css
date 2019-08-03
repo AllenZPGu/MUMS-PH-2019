@@ -96,3 +96,9 @@ table td.shrink {
 table td.expand {
     width: 99%;
 }
+
+.flag-emoji {
+	height:2.5rem; 
+	display: inline-block; 
+	vertical-align: center;
+}
