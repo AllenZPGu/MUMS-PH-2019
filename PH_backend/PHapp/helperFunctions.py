@@ -93,6 +93,7 @@ def huntFinished(releaseTimes):
 
 def calcNextRelease(releaseTimes):
 	now = AEST.localize(datetime.datetime.now())
+	print(releaseTimes)
 
 	for i in range(len(releaseTimes)):
 		if (releaseTimes[i]-now).days >= 0:
