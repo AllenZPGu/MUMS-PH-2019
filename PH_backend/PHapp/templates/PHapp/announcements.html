@@ -6,23 +6,17 @@
 <div class="inner-container">
 	<h2>Announcements</h2>
 	Announcements are sorted by most recent first. All times are in AEST (UTC+10)
-	
+
 	<table>
 		<tbody>
 			{% for message, msgTime in messageList %}
 				<tr>
-					<td class="shrink">{{msgTime}}: </td>
-					<td>{{message | safe}}</td>
+					<td class="shrink align-top" style="padding-right: 10px; padding-top: 20px;">{{msgTime}}:</td>
+					<td style="padding-left: 10px; padding-top: 20px;">{{message | safe}}</td>
 				</tr>
 			{% endfor %}
 		</tbody>
 	</table>
-	{% for message, msgTime in messageList %}
-		<div>
-			<br>
-		{{msgTime}}: {{message | safe}}
-		</div>
-	{% endfor %}
 
 </div>
 </div>
