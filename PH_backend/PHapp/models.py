@@ -130,3 +130,11 @@ class AltAnswers(models.Model):
 
     class Meta:
         db_table = 'AltAnswers'
+
+class Announcements(models.Model):
+    id = models.AutoField(primary_key=True)
+    msgTime = models.DateTimeField(auto_now_add=True, null=True)
+    msg = models.TextField(max_length=1000, null=True)
+
+    class Meta:
+        db_table = 'Announcements'
