@@ -9,7 +9,7 @@ from django.forms import formset_factory, ValidationError
 from django.core.mail import send_mail
 from django.views.decorators.http import last_modified
 from django.urls import reverse
-from .models import Puzzles, Teams, SubmittedGuesses, Individuals, AltAnswers
+from .models import Puzzles, Teams, SubmittedGuesses, Individuals, AltAnswers, Announcements
 from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginForm, BaseIndivRegFormSet
 from django.conf import settings
 import json
@@ -638,7 +638,9 @@ def debrief(request):
         return render(request, 'PHapp/home.html')
 
 def announcements(request):
-    return render(request, 'PHapp/announcements.html')
+    messageList = [(i.msg, i.msgTime.astimezone(AEST).strftime("%d/%m/%Y %I:%M%p").lower()) for i in sorted(list(Announcements.objects.all()), key=lambda x: x.msgTime)]
+    messageList.reverse()
+    return render(request, 'PHapp/announcements.html', {'messageList':messageList})
 
 def loginCustom(request):
     if request.user.is_authenticated:
