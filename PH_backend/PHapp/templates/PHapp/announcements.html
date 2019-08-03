@@ -6,19 +6,17 @@
 <div class="inner-container">
 	<h2>Announcements</h2>
 	Announcements are sorted by most recent first. All times are in AEST (UTC+10)
-	<div>
-		<br>
-		31/07/2019 08:16pm: We've received reports that our emails are being flagged as spam by some recipients' email filters. Please ensure that you check your spam folder regularly so that you do not miss important communications!
-	</div>
-	<div>
-		<br>
-		31/07/2019 12:00pm: The Prologue for the hunt is now available from the <a href='/puzzles/'>puzzles page</a>.
-	</div>
-	<div>
-		<br>
-		01/07/2019 12:00pm: Registrations are live! Head to the <a href='/registration/'>registration page</a> to register your team.
-	</div>
-
+	
+	<table>
+		<tbody>
+			{% for message, msgTime in messageList %}
+				<tr>
+					<td class="shrink">{{msgTime}}: </td>
+					<td>{{message | safe}}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 	{% for message, msgTime in messageList %}
 		<div>
 			<br>
