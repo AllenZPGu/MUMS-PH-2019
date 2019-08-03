@@ -23,7 +23,7 @@
 <div class="fill graydient" id="outer-container">
 	<div id="cube-container">
 		<div class="home-heading">
-			<h1>MUMS Puzzle Hunt 2019</h1>
+			<h1><b>MUMS Puzzle Hunt 2019</b></h1>
 			<h3>7th Aug 2019 - 16th Aug 2019</h3>
 		</div>
 	</div>
@@ -71,6 +71,8 @@
 		function resizeContent() {
 			let vph = $(window).height(), header_height = $(".navbar-container")[0].clientHeight, footerheight = $(".footer")[0].clientHeight
 			$("#content-wrapper").css({"top": header_height + "px", "height": (vph-header_height-footerheight) + "px"});
+			$("#content-wrapper").removeClass("container");
+			$("#content-wrapper").addClass("content-wrapper-container");
 			if (!erno.stateFrames) {
 				loop()
 			}

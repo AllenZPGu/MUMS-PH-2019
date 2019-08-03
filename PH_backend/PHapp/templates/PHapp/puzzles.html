@@ -25,23 +25,29 @@
 				<td class="shrink">-</td>
 			</tr>
 			{% if nextRelease.0 != 0 %}
-				{% for puzzle, solved, correct, incorrect, worth in puzzleList %}
-					<tr>
-						<td class="shrink">{{puzzle.hyperlinkText}}</td>
-						<td class="expand">
-							<a href='/{{puzzle.pdfURI}}' target="_blank">{{puzzle.title}}</a>
-						</td>
-						
-						{% if solved %}
-							<td class="shrink" style="color:green"><b>{{worth}}<b></td>
-							<td class="shrink" style="color:green"><b>{{puzzle.answer}}</b></td>
-						{% else %}
-							<td class="shrink">{{worth}}</td>
-							<td class="shrink"><a href="/solve/{{puzzle.solveURI}}">Solve</a></td>
-						{% endif %}
-						<td class="shrink"><a href='/hints/{{puzzle.solveURI}}'>Hints</a></td>
-						<td class="shrink"><a href='/puzzlestats/{{puzzle.solveURI}}'>{{correct}}/{{incorrect}}</a></td>
-					</tr>
+				{% for isPuzzle, puzzle, solved, correct, incorrect, worth in puzzleList %}
+					{% if isPuzzle %}
+						<tr>
+							<td class="shrink">{{puzzle.hyperlinkText}}</td>
+							<td class="expand">
+								<a href='/{{puzzle.pdfURI}}' target="_blank">{{puzzle.title}}</a>
+							</td>
+							
+							{% if solved %}
+								<td class="shrink" style="color:green"><b>{{worth}}<b></td>
+								<td class="shrink" style="color:green"><b>{{puzzle.answer}}</b></td>
+							{% else %}
+								<td class="shrink">{{worth}}</td>
+								<td class="shrink"><a href="/solve/{{puzzle.solveURI}}">Solve</a></td>
+							{% endif %}
+							<td class="shrink"><a href='/hints/{{puzzle.solveURI}}'>Hints</a></td>
+							<td class="shrink"><a href='/puzzlestats/{{puzzle.solveURI}}'>{{correct}}/{{incorrect}}</a></td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6" align="center" style="color:red; font-weight: bold;">{{puzzle}}</td>
+						</tr>
+					{% endif %}
 				{% endfor %}
 			{% endif %}
 		</tbody>

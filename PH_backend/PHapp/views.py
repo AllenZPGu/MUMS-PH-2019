@@ -29,6 +29,8 @@ SOLVE_DUPLICATE = 1
 SOLVE_METAHALF = 2
 SOLVE_METAHALFDUPLICATE = 3
 
+turnOnDiscord = False
+
 #releaseTimes = [aest.localize(datetime.datetime(2019, 6, 24, 12)) + datetime.timedelta(days=i) for i in range(10)]
 
 def index(request):
@@ -104,7 +106,7 @@ def cubeData(request):
 def puzzles(request):
     puzzleList = []
     if request.user.is_authenticated:
-        userCorrectGuesses = SubmittedGuesses.objects.filter(correct=True).filter(team=request.user)
+        userCorrectGuesses = SubmittedGuesses.objects.filter(correct=True, team=request.user)
     else:
         userCorrectGuesses = None
     for puzzle in Puzzles.objects.filter(releaseStatus__lte = releaseStage(RELEASE_TIMES)):
@@ -115,16 +117,23 @@ def puzzles(request):
 
         if thisPuzzleCorrect:
             correctGuess = thisPuzzleCorrect[0]
-            puzzleList.append( (puzzle, True, puzzle.solveCount, puzzle.guessCount, correctGuess.pointsAwarded) )
+            puzzleList.append((True, puzzle, True, puzzle.solveCount, puzzle.guessCount, correctGuess.pointsAwarded) )
         else:
-            puzzleList.append((puzzle, False, puzzle.solveCount, puzzle.guessCount, calcWorth(puzzle, RELEASE_TIMES)))
+            puzzleList.append((True, puzzle, False, puzzle.solveCount, puzzle.guessCount, calcWorth(puzzle, RELEASE_TIMES)))
             
-    puzzleList = sorted(puzzleList, key=lambda x:(x[0].act, x[0].scene))
+    puzzleList = sorted(puzzleList, key=lambda x:(x[1].act, x[1].scene))
+
+    #adding gaps in table
+    realPuzzleList = []
+    n = 0
+    for i in puzzleList:
+        if n < i[1].act:
+            n = i[1].act
+            realPuzzleList.append((False, f'Act {IntToRoman(n)}', None, None, None, None))
+        realPuzzleList.append(i)
 
     nextRelease = calcNextRelease(RELEASE_TIMES)
-    print(nextRelease)
-
-    return render(request, 'PHapp/puzzles.html', {'puzzleList':puzzleList, 'nextRelease':nextRelease})
+    return render(request, 'PHapp/puzzles.html', {'puzzleList':realPuzzleList, 'nextRelease':nextRelease})
 
 
 def puzzleInfo(request, act, scene):
@@ -355,15 +364,16 @@ def solve(request, act, scene):
                 puzzle.solveCount = puzzle.solveCount + 1
                 puzzle.save()
 
-                try:
-                    webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
-                    webhookTitle = '**{}** solved **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
-                    webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
-                    webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=47872)
-                    webhook.add_embed(webhookEmbed)
-                    webhook.execute()
-                except:
-                    pass
+                if turnOnDiscord:
+                    try:
+                        webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+                        webhookTitle = '**{}** solved **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
+                        webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+                        webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=47872)
+                        webhook.add_embed(webhookEmbed)
+                        webhook.execute()
+                    except:
+                        pass
 
                 return redirect(f'/solve/{act}/{scene}')
 
@@ -389,15 +399,16 @@ def solve(request, act, scene):
                 puzzle.guessCount = puzzle.guessCount + 1
                 puzzle.save()
 
-                try:
-                    webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
-                    webhookTitle = '**{}** incorrectly attempted **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
-                    webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
-                    webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=12255232)
-                    webhook.add_embed(webhookEmbed)
-                    webhook.execute()
-                except:
-                    pass
+                if turnOnDiscord:
+                    try:
+                        webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+                        webhookTitle = '**{}** incorrectly attempted **{}.{} {}**'.format(team.teamName, puzzle.act, puzzle.scene, puzzle.title)
+                        webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+                        webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=12255232)
+                        webhook.add_embed(webhookEmbed)
+                        webhook.execute()
+                    except:
+                        pass
 
     # Reset solve form
     solveform = SolveForm()
@@ -502,16 +513,16 @@ def teamReg(request):
                 msg_name = 'Team name: ' + newTeam.teamName + '\n\n'
             
                 message = 'Thank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
-                subject = '[PH2019] Team registered'
+                subject = '[MPH 2019] Team registered'
                 email_from = settings.EMAIL_HOST_USER
                 send_mail( subject, message, email_from, recipient_list )
 
             
-                message = 'Subject: [MPH 2019] Team registered\n\nThank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
-                context = ssl.create_default_context()
-                with smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT, context=context) as emailServer:
-                    emailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-                    emailServer.sendmail(settings.EMAIL_HOST_USER, recipient_list, message)
+                # message = 'Subject: [MPH 2019] Team registered\n\nThank you for registering for the 2019 MUMS Puzzle Hunt. Please find below your team details:\n\n' + msg_username + msg_name + 'A reminder that you will need your username, and not your team name, to login.\n\n' + 'Regards,\n' + 'MUMS Puzzle Hunt Organisers'
+                # context = ssl.create_default_context()
+                # with smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT, context=context) as emailServer:
+                #     emailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+                #     emailServer.sendmail(settings.EMAIL_HOST_USER, recipient_list, message)
             except:
                 pass
 
