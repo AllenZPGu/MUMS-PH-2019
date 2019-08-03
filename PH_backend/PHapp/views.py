@@ -638,7 +638,7 @@ def debrief(request):
         return render(request, 'PHapp/home.html')
 
 def announcements(request):
-    messageList = sorted(list(Announcements.objects.all()), key=lambda x: x.msgTime)
+    messageList = [(i, i.msgTime.strftime("%d/%m/%Y %I:%M%p").lower()) for i in sorted(list(Announcements.objects.all()), key=lambda x: x.msgTime)]
     return render(request, 'PHapp/announcements.html', {'messageList':messageList})
 
 def loginCustom(request):

@@ -19,8 +19,11 @@
 		01/07/2019 12:00pm: Registrations are live! Head to the <a href='/registration/'>registration page</a> to register your team.
 	</div>
 
-	{% for message in messageList %}
-		{{message.msg}}
+	{% for message, msgTime in messageList %}
+		<div>
+			<br>
+		{{msgTime}}: {{message | safe}}
+		</div>
 	{% endfor %}
 
 </div>
