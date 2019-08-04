@@ -8,10 +8,12 @@
 	<h6>Team information</h6>
 
 	{% if team.aussie %}
-		<div style="white-space:nowrap;">
-			<img src="{% static 'PHapp/img/flag.png' %}" class='flag-emoji' style="margin-right:20px;">
-			<h1 style='display: inline-block; margin-bottom: 0px; vertical-align: top'>{{team.teamName}}</h1>
-			<img src="{% static 'PHapp/img/flag.png' %}" class='flag-emoji' style="margin-left:20px;">
+		<div>
+			<h1 style='display: inline-block; margin-bottom: 0px; vertical-align: top'>
+				<img src="{% static 'PHapp/img/flag.png' %}" class='flag-emoji' style="margin-right:20px;">
+				{{team.teamName}}
+				<img src="{% static 'PHapp/img/flag.png' %}" class='flag-emoji' style="margin-left:20px;">
+			</h1>
 		</div>
 	{% else %}
 		<h1>{{team.teamName}}</h1>
