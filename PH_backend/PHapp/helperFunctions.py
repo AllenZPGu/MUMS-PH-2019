@@ -187,6 +187,9 @@ def cubeDataColourCell(puzzle):
 		return None
 	return CUBE_CELL_MAP[puzzle.act][puzzle.scene]
 
+def cubeDataColourCellCoords(act, scene):
+    return CUBE_CELL_MAP[act][scene]
+
 def RomanToInt(roman):
 	roman = str(roman)
 	if roman in ('I', 'II', 'III', 'IV', 'V', 'VI'):
