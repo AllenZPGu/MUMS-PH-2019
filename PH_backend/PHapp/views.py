@@ -2,15 +2,18 @@ from django import forms
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django.http import JsonResponse, FileResponse, Http404, HttpResponse
 from django.contrib.auth.models import User
 from django.forms import formset_factory, ValidationError
+from django.core import mail
 from django.core.mail import send_mail
 from django.views.decorators.http import last_modified
 from django.urls import reverse
-from .models import Puzzles, Teams, SubmittedGuesses, Individuals, AltAnswers, Announcements
-from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginForm, BaseIndivRegFormSet
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from .models import *
+from .forms import *
 from django.conf import settings
 import json
 import datetime
@@ -21,8 +24,6 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 import smtplib, ssl
 from .helperFunctions import *
 from .globals import *
-
-# Force rebuild
 
 SOLVE_WRONG = 0
 SOLVE_DUPLICATE = 1
@@ -127,7 +128,9 @@ def puzzles(request):
     realPuzzleList = []
     n = 0
     for i in puzzleList:
-        if n < i[1].act:
+        if i[1].act == 7:
+            realPuzzleList.append((False, f'Meta', None, None, None, None))
+        elif n < i[1].act:
             n = i[1].act
             realPuzzleList.append((False, f'Act {IntToRoman(n)}', None, None, None, None))
         realPuzzleList.append(i)
@@ -218,11 +221,12 @@ def solveMeta(request):
         return render(request, 'PHapp/huntOver.html')
     meta1 = Puzzles.objects.get(act=7, scene=1)
     meta2 = Puzzles.objects.get(act=7, scene=2)
+
     if releaseStage(RELEASE_TIMES) < meta1.releaseStatus:
         raise Http404()
     
     team = Teams.objects.get(authClone = request.user)
-    meta2Guesses = SubmittedGuesses.objects.filter(team=request.user,puzzle=meta2)
+    meta2Guesses = SubmittedGuesses.objects.filter(team=request.user, puzzle=meta2)
     correctGuesses = meta2Guesses.filter(correct=True)
     if correctGuesses:
         correctMeta2Answers = [meta2.answer] + list(AltAnswers.objects.filter(puzzle=meta2))
@@ -240,8 +244,8 @@ def solveMeta(request):
     altAns = None
 
     if request.method == 'POST':
-        solveForm = SolveForm(request.POST)
-        if solveForm.is_valid():
+        solveform = SolveForm(request.POST)
+        if solveform.is_valid():
             guess = stripToLetters(solveform.cleaned_data['guess'])
             alreadySeen = correctGuesses.filter(guess=guess)
             if alreadySeen:
@@ -261,29 +265,26 @@ def solveMeta(request):
                     puzzle = meta1,
                     guess = guess,
                     correct = True,
-                    pointsAwarded = calcWorth(meta1, RELEASE_TIMES)
+                    pointsAwarded = 0
                 )
-                team.teamPoints += calcWorth(meta1, RELEASE_TIMES)
                 team.save()
 
                 solveType = SOLVE_METAHALF
                 altAns = guess if guess != meta1.answer else None
-            elif guess == meta2.answer or AltAnswers.objects.filter(puzzle=meta2,altAnswer=guess):
+            elif guess == meta2.answer or AltAnswers.objects.filter(puzzle=meta2, altAnswer=guess):
                 # This is a meta 2 answer
                 SubmittedGuesses.objects.create(
                     team = request.user,
                     puzzle = meta2,
                     guess = guess,
                     correct = True,
-                    pointsAwarded = calcWorth(meta2, RELEASE_TIMES)
+                    pointsAwarded = 0
                 )
 
                 solveTime = calcSolveTime(team, RELEASE_TIMES)
                 team.avHr = solveTime[1]
                 team.avMin = solveTime[2]
                 team.avSec = solveTime[3]
-                team.teamPoints += calcWorth(meta2, RELEASE_TIMES)
-                team.teamPuzzles += 1
                 team.save()
 
                 meta2.solveCount = meta2.solveCount + 1
@@ -295,15 +296,23 @@ def solveMeta(request):
                 displayGuess = guess
                 meta2.guessCount = meta2.guessCount + 1
                 meta2.save()
+                SubmittedGuesses.objects.create(
+                    team = request.user,
+                    puzzle = meta2,
+                    guess = guess,
+                    correct = False,
+                    pointsAwarded = 0
+                )
+
     
-    solveForm = SolveForm()
-    previousGuesses = SubmittedGuesses.objects.filter(puzzle=puzzle, team=request.user, correct=False).values_list('guess', flat=True)
-    # I feel like reverse chronological order of guess submission is more intuitive?
+    solveform = SolveForm()
+    previousGuesses = SubmittedGuesses.objects.filter(puzzle=meta2, team=request.user, correct=False).values_list('guess', flat=True)
+    # I feel like reverse chronological order of guess submission is more intuitive? ## No cause it'll be easier to search for guesses alphabetically   
     # previousGuesses = sorted(previousGuesses)
     previousGuesses = previousGuesses[::-1]
 
     return render(request, 'PHapp/solve.html', 
-        {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':puzzle, 'team':team, 'previousGuesses':previousGuesses, 'altAns': altAns})
+        {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':meta2, 'team':team, 'previousGuesses':previousGuesses, 'altAns': altAns})
 
 @login_required
 def solve(request, act, scene):
@@ -669,7 +678,10 @@ def loginCustom(request):
                 return render(request, 'PHapp/login.html', {'loginForm':loginForm, 'wrong':True})
             else:
                 login(request, user)
-                return redirect('/')
+                try:
+                    return redirect(request.GET['next'])
+                except:
+                    return redirect('/')
     else:
         loginForm = LoginForm()
 
@@ -678,3 +690,72 @@ def loginCustom(request):
 def logoutCustom(request):
     logout(request)
     return redirect('/')
+
+def passwordChange(request):
+    if request.method == 'POST':
+        emailForm = PasswordChangeEmail(request.POST)
+        if emailForm.is_valid():
+            email = emailForm.cleaned_data.get('email')
+            indivList = list(Individuals.objects.filter(email=email))
+            teamList = list(Teams.objects.filter(teamEmail=email))
+            if indivList or teamList:
+                checkTeamList = [i.team for i in indivList] + teamList
+
+                if all([i == checkTeamList[0] for i in checkTeamList]):
+                    team = checkTeamList[0]
+                    user = team.authClone
+                    token = generateToken()
+                    while len(ResetTokens.objects.filter(token=token)) > 0:
+                        token = generateToken()
+                    ResetTokens.objects.create(
+                        token = token,
+                        user = user
+                    )
+
+                    try:
+                        resetLink = f'{settings.WEB_DOMAIN}/password_reset/{user.id}/{token}'
+                        #email
+                        subject = '[MPH 2019] Password change request'
+                        html_message = render_to_string('PHapp/passwordChangeTemplate.html', {'teamName':team.teamName, 'username': user.username, 'resetLink':resetLink})
+                        plain_message = strip_tags(html_message)
+                        email_from = settings.EMAIL_HOST_USER
+
+                        send_mail(subject, plain_message, email_from, [email], html_message=html_message)
+                    except:
+                        return render(request, 'PHapp/passwordChangeEmailDone.html', {'emailForm':emailForm, 'bad':True})
+
+                    return render(request, 'PHapp/passwordChangeEmailDone.html', {'emailForm':emailForm, 'bad':False})
+                else:
+                    return render(request, 'PHapp/passwordChangeEmailDone.html', {'emailForm':emailForm, 'bad':True})
+
+            else:
+                emailForm = PasswordChangeEmail()
+                return render(request, 'PHapp/passwordChangeEmail.html', {'emailForm':emailForm, 'wrong':True})
+
+    else:
+        emailForm = PasswordChangeEmail()
+    
+    return render(request, 'PHapp/passwordChangeEmail.html', {'emailForm':emailForm, 'wrong':False})
+
+def passwordReset(request, userId, token):
+    logout(request)
+    try:
+        user = User.objects.get(id=userId)
+        token = ResetTokens.objects.get(token=token)
+        if not token.active:
+            return render(request, 'PHapp/passwordReset.html', {'linkExpired':True})
+        team = Teams.objects.get(authClone=user)
+    except:
+        return render(request, 'PHapp/passwordReset.html', {'linkExpired':True})
+
+    if request.method == 'POST':
+        changeForm = SetPasswordForm(user, request.POST)
+        if changeForm.is_valid():
+            changeForm.save()
+            token.active = False
+            token.save()
+            return render(request, 'PHapp/passwordResetDone.html')
+    else:
+        changeForm = SetPasswordForm(user)
+
+    return render(request, 'PHapp/passwordReset.html', {'changeForm':changeForm, 'linkExpired':False, 'user':user, 'team':team})

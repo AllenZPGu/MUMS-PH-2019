@@ -18,13 +18,15 @@
 			<h5>For the record, it was incorrect. This does not affect your remaining guesses.</h5>
 			<br>
 		{% elif solveType == 2 %}
-			<h4 style='color:green'>Correct!</h4>
+			<h4 style='color:green'>Almost...</h4>
 			{% if altAns %}
 				<h5>Your solution of <font style='color:green'><b>{{altAns}}</b></font> is acceptable, but the actual solution is:</h5>
 				<h4 style='color:green'>{{puzzle.answer}}</h4>
 				<br>
+				<h4 style='color:green'>BUT you're not quite there yet...</h4>
+			{% else %}
+				<h5>Your solution of <font style='color:green'><b>{{altAns}}</b></font> means you're not quite there yet...</h5>
 			{% endif %}
-			<h4 style='color:green'>{{puzzle.winPun}}</h4>
 			<br>
 		{% elif solveType == 3 %}
 			<h4 style='color:green'>You have already guessed "{{displayGuess}}"!</h4>

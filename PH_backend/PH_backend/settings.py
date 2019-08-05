@@ -121,14 +121,6 @@ DATABASES = {
     },
 }
 
-
-
-
-
-
-
-
-
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
@@ -190,3 +182,5 @@ EMAIL_HOST_USER = 'mumspuzzlehunt2019@gmail.com'
 EMAIL_HOST_PASSWORD = '420blazer'
 
 SOLVE_BOT_URL = 'https://discordapp.com/api/webhooks/585024945478696961/WuI0J8wGk-GpOPeTayg0AGjL376DdYgo0LUEJjWgH3yz8HnIOvJp71fnrwjef91zYWSL'
+
+WEB_DOMAIN = 'https://www.mumspuzzlehunt.com'

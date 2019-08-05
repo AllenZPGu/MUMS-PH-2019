@@ -49,5 +49,11 @@ urlpatterns = [
 	path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type='text/plain')),
 	path('dynamic/cubedata.js', views.cubeData),
 	path('debrief/', views.debrief),
-	path('announcements/', views.announcements)
+	path('announcements/', views.announcements),
+	path('password_change/', views.passwordChange),
+	path('password_reset/<int:userId>/<str:token>/', views.passwordReset),
+	# path('password_reset/', views.passwordReset),
+	# path('password_reset/done/', views.passwordResetDone),
+	# path('reset/<uidb64>/<token>/', views.passwordResetConfirm),
+	# path('reset/done/', views.resetComplete),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
