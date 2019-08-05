@@ -76,7 +76,7 @@ def cubeData(request):
             for i in range(1, 7):
                 if metascomplete[i]:
                     for j in range(5,10):
-                        colourcell = cubeDataColourCell(puzzle)
+                        colourcell = cubeDataColourCellCoords(i, j)
                         responseData[colourcell[0]]['colors'][colourcell[1]] = PUZZLE_COLOURS[colourcell[0]][colourcell[1]]
     availablePuzzles = Puzzles.objects.filter(releaseStatus__lte = releaseStage(RELEASE_TIMES))
     for puzzle in availablePuzzles:
