@@ -2,8 +2,8 @@ import datetime
 import pytz
 
 AEST = pytz.timezone("Australia/Melbourne")
-#RELEASE_TIMES = [AEST.localize(datetime.datetime(2019, 8, 7, 12)) + datetime.timedelta(days=i) for i in range(10)]
-RELEASE_TIMES = [AEST.localize(datetime.datetime(2019, 7, 29, 12)) + datetime.timedelta(days=i) for i in range(10)]
+RELEASE_TIMES = [AEST.localize(datetime.datetime(2019, 8, 7, 12)) + datetime.timedelta(days=i) for i in range(10)]
+#RELEASE_TIMES = [AEST.localize(datetime.datetime(2019, 7, 29, 12)) + datetime.timedelta(days=i) for i in range(10)]
 PUZZLE_COLOURS = [
 	['W','O','','','G','',], ['O','W','','','','',], ['W','O','B','','','',],
 	['Y','','','','O','',],  ['R','','','','','',],  ['G','','O','','','',],
