@@ -47,6 +47,13 @@ List of tasks (so that we avoid overlap etc)
         - Registration
         - Edit team
 - Fix edit team members page
+- Change password link
+    - DJANGO?
+    - Get GSuite
+- E and M are wrong on cube
+
+- Make cube slightly bigger, lower
+    - M/m are the wrong way around?
 
 - Remove show/hide previous guesses?
     - (why not just show them...)

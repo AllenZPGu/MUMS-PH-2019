@@ -73,28 +73,11 @@ def cubeData(request):
             if correctGuesses.filter(puzzle__act=7).filter(puzzle__scene=2):
                 # Meta 2 is done; set up to colour the whole cube
                 metascomplete = [True] * 8
-            if metascomplete[1]:
-                for i in range(9):
-                    responseData[i]['colors'][0] = PUZZLE_COLOURS[i][0]
-            if metascomplete[2]:
-                for i in range(18, 27):
-                    responseData[i]['colors'][5] = PUZZLE_COLOURS[i][5]
-            if metascomplete[3]:
-                for i in range(2, 27, 3):
-                    responseData[i]['colors'][2] = PUZZLE_COLOURS[i][2]
-            if metascomplete[4]:
-                for i in range(6,9):
-                    for j in range(3):
-                        k = i + 9*j
-                        responseData[k]['colors'][3] = PUZZLE_COLOURS[k][3]
-            if metascomplete[5]:
-                for i in range(3):
-                    for j in range(3):
-                        k = i + 9*j
-                        responseData[k]['colors'][1] = PUZZLE_COLOURS[k][1]
-            if metascomplete[6]:
-                for i in range(0, 25, 3):
-                    responseData[i]['colors'][4] = PUZZLE_COLOURS[i][4]
+            for i in range(1, 7):
+                if metascomplete[i]:
+                    for j in range(5,10):
+                        colourcell = cubeDataColourCellCoords(i, j)
+                        responseData[colourcell[0]]['colors'][colourcell[1]] = PUZZLE_COLOURS[colourcell[0]][colourcell[1]]
     availablePuzzles = Puzzles.objects.filter(releaseStatus__lte = releaseStage(RELEASE_TIMES))
     for puzzle in availablePuzzles:
         if not IsMeta(puzzle):
