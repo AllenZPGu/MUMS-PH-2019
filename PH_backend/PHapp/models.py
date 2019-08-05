@@ -138,3 +138,12 @@ class Announcements(models.Model):
 
     class Meta:
         db_table = 'Announcements'
+
+class ResetTokens(models.Model):
+    id = models.AutoField(primary_key=True)
+    token = models.CharField(max_length=100, null=True)
+    active = models.BooleanField(default = True)
+    user = models.ForeignKey(User, models.DO_NOTHING, db_column = 'user', null=True)
+    
+    class Meta:
+        db_table = 'ResetTokens'

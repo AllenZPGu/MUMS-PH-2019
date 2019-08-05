@@ -2,6 +2,8 @@ import datetime
 import pytz
 from .models import Puzzles, Teams, SubmittedGuesses, Individuals
 from .globals import *
+import random
+import string
 
 def prettyPrintDateTime(td):
 	if td.days:
@@ -196,3 +198,10 @@ def IntToRoman(i):
 		return 0
 	else:
 		 return ('I', 'II', 'III', 'IV', 'V', 'VI')[i-1]
+
+def generateToken():
+	choice = string.ascii_lowercase + string.ascii_uppercase + string.digits
+	token = ''
+	for i in range(64):
+		token += random.choice(choice)
+	return token

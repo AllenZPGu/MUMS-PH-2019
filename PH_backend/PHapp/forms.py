@@ -30,7 +30,7 @@ class IndivRegForm(forms.Form):
 	melb = forms.BooleanField(required = False, label="", widget=forms.CheckboxInput(attrs={'class': 'centred-checkbox'}))
 
 class LoginForm(forms.Form):
-	username = forms.CharField(label='Username', help_text='Please enter your username and NOT your team name. This is case-sensitive.')
+	username = forms.CharField(label='Username', help_text='Please enter your team username and NOT your team name. This is case-sensitive.')
 	password = forms.CharField(widget=forms.PasswordInput, label='Password', help_text='This is case-sensitive.')
 
 class BaseIndivRegFormSet(forms.BaseFormSet):
@@ -44,3 +44,6 @@ class BaseIndivRegFormSet(forms.BaseFormSet):
 			raise forms.ValidationError("Please ensure that at least one member's details are recorded.")
 
 IndivRegFormSet = forms.formset_factory(IndivRegForm, formset=BaseIndivRegFormSet, extra=10)
+
+class PasswordChangeEmail(forms.Form):
+	email = forms.EmailField(max_length=254, label="", widget=forms.TextInput(attrs={'placeholder': 'Email'}))

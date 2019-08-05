@@ -2,15 +2,18 @@ from django import forms
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django.http import JsonResponse, FileResponse, Http404, HttpResponse
 from django.contrib.auth.models import User
 from django.forms import formset_factory, ValidationError
+from django.core import mail
 from django.core.mail import send_mail
 from django.views.decorators.http import last_modified
 from django.urls import reverse
-from .models import Puzzles, Teams, SubmittedGuesses, Individuals, AltAnswers, Announcements
-from .forms import SolveForm, TeamRegForm, IndivRegForm, IndivRegFormSet, LoginForm, BaseIndivRegFormSet
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from .models import *
+from .forms import *
 from django.conf import settings
 import json
 import datetime
@@ -21,8 +24,6 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 import smtplib, ssl
 from .helperFunctions import *
 from .globals import *
-
-# Force rebuild
 
 SOLVE_WRONG = 0
 SOLVE_DUPLICATE = 1
@@ -689,3 +690,72 @@ def loginCustom(request):
 def logoutCustom(request):
     logout(request)
     return redirect('/')
+
+def passwordChange(request):
+    if request.method == 'POST':
+        emailForm = PasswordChangeEmail(request.POST)
+        if emailForm.is_valid():
+            email = emailForm.cleaned_data.get('email')
+            indivList = list(Individuals.objects.filter(email=email))
+            teamList = list(Teams.objects.filter(teamEmail=email))
+            if indivList or teamList:
+                checkTeamList = [i.team for i in indivList] + teamList
+
+                if all([i == checkTeamList[0] for i in checkTeamList]):
+                    team = checkTeamList[0]
+                    user = team.authClone
+                    token = generateToken()
+                    while len(ResetTokens.objects.filter(token=token)) > 0:
+                        token = generateToken()
+                    ResetTokens.objects.create(
+                        token = token,
+                        user = user
+                    )
+
+                    try:
+                        resetLink = f'{settings.WEB_DOMAIN}/password_reset/{user.id}/{token}'
+                        #email
+                        subject = '[MPH 2019] Password change request'
+                        html_message = render_to_string('PHapp/passwordChangeTemplate.html', {'teamName':team.teamName, 'username': user.username, 'resetLink':resetLink})
+                        plain_message = strip_tags(html_message)
+                        email_from = settings.EMAIL_HOST_USER
+
+                        send_mail(subject, plain_message, email_from, [email], html_message=html_message)
+                    except:
+                        return render(request, 'PHapp/passwordChangeEmailDone.html', {'emailForm':emailForm, 'bad':True})
+
+                    return render(request, 'PHapp/passwordChangeEmailDone.html', {'emailForm':emailForm, 'bad':False})
+                else:
+                    return render(request, 'PHapp/passwordChangeEmailDone.html', {'emailForm':emailForm, 'bad':True})
+
+            else:
+                emailForm = PasswordChangeEmail()
+                return render(request, 'PHapp/passwordChangeEmail.html', {'emailForm':emailForm, 'wrong':True})
+
+    else:
+        emailForm = PasswordChangeEmail()
+    
+    return render(request, 'PHapp/passwordChangeEmail.html', {'emailForm':emailForm, 'wrong':False})
+
+def passwordReset(request, userId, token):
+    logout(request)
+    try:
+        user = User.objects.get(id=userId)
+        token = ResetTokens.objects.get(token=token)
+        if not token.active:
+            return render(request, 'PHapp/passwordReset.html', {'linkExpired':True})
+        team = Teams.objects.get(authClone=user)
+    except:
+        return render(request, 'PHapp/passwordReset.html', {'linkExpired':True})
+
+    if request.method == 'POST':
+        changeForm = SetPasswordForm(user, request.POST)
+        if changeForm.is_valid():
+            changeForm.save()
+            token.active = False
+            token.save()
+            return render(request, 'PHapp/passwordResetDone.html')
+    else:
+        changeForm = SetPasswordForm(user)
+
+    return render(request, 'PHapp/passwordReset.html', {'changeForm':changeForm, 'linkExpired':False, 'user':user, 'team':team})
