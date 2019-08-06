@@ -440,7 +440,7 @@ def teams(request):
     totRank = 1
     ausRank = 1
 
-    for team in Teams.objects.all():
+    for team in Teams.objects.exclude(id = 1):
         if team.teamPuzzles:
             allTeams.append([team, "{:02d}h {:02d}m {:02d}s".format(team.avHr, team.avMin, team.avSec), team.avHr, team.avMin, team.avSec])
         else:
