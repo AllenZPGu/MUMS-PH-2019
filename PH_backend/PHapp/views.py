@@ -31,7 +31,7 @@ SOLVE_DUPLICATE = 1
 SOLVE_METAHALF = 2
 SOLVE_METAHALFDUPLICATE = 3
 
-turnOnDiscord = False
+turnOnDiscord = True
 
 #releaseTimes = [aest.localize(datetime.datetime(2019, 6, 24, 12)) + datetime.timedelta(days=i) for i in range(10)]
 @never_cache
