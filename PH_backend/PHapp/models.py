@@ -201,3 +201,6 @@ class ResetTokens(models.Model):
 class CubeDataAccessRecord(models.Model):
     user = models.ForeignKey(User, models.CASCADE)
     createdTime = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.createdTime.strftime('%Y-%m-%d %H:%M:%S') + ' ' + self.user.username
