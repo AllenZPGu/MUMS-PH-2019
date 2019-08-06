@@ -225,6 +225,7 @@ def solveMeta(request):
     solveType = -1
     displayGuess = None
     altAns = None
+    altMessage = None
 
     if request.method == 'POST':
         solveform = SolveForm(request.POST)
@@ -286,6 +287,10 @@ def solveMeta(request):
                     correct = False,
                     pointsAwarded = 0
                 )
+                
+                specialAnswers = IncorrectAnswer.objects.filter(puzzle=puzzle, answer=guess)
+                if specialAnswers:
+                    altMessage = (specialAnswers[0].title, specialAnswers[0].message)
 
     
     solveform = SolveForm()
@@ -295,7 +300,7 @@ def solveMeta(request):
     previousGuesses = previousGuesses[::-1]
 
     return render(request, 'PHapp/solve.html', 
-        {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':meta2, 'team':team, 'previousGuesses':previousGuesses, 'altAns': altAns})
+        {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':meta2, 'team':team, 'previousGuesses':previousGuesses, 'altAns': altAns, 'altMessage': altMessage})
 
 @login_required
 def solve(request, act, scene):
@@ -329,6 +334,7 @@ def solve(request, act, scene):
     # Default value
     solveType = -1
     displayGuess = None
+    altMessage = None
 
     if request.method == 'POST':
         solveform = SolveForm(request.POST)
@@ -391,6 +397,10 @@ def solve(request, act, scene):
                 puzzle.guessCount = puzzle.guessCount + 1
                 puzzle.save()
 
+                specialAnswers = IncorrectAnswer.objects.filter(puzzle=puzzle, answer=guess)
+                if specialAnswers:
+                    altMessage = (specialAnswers[0].title, specialAnswers[0].message)
+
                 if turnOnDiscord:
                     try:
                         webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
@@ -411,7 +421,7 @@ def solve(request, act, scene):
     previousGuesses = previousGuesses[::-1]
 
     return render(request, 'PHapp/solve.html', 
-        {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':puzzle, 'team':team, 'previousGuesses':previousGuesses})
+        {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':puzzle, 'team':team, 'previousGuesses':previousGuesses, 'altMessage': altMessage})
 
 @login_required
 def solveMiniMeta(request, act):

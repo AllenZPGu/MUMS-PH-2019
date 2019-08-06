@@ -9,9 +9,18 @@
 		<h4>Enter a guess for <a href='{{puzzle.pdfURI}}'>{{puzzle.hyperlinkText}}: {{puzzle.title}}</a></h4>
 		<br>
 
-		{% if solveType == 0 %}
-			<h4 style='color:red'>Incorrect!</h4>
-			<h4 style='color:red'>{{puzzle.losePun}}</h4>
+        {% if solveType == 0 %}
+            {% if altMessage %}
+                {% if altMessage.0 %}
+                <h4 style='color:red'>{{altMessage.0}}</h4>
+                {% endif %}
+                {% if altMessage.1 %}
+                <h4 style='color:red'>{{altMessage.1}}</h4>
+                {% endif %}
+            {% else %}
+                <h4 style='color:red'>Incorrect!</h4>
+                <h4 style='color:red'>{{puzzle.losePun}}</h4>
+            {% endif %}
 			<br>
 		{% elif solveType == 1 %}
 			<h4 style='color:red'>You have already guessed "{{displayGuess}}"!</h4>

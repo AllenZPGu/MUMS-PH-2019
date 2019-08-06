@@ -131,6 +131,12 @@ class AltAnswers(models.Model):
     class Meta:
         db_table = 'AltAnswers'
 
+class IncorrectAnswer(models.Model):
+    puzzle = models.ForeignKey(Puzzles, models.CASCADE)
+    answer = models.CharField(max_length=100)
+    title = models.CharField(max_length=500, null = True)
+    message = models.CharField(max_length=500, null = True)
+
 class Announcements(models.Model):
     id = models.AutoField(primary_key=True)
     msgTime = models.DateTimeField(auto_now_add=True, null=True)
