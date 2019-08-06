@@ -172,8 +172,8 @@ class IncorrectAnswer(models.Model):
         if self.puzzle:
             string += str(self.puzzle)
         string += ' - '
-        if self.altAnswer:
-            string += self.altAnswer
+        # if self.altAnswer:
+        #     string += self.altAnswer
         return string
 
 class Announcements(models.Model):
@@ -183,11 +183,6 @@ class Announcements(models.Model):
 
     class Meta:
         db_table = 'Announcements'
-    
-    def __str__(self):
-        string = f'Announcement {self.id}'
-        if self.msgTime:
-            string += ' ' + msgTime.strftime('%Y-%m-%d %H:%M:%S')
 
 class ResetTokens(models.Model):
     id = models.AutoField(primary_key=True)
