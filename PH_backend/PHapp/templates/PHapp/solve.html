@@ -14,17 +14,22 @@
                 {% if altMessage.0 %}
                 <h4 style='color:red'>{{altMessage.0}}</h4>
                 {% endif %}
+                {% if displayGuess %}
+                <h5>Your solution of <font style='color:green'><b>{{displayGuess}}</b></font> means you're nearly there but not quite...</h5>
+                {% endif %}
                 {% if altMessage.1 %}
                 <h4 style='color:red'>{{altMessage.1}}</h4>
                 {% endif %}
+                <br>
+                <h5>This does not affect your remaining guesses.</h5>
             {% else %}
                 <h4 style='color:red'>Incorrect!</h4>
                 <h4 style='color:red'>{{puzzle.losePun}}</h4>
             {% endif %}
 			<br>
 		{% elif solveType == 1 %}
-			<h4 style='color:red'>You have already guessed "{{displayGuess}}"!</h4>
-			<h5>For the record, it was incorrect. This does not affect your remaining guesses.</h5>
+			<h4 style='color:red'>You have already guessed <font style='color:green'><b>{{displayGuess}}</b></font></h4>
+			<h5>For the record, it was <font style='color:red'>incorrect</font>. This does not affect your remaining guesses.</h5>
 			<br>
 		{% elif solveType == 2 %}
 			<h4 style='color:green'>Almost...</h4>
