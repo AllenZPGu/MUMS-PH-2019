@@ -58,7 +58,7 @@ def cubeData(request):
     huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
     responseData = [{'colors': [color for color in PUZZLE_COLOURS_BLANK[i]], 'text': ['']*6, 'links': ['']*6} for i in range(27)]
     if request.user.is_authenticated:
-        CubeDataAccessRecord.objects.create(user = request.user)
+#        CubeDataAccessRecord.objects.create(user = request.user)
         correctGuesses = SubmittedGuesses.objects.filter(team=request.user, correct=True)
 
         metascomplete = [False] * 8
