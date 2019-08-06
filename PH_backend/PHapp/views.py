@@ -294,10 +294,9 @@ def solveMeta(request):
 
     
     solveform = SolveForm()
-    previousGuesses = SubmittedGuesses.objects.filter(puzzle=meta2, team=request.user, correct=False).values_list('guess', flat=True)
+    previousGuesses = SubmittedGuesses.objects.filter(puzzle=meta2, team=request.user, correct=False).order_by('-submitTime').values_list('guess', flat=True)
     # I feel like reverse chronological order of guess submission is more intuitive? ## No cause it'll be easier to search for guesses alphabetically   
     # previousGuesses = sorted(previousGuesses)
-    previousGuesses = previousGuesses[::-1]
 
     return render(request, 'PHapp/solve.html', 
         {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':meta2, 'team':team, 'previousGuesses':previousGuesses, 'altAns': altAns, 'altMessage': altMessage})
@@ -415,10 +414,9 @@ def solve(request, act, scene):
     # Reset solve form
     solveform = SolveForm()
 
-    previousGuesses = SubmittedGuesses.objects.filter(puzzle=puzzle, team=request.user, correct=False).values_list('guess', flat=True)
+    previousGuesses = SubmittedGuesses.objects.filter(puzzle=puzzle, team=request.user, correct=False).order_by('-submitTime').values_list('guess', flat=True)
     # I feel like reverse chronological order of guess submission is more intuitive?
     # previousGuesses = sorted(previousGuesses)
-    previousGuesses = previousGuesses[::-1]
 
     return render(request, 'PHapp/solve.html', 
         {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':puzzle, 'team':team, 'previousGuesses':previousGuesses, 'altMessage': altMessage})
