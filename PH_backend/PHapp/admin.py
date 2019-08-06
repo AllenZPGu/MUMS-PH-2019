@@ -11,4 +11,5 @@ admin.site.register(AltAnswers)
 admin.site.register(Announcements)
 admin.site.register(ResetTokens)
 admin.site.register(IncorrectAnswer)
+admin.site.register(CubeDataAccessRecord)
 
