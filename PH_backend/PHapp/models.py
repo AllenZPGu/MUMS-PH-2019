@@ -197,3 +197,7 @@ class ResetTokens(models.Model):
     
     class Meta:
         db_table = 'ResetTokens'
+
+class CubeDataAccessRecord(models.Model):
+    user = models.ForeignKey(User, models.CASCADE)
+    createdTime = models.DateTimeField(auto_now_add=True)
