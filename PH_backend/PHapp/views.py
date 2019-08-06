@@ -733,9 +733,9 @@ def passwordChange(request):
 def passwordReset(request, userId, token):
     logout(request)
     try:
-        user = User.objects.get(id=userId)
-        token = ResetTokens.objects.get(token=token)
-        if not token.active:
+        tokenObj = ResetTokens.objects.get(token=token)
+        user = tokenObj.user
+        if not tokenObj.active or user.id != userId:
             return render(request, 'PHapp/passwordReset.html', {'linkExpired':True})
         team = Teams.objects.get(authClone=user)
     except:
@@ -745,8 +745,8 @@ def passwordReset(request, userId, token):
         changeForm = SetPasswordForm(user, request.POST)
         if changeForm.is_valid():
             changeForm.save()
-            token.active = False
-            token.save()
+            tokenObj.active = False
+            tokenObj.save()
             return render(request, 'PHapp/passwordResetDone.html')
     else:
         changeForm = SetPasswordForm(user)
