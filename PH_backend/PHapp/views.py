@@ -2,6 +2,7 @@ from django import forms
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django.http import JsonResponse, FileResponse, Http404, HttpResponse
 from django.contrib.auth.models import User
@@ -33,11 +34,12 @@ SOLVE_METAHALFDUPLICATE = 3
 turnOnDiscord = False
 
 #releaseTimes = [aest.localize(datetime.datetime(2019, 6, 24, 12)) + datetime.timedelta(days=i) for i in range(10)]
-
+@never_cache
 def index(request):
     huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
     return render(request, 'PHapp/home.html', {'huntOver':huntOver})
 
+@never_cache
 def cubeDataLastModified(request):
     # TODO: test this
     if request.user.is_authenticated:
@@ -51,6 +53,7 @@ def cubeDataLastModified(request):
     return None
 
 #@last_modified(cubeDataLastModified)
+@never_cache
 def cubeData(request):
     huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
     responseData = [{'colors': PUZZLE_COLOURS_BLANK[i], 'text': ['']*6, 'links': ['']*6} for i in range(27)]
@@ -339,6 +342,7 @@ def solve(request, act, scene):
         solveform = SolveForm(request.POST)
         if solveform.is_valid():
             guess = stripToLetters(solveform.cleaned_data['guess'])
+            specialAnswers = IncorrectAnswer.objects.filter(puzzle=puzzle, answer=guess)
 
             if guess == puzzle.answer or AltAnswers.objects.filter(puzzle=puzzle).filter(altAnswer=guess):
                 # Correct guess!
@@ -374,6 +378,11 @@ def solve(request, act, scene):
 
                 return redirect(f'/solve/{act}/{scene}')
 
+            elif specialAnswers:
+                altMessage = (specialAnswers[0].title, specialAnswers[0].message)
+                displayGuess = guess
+                solveType = SOLVE_WRONG
+
             elif SubmittedGuesses.objects.filter(guess=guess, puzzle=puzzle, team=request.user):
                 # Duplicate guess
                 solveType = SOLVE_DUPLICATE
@@ -388,17 +397,14 @@ def solve(request, act, scene):
                     correct = False,
                     pointsAwarded = calcWorth(puzzle, RELEASE_TIMES),
                 )
-                team.guesses -= 1
-                team.save()
+                
                 solveType = SOLVE_WRONG
                 displayGuess = None
 
+                team.guesses -= 1
+                team.save()
                 puzzle.guessCount = puzzle.guessCount + 1
                 puzzle.save()
-
-                specialAnswers = IncorrectAnswer.objects.filter(puzzle=puzzle, answer=guess)
-                if specialAnswers:
-                    altMessage = (specialAnswers[0].title, specialAnswers[0].message)
 
                 if turnOnDiscord:
                     try:
