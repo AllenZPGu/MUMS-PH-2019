@@ -100,6 +100,12 @@ class Teams(models.Model):
     class Meta:
         db_table = 'Teams'
 
+    def __str__(self):
+        str = f'Team {self.id}'
+        if self.teamName:
+            str += ' - ' + self.teamName
+        return str
+
 class Individuals(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, null=True)
@@ -110,6 +116,14 @@ class Individuals(models.Model):
 
     class Meta:
         db_table = 'Individuals'
+    
+    def __str__(self):
+        string = f'Individual {self.id}'
+        if self.name:
+            string += ' - ' + self.name
+        if self.team:
+            string += ' (' + str(self.team) + ')'
+        return string
 
 class SubmittedGuesses(models.Model):
     id = models.AutoField(primary_key=True)
@@ -123,6 +137,14 @@ class SubmittedGuesses(models.Model):
     class Meta:
         db_table = 'SubmittedGuesses'
 
+    def __str__(self):
+        string = f'Guess {self.id}'
+        if self.guess:
+            string += ' - ' + self.guess
+        if self.team:
+            string += ' (' + str(self.team) + ')'
+        return string
+
 class AltAnswers(models.Model):
     id = models.AutoField(primary_key=True)
     puzzle = models.ForeignKey(Puzzles, models.CASCADE, db_column = 'puzzle', null=True)
@@ -130,12 +152,29 @@ class AltAnswers(models.Model):
 
     class Meta:
         db_table = 'AltAnswers'
+    
+    def __str__(self):
+        string = f'AltAnswer {self.id} - '
+        if self.puzzle:
+            string += str(self.puzzle)
+        string += ' - '
+        if self.altAnswer:
+            string += self.altAnswer
+        return string
 
 class IncorrectAnswer(models.Model):
     puzzle = models.ForeignKey(Puzzles, models.CASCADE)
     answer = models.CharField(max_length=100)
     title = models.CharField(max_length=500, null = True)
     message = models.CharField(max_length=500, null = True)
+    def __str__(self):
+        string = f'IncorrectAnswer {self.id} - '
+        if self.puzzle:
+            string += str(self.puzzle)
+        string += ' - '
+        if self.altAnswer:
+            string += self.altAnswer
+        return string
 
 class Announcements(models.Model):
     id = models.AutoField(primary_key=True)
@@ -144,6 +183,11 @@ class Announcements(models.Model):
 
     class Meta:
         db_table = 'Announcements'
+    
+    def __str__(self):
+        string = f'Announcement {self.id}'
+        if self.msgTime:
+            string += ' ' + msgTime.strftime('%Y-%m-%d %H:%M:%S')
 
 class ResetTokens(models.Model):
     id = models.AutoField(primary_key=True)
