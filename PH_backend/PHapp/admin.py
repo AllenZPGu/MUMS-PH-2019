@@ -10,4 +10,5 @@ admin.site.register(Individuals)
 admin.site.register(AltAnswers)
 admin.site.register(Announcements)
 admin.site.register(ResetTokens)
+admin.site.register(IncorrectAnswer)
 

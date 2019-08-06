@@ -2,6 +2,7 @@ from django import forms
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django.http import JsonResponse, FileResponse, Http404, HttpResponse
 from django.contrib.auth.models import User
@@ -33,11 +34,12 @@ SOLVE_METAHALFDUPLICATE = 3
 turnOnDiscord = False
 
 #releaseTimes = [aest.localize(datetime.datetime(2019, 6, 24, 12)) + datetime.timedelta(days=i) for i in range(10)]
-
+@never_cache
 def index(request):
     huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
     return render(request, 'PHapp/home.html', {'huntOver':huntOver})
 
+@never_cache
 def cubeDataLastModified(request):
     # TODO: test this
     if request.user.is_authenticated:
@@ -51,6 +53,7 @@ def cubeDataLastModified(request):
     return None
 
 #@last_modified(cubeDataLastModified)
+@never_cache
 def cubeData(request):
     huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
     responseData = [{'colors': PUZZLE_COLOURS_BLANK[i], 'text': ['']*6, 'links': ['']*6} for i in range(27)]
@@ -225,6 +228,7 @@ def solveMeta(request):
     solveType = -1
     displayGuess = None
     altAns = None
+    altMessage = None
 
     if request.method == 'POST':
         solveform = SolveForm(request.POST)
@@ -286,16 +290,19 @@ def solveMeta(request):
                     correct = False,
                     pointsAwarded = 0
                 )
+                
+                specialAnswers = IncorrectAnswer.objects.filter(puzzle=puzzle, answer=guess)
+                if specialAnswers:
+                    altMessage = (specialAnswers[0].title, specialAnswers[0].message)
 
     
     solveform = SolveForm()
-    previousGuesses = SubmittedGuesses.objects.filter(puzzle=meta2, team=request.user, correct=False).values_list('guess', flat=True)
+    previousGuesses = SubmittedGuesses.objects.filter(puzzle=meta2, team=request.user, correct=False).order_by('-submitTime').values_list('guess', flat=True)
     # I feel like reverse chronological order of guess submission is more intuitive? ## No cause it'll be easier to search for guesses alphabetically   
     # previousGuesses = sorted(previousGuesses)
-    previousGuesses = previousGuesses[::-1]
 
     return render(request, 'PHapp/solve.html', 
-        {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':meta2, 'team':team, 'previousGuesses':previousGuesses, 'altAns': altAns})
+        {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':meta2, 'team':team, 'previousGuesses':previousGuesses, 'altAns': altAns, 'altMessage': altMessage})
 
 @login_required
 def solve(request, act, scene):
@@ -329,11 +336,13 @@ def solve(request, act, scene):
     # Default value
     solveType = -1
     displayGuess = None
+    altMessage = None
 
     if request.method == 'POST':
         solveform = SolveForm(request.POST)
         if solveform.is_valid():
             guess = stripToLetters(solveform.cleaned_data['guess'])
+            specialAnswers = IncorrectAnswer.objects.filter(puzzle=puzzle, answer=guess)
 
             if guess == puzzle.answer or AltAnswers.objects.filter(puzzle=puzzle).filter(altAnswer=guess):
                 # Correct guess!
@@ -369,6 +378,11 @@ def solve(request, act, scene):
 
                 return redirect(f'/solve/{act}/{scene}')
 
+            elif specialAnswers:
+                altMessage = (specialAnswers[0].title, specialAnswers[0].message)
+                displayGuess = guess
+                solveType = SOLVE_WRONG
+
             elif SubmittedGuesses.objects.filter(guess=guess, puzzle=puzzle, team=request.user):
                 # Duplicate guess
                 solveType = SOLVE_DUPLICATE
@@ -383,11 +397,12 @@ def solve(request, act, scene):
                     correct = False,
                     pointsAwarded = calcWorth(puzzle, RELEASE_TIMES),
                 )
-                team.guesses -= 1
-                team.save()
+                
                 solveType = SOLVE_WRONG
                 displayGuess = None
 
+                team.guesses -= 1
+                team.save()
                 puzzle.guessCount = puzzle.guessCount + 1
                 puzzle.save()
 
@@ -405,13 +420,12 @@ def solve(request, act, scene):
     # Reset solve form
     solveform = SolveForm()
 
-    previousGuesses = SubmittedGuesses.objects.filter(puzzle=puzzle, team=request.user, correct=False).values_list('guess', flat=True)
+    previousGuesses = SubmittedGuesses.objects.filter(puzzle=puzzle, team=request.user, correct=False).order_by('-submitTime').values_list('guess', flat=True)
     # I feel like reverse chronological order of guess submission is more intuitive?
     # previousGuesses = sorted(previousGuesses)
-    previousGuesses = previousGuesses[::-1]
 
     return render(request, 'PHapp/solve.html', 
-        {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':puzzle, 'team':team, 'previousGuesses':previousGuesses})
+        {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':puzzle, 'team':team, 'previousGuesses':previousGuesses, 'altMessage': altMessage})
 
 @login_required
 def solveMiniMeta(request, act):
@@ -426,7 +440,7 @@ def teams(request):
     totRank = 1
     ausRank = 1
 
-    for team in Teams.objects.all():
+    for team in Teams.objects.exclude(id = 1):
         if team.teamPuzzles:
             allTeams.append([team, "{:02d}h {:02d}m {:02d}s".format(team.avHr, team.avMin, team.avSec), team.avHr, team.avMin, team.avSec])
         else:
