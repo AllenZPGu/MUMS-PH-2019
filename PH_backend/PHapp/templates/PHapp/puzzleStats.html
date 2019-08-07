@@ -29,12 +29,14 @@
 			</thead>
 			<tbody>
 				{% for solve, timeTaken in allSolves %}
-					<tr>
-						<td><a href='/team/{{solve.team.teams.id}}/'>{{solve.team.teams.teamName}}</a></td>
-						<td>{{solve.submitTime|date:"d M, h:i:s a"}}</td>
-						<td>{{timeTaken}}</td>
-						<td>{{solve.pointsAwarded}}</td>
-					</tr>
+					{% if solve.team.teams.id != 1 %}
+						<tr>
+							<td><a href='/team/{{solve.team.teams.id}}/'>{{solve.team.teams.teamName}}</a></td>
+							<td>{{solve.submitTime|date:"d M, h:i:s a"}}</td>
+							<td>{{timeTaken}}</td>
+							<td>{{solve.pointsAwarded}}</td>
+						</tr>
+					{% endif %}
 				{% endfor %}
 			</tbody>
 		</table>

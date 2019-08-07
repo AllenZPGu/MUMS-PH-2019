@@ -140,7 +140,8 @@ def puzzleInfo(request, act, scene):
     if releaseStage(RELEASE_TIMES) < puzzle.releaseStatus:
         raise Http404()
 
-    allSolves = sorted([[guess, calcSingleTime(guess, RELEASE_TIMES)] for guess in SubmittedGuesses.objects.filter(correct=True, puzzle=puzzle)], key=lambda x:x[1])
+    userGB = Teams.objects.get(id=1).authClone
+    allSolves = sorted([[guess, calcSingleTime(guess, RELEASE_TIMES)] for guess in SubmittedGuesses.objects.filter(correct=True, puzzle=puzzle).exclude(team=userGB)], key=lambda x:x[1])
     if allSolves:
         avgTime = allSolves[0][1]
         for guess, time in allSolves[1:]:
