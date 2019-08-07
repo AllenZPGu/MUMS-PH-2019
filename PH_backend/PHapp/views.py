@@ -140,7 +140,8 @@ def puzzleInfo(request, act, scene):
     if releaseStage(RELEASE_TIMES) < puzzle.releaseStatus:
         raise Http404()
 
-    allSolves = sorted([[guess, calcSingleTime(guess, RELEASE_TIMES)] for guess in SubmittedGuesses.objects.filter(correct=True, puzzle=puzzle)], key=lambda x:x[1])
+    userGB = Teams.objects.get(id=1).authClone
+    allSolves = sorted([[guess, calcSingleTime(guess, RELEASE_TIMES)] for guess in SubmittedGuesses.objects.filter(correct=True, puzzle=puzzle).exclude(team=userGB)], key=lambda x:x[1])
     if allSolves:
         avgTime = allSolves[0][1]
         for guess, time in allSolves[1:]:
@@ -363,7 +364,8 @@ def solve(request, act, scene):
                 team.teamPoints += pointsAwarded
                 team.teamPuzzles += 1
                 team.save()
-                puzzle.solveCount = puzzle.solveCount + 1
+                if team.id != 1:
+                    puzzle.solveCount = puzzle.solveCount + 1
                 puzzle.save()
 
                 if turnOnDiscord:
@@ -404,7 +406,8 @@ def solve(request, act, scene):
 
                 team.guesses -= 1
                 team.save()
-                puzzle.guessCount = puzzle.guessCount + 1
+                if team.id != 1:
+                    puzzle.guessCount = puzzle.guessCount + 1
                 puzzle.save()
 
                 if turnOnDiscord:
