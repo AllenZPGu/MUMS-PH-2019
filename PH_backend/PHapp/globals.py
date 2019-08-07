@@ -3,11 +3,11 @@ import pytz
 
 AEST = pytz.timezone("Australia/Melbourne")
 RELEASE_TIMES = [AEST.localize(datetime.datetime(2019, 8, 7, 12)) + datetime.timedelta(days=i) for i in range(10)]
-#RELEASE_TIMES = [AEST.localize(datetime.datetime(2019, 8, 6, 12)) + datetime.timedelta(days=i) for i in range(10)]
+#RELEASE_TIMES = [AEST.localize(datetime.datetime(2019, 7, 29, 12)) + datetime.timedelta(days=i) for i in range(10)]
 PUZZLE_COLOURS = (
-	('W','O','','','G','',), ('O','W','','','','',), ('W','O','B','','','',),
+	('W','O','','','G','',), ('O','W','','','','',), ('B','O','B','','','',),
 	('Y','','','','O','',),  ('R','','','','','',),  ('G','','O','','','',),
-	('B','','','Y','R','',), ('G','','','Y','','',), ('W','','R','G','','',),
+	('W','','','Y','R','',), ('G','','','Y','','',), ('W','','R','G','','',),
 	('','W','','','B','',),  ('','B','','','','',),  ('','B','R','','','',),
 	('','','','','W','',),   ('','','','','','',),   ('','','Y','','','',),
 	('','','','R','Y','',),  ('','','','G','','',),  ('','','B','O','','',),

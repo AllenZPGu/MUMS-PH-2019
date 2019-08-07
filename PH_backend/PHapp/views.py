@@ -144,7 +144,7 @@ def puzzleInfo(request, act, scene):
     if allSolves:
         avgTime = allSolves[0][1]
         for guess, time in allSolves[1:]:
-            avgTime += guess
+            avgTime += time
         avgTime /= len(allSolves)
         averageTimeString = prettyPrintDateTime(avgTime)
     else:
