@@ -364,7 +364,8 @@ def solve(request, act, scene):
                 team.teamPoints += pointsAwarded
                 team.teamPuzzles += 1
                 team.save()
-                puzzle.solveCount = puzzle.solveCount + 1
+                if team.id != 1:
+                    puzzle.solveCount = puzzle.solveCount + 1
                 puzzle.save()
 
                 if turnOnDiscord:
@@ -405,7 +406,8 @@ def solve(request, act, scene):
 
                 team.guesses -= 1
                 team.save()
-                puzzle.guessCount = puzzle.guessCount + 1
+                if team.id != 1:
+                    puzzle.guessCount = puzzle.guessCount + 1
                 puzzle.save()
 
                 if turnOnDiscord:
