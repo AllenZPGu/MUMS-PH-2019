@@ -444,7 +444,7 @@ def solveMiniMeta(request, act):
 
 def guesslog(request, act, scene):
     if request.user.is_authenticated:
-        if request.user.id != 1:
+        if request.user.username != 'testaccount':
             raise Http404()
     else:
         raise Http404()
