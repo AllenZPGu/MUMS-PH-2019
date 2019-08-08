@@ -27,7 +27,9 @@
 				<td class="shrink">-</td>
 				<td class="shrink">-</td>
 				<td class="shrink">-</td>
-				<td class="shrink">-</td>
+				{% if isGB %}
+					<td class="shrink">-</td>
+				{% endif %}
 			</tr>
 			{% if nextRelease.0 != 0 %}
 				{% for isPuzzle, puzzle, solved, correct, incorrect, worth in puzzleList %}
@@ -53,7 +55,11 @@
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="7" align="center" style="color:red; font-weight: bold;">{{puzzle}}</td>
+							{% if isGB %}
+								<td colspan="7" align="center" style="color:red; font-weight: bold;">{{puzzle}}</td>
+							{% else %}
+								<td colspan="6" align="center" style="color:red; font-weight: bold;">{{puzzle}}</td>
+							{% endif %}
 						</tr>
 					{% endif %}
 				{% endfor %}
