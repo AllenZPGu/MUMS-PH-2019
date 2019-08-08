@@ -444,7 +444,7 @@ def solveMiniMeta(request, act):
 
 def guesslog(request, act, scene):
     if request.user.is_authenticated:
-        if request.user.id != 1:
+        if request.user.username != 'testaccount':
             raise Http404()
     else:
         raise Http404()
@@ -462,7 +462,7 @@ def guesslog(request, act, scene):
     except:
         raise Http404()
 
-    counted = countInList([i.guess for i in SubmittedGuesses.objects.filter(puzzle=puzzle).exclude(team=Teams.objects.get(id=1))])
+    counted = countInList([i.guess for i in SubmittedGuesses.objects.filter(puzzle=puzzle).exclude(team=request.user)])
     counted = sorted(counted, key=lambda x:x[0])
     counted = sorted(counted, key=lambda x:-x[1])
 
