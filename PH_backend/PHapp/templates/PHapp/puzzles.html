@@ -27,6 +27,7 @@
 				<td class="shrink">-</td>
 				<td class="shrink">-</td>
 				<td class="shrink">-</td>
+				<td class="shrink">-</td>
 			</tr>
 			{% if nextRelease.0 != 0 %}
 				{% for isPuzzle, puzzle, solved, correct, incorrect, worth in puzzleList %}
@@ -52,7 +53,7 @@
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="6" align="center" style="color:red; font-weight: bold;">{{puzzle}}</td>
+							<td colspan="7" align="center" style="color:red; font-weight: bold;">{{puzzle}}</td>
 						</tr>
 					{% endif %}
 				{% endfor %}

@@ -4,12 +4,14 @@
 {% block content %}
 <div class="outer-container">
 <div class="inner-container">
-	<h4>Guesslog for <a href='/puzzlestats/{{puzzle.solveURI}}'>{{puzzle.hyperlinkText}}</a></h4>
-	<table class="table table-bordered">
+
+	<h4>Guess tally for <a href='/puzzlestats/{{puzzle.solveURI}}'>{{puzzle.hyperlinkText}}: {{puzzle.title}}</a></h4>
+	<br>
+	<table class="table table-bordered" style="table-layout: fixed; width: 100%">
 		<thead>
 			<tr>
+				<td style="width: 80px">Count</td>
 				<td>Guess</td>
-				<td>Count</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -19,8 +21,8 @@
 				{% else %}
 					<tr>
 				{% endif %}
-					<td>{{guess}}</td>
-					<td>{{count}}</td>
+					<td style="width: 80px">{{count}}</td>
+					<td style="word-wrap: break-word">{{guess}}</td>
 				</tr>
 			{% endfor %}
 		</tbody>
