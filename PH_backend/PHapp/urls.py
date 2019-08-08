@@ -37,6 +37,7 @@ urlpatterns = [
 	path('hints/<int:act>/S/', lambda req, act: redirect(views.hintsMiniMeta, act=IntToRoman(act), permanent=True)),
 	path('hints/<str:act>/<int:scene>/', views.hints),
 	path('hints/<str:act>/S/', views.hintsMiniMeta),
+	path('guesslog/<str:act>/<int:scene>/', views.guesslog),
 	path('hints/meta/', views.hintsMeta),
 	path('registration/', views.teamReg),
 	path('teams/', views.teams),

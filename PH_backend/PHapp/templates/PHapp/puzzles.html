@@ -14,6 +14,9 @@
 				<td class="shrink">Solve / Solution</td>
 				<td class="shrink">Hints</td>
 				<td class="shrink">Solves / Incorrect guesses</td>
+				{% if isGB %}
+					<td class="shrink">Guesslog</td>
+				{% endif %}
 			</tr>
     </thead>
 		<tbody>
@@ -24,6 +27,9 @@
 				<td class="shrink">-</td>
 				<td class="shrink">-</td>
 				<td class="shrink">-</td>
+				{% if isGB %}
+					<td class="shrink">-</td>
+				{% endif %}
 			</tr>
 			{% if nextRelease.0 != 0 %}
 				{% for isPuzzle, puzzle, solved, correct, incorrect, worth in puzzleList %}
@@ -42,11 +48,18 @@
 								<td class="shrink"><a href="/solve/{{puzzle.solveURI}}">Solve</a></td>
 							{% endif %}
 							<td class="shrink"><a href='/hints/{{puzzle.solveURI}}'>Hints</a></td>
-							<td class="shrink"><a href='/puzzlestats/{{puzzle.solveURI}}'>{{correct}}/{{incorrect}}</a></td>
+							<td class="shrink"><a href='/puzzlestats/{{puzzle.solveURI}}'>{{correct}} / {{incorrect}}</a></td>
+							{% if isGB %}
+								<td class="shrink"><a href='/guesslog/{{puzzle.solveURI}}'>Guesslog</a></td>
+							{% endif %}
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="6" align="center" style="color:red; font-weight: bold;">{{puzzle}}</td>
+							{% if isGB %}
+								<td colspan="7" align="center" style="color:red; font-weight: bold;">{{puzzle}}</td>
+							{% else %}
+								<td colspan="6" align="center" style="color:red; font-weight: bold;">{{puzzle}}</td>
+							{% endif %}
 						</tr>
 					{% endif %}
 				{% endfor %}
