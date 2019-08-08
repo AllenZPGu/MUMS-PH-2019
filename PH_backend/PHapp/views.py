@@ -455,6 +455,14 @@ def guesslog(request, act, scene):
         actNumber = RomanToInt(act)
         if not actNumber:
             raise Http404()
+
+    if scene == 'S':
+        scene = 5
+    else:
+        try:
+            scene = int(scene)
+        except:
+            raise Http404()
     
     try:
         puzzle = Puzzles.objects.get(act=actNumber,scene=scene)
@@ -637,6 +645,15 @@ def teamInfo(request, teamId):
         team = Teams.objects.get(id=teamId)
     except:
         raise Http404()
+
+    if team.id == 1:
+        if request.user.is_authenticated:
+            if request.user.username != 'testaccount':
+                raise Http404()
+        else:
+            raise Http404()
+
+
     membersList = sorted(list(Individuals.objects.filter(team=team)), key=lambda x: x.name)
     correctGuesses = SubmittedGuesses.objects.filter(team=team.authClone, correct=True)
     correctList = []
