@@ -96,8 +96,11 @@ def cubeData(request):
 
 def puzzles(request):
     puzzleList = []
+    isGB = False
     if request.user.is_authenticated:
         userCorrectGuesses = SubmittedGuesses.objects.filter(correct=True, team=request.user)
+        if request.user.id == 1:
+            isGB = True
     else:
         userCorrectGuesses = None
     for puzzle in Puzzles.objects.filter(releaseStatus__lte = releaseStage(RELEASE_TIMES)):
@@ -126,7 +129,7 @@ def puzzles(request):
         realPuzzleList.append(i)
 
     nextRelease = calcNextRelease(RELEASE_TIMES)
-    return render(request, 'PHapp/puzzles.html', {'puzzleList':realPuzzleList, 'nextRelease':nextRelease})
+    return render(request, 'PHapp/puzzles.html', {'puzzleList':realPuzzleList, 'nextRelease':nextRelease, 'isGB':isGB})
 
 
 def puzzleInfo(request, act, scene):
@@ -438,6 +441,37 @@ def solve(request, act, scene):
 def solveMiniMeta(request, act):
     # Just prettifies the URLs a bit
     return solve(request, act, 5)
+
+def guesslog(request, act, scene, puzzleName):
+    if request.user.is_authenticated:
+        if request.user.id != 1:
+            raise Http404()
+    else:
+        raise Http404()
+
+    if act == 7:
+        actNumber = 7
+    else:
+        actNumber = RomanToInt(act)
+        if not actNumber:
+            raise Http404()
+    
+    try:
+        puzzle = Puzzles.objects.get(act=actNumber,scene=scene)
+        correct = [puzzle.answer] + [i.altAnswer for i in AltAnswers.objects.filter(puzzle=puzzle)]
+    except:
+        raise Http404()
+
+    counted = countInList([i.guess for i in SubmittedGuesses.objects.filter(puzzle=puzzle)s])
+    counted = sorted(counted, key=lambda x:-x[1])
+
+    for i in range(len(counted)):
+        if counted[i][0] in correct:
+            counted[i] += [True]
+        else:
+            counted[i] += [False]
+
+    return render(request, 'PHapp/guesslog.html', {'counted':counted, 'puzzle':puzzle})
 
 def teams(request):
     if not Teams.objects.all():

@@ -208,3 +208,13 @@ def generateToken():
 	for i in range(64):
 		token += random.choice(choice)
 	return token
+
+def countInList(aList):
+	returnDict = {}
+	for i in aList:
+		if i not in returnDict:
+			returnDict[i] = 1
+		else:
+			returnDict[i] += 1
+	returnList = [[i, returnDict[i]] for i in returnDict]
+	return returnList
