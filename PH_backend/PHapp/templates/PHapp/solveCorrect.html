@@ -6,6 +6,9 @@
 <div class="inner-container">
 	<center>
 		<h4>{{puzzle.winPun | safe}}</h4>
+		{% if puzzle.id == 8 %}
+			<img src="{% static 'PHapp/img/assange.png' %}" alt="The bridge troll" style="padding:10px">
+		{% endif %}
 		<br>
 		<h4>You have solved <b>{{puzzle.hyperlinkText}}: {{puzzle.title}}</b>.</h4>
 		<h4>This has earned your team <font style='color:green'><b>{{points}} points</b></font>.</h4>
