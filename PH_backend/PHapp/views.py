@@ -462,7 +462,7 @@ def guesslog(request, act, scene):
     except:
         raise Http404()
 
-    counted = countInList([i.guess for i in SubmittedGuesses.objects.filter(puzzle=puzzle)])
+    counted = countInList([i.guess for i in SubmittedGuesses.objects.filter(puzzle=puzzle).exclude(team=Teams.objects.get(id=1))])
     counted = sorted(counted, key=lambda x:x[0])
     counted = sorted(counted, key=lambda x:-x[1])
 
