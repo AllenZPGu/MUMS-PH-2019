@@ -7,8 +7,7 @@
 	<center>
 		<h4>{{puzzle.winPun | safe}}</h4>
 		{% if puzzle.id == 8 %}
-			grrr
-			<img src="{% static 'PHapp/img/assange.png' %}" alt="The bridge troll" style="padding:10px">
+			<img src="{% static 'PHapp/img/assange.png' %}" alt="The bridge troll" style="margin:10px">
 		{% endif %}
 		<br>
 		<h4>You have solved <b>{{puzzle.hyperlinkText}}: {{puzzle.title}}</b>.</h4>
