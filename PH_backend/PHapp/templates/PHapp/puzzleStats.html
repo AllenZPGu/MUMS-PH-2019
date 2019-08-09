@@ -16,7 +16,7 @@
 	
 	{% if totalRight %}
 		<center>
-			<h5>Solve history</h5>
+			<h4>Solve history:</h4>
 		</center>
 		<table class="table table-bordered">
 			<thead>
@@ -42,9 +42,32 @@
 		</table>
 	{% else %}
 		<center>
-			<h5>No team has solved this puzzle.</h5>
+			<h4>No team has solved this puzzle.</h4>
 		</center>
 	{% endif %}
+	<br>
+	{% if wrongGuesses|length != 0 %}
+			<center>
+				<h4>Incorrect guesses:</h4>
+			</center>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<td class="shrink">Incorrect guesses</td>
+						<td>Team</td>			
+					</tr>
+				</thead>
+				<tbody>
+					{% for team, guesses in wrongGuesses %}
+						<tr>
+							<td class="shrink">{{guesses}}</td>
+							<td><a href='/team/{{team.id}}'>{{team.teamName}}</a></td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+	{% endif %}
+
 </div>
 </div>
 
