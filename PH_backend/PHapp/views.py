@@ -162,8 +162,12 @@ def puzzleInfo(request, act, scene):
     totalRight = puzzle.solveCount
     totalWrong = puzzle.guessCount
 
+    wrongGuessingTeams = [guess.team for guess in SubmittedGuesses.objects.filter(puzzle=puzzle,correct=False).exclude(team=userGB)]
+    wGTL = sorted(countInList(wrongGuessingTeams), key=lambda x:-x[1])
+    wGTL = [[Teams.objects.get(authClone=i[0]), i[1]] for i in wGTL]
+
     return render(request, 'PHapp/puzzleStats.html', 
-        {'puzzle':puzzle, 'allSolves':allSolves, 'totalWrong':totalWrong, 'totalRight':totalRight, 'avTime':averageTimeString})
+        {'puzzle':puzzle, 'allSolves':allSolves, 'totalWrong':totalWrong, 'totalRight':totalRight, 'avTime':averageTimeString, 'wrongGuesses':wGTL})
 
 def puzzleInfoMiniMeta(request, act):
     return puzzleInfo(request, act, 5)
