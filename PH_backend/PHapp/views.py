@@ -30,6 +30,7 @@ SOLVE_WRONG = 0
 SOLVE_DUPLICATE = 1
 SOLVE_METAHALF = 2
 SOLVE_METAHALFDUPLICATE = 3
+SOLVE_EMPTYSTRING = 4
 
 turnOnDiscord = True
 
@@ -354,6 +355,7 @@ def solve(request, act, scene):
         solveform = SolveForm(request.POST)
         if solveform.is_valid():
             guess = stripToLetters(solveform.cleaned_data['guess'])
+
             specialAnswers = IncorrectAnswer.objects.filter(puzzle=puzzle, answer=guess)
 
             if guess == puzzle.answer or AltAnswers.objects.filter(puzzle=puzzle).filter(altAnswer=guess):
@@ -400,6 +402,10 @@ def solve(request, act, scene):
                 # Duplicate guess
                 solveType = SOLVE_DUPLICATE
                 displayGuess = guess
+
+            elif guess == '':
+                solveType = SOLVE_EMPTYSTRING
+                displayGuess = False
 
             else:
                 # Incorrect guess
