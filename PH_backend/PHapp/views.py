@@ -131,7 +131,7 @@ def puzzles(request):
 
     nextRelease = calcNextRelease(RELEASE_TIMES)
 
-    messageList = [(i.msg, i.msgTime.astimezone(AEST).strftime("%d/%m/%Y %I:%M%p").lower()) for i in sorted(list(Announcements.objects.filter(errata=True)), key=lambda x: x.msgTime)]
+    messageList = [(i.msg, i.msgTime.astimezone(AEST).strftime("%d/%m/%Y %I:%M%p").lower()) for i in sorted(list(Announcements.objects.filter(erratum=True)), key=lambda x: x.msgTime)]
     messageList.reverse()
 
     return render(request, 'PHapp/puzzles.html', {'puzzleList':realPuzzleList, 'nextRelease':nextRelease, 'isGB':isGB, 'messageList':messageList})
