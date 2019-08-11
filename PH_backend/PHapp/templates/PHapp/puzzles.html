@@ -67,6 +67,21 @@
 		</tbody>
 	</table>
 
+	<br>
+	<h4>Errata list</h4>
+	<table>
+		<tbody>
+			{% for message, msgTime in messageList %}
+				<tr>
+					<td class="shrink align-top" style="padding-right: 10px; padding-top: 20px;">{{msgTime}}:</td>
+					<td style="padding-left: 10px; padding-top: 20px;">{{message | safe}}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<br>
+
 	{% if nextRelease.0 == 0 %}
 		<h4>Puzzles will be released in {{nextRelease.1}}.</h4>
 	{% elif nextRelease.0 == 1 %}
