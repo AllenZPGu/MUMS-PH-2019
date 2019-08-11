@@ -30,6 +30,7 @@ SOLVE_WRONG = 0
 SOLVE_DUPLICATE = 1
 SOLVE_METAHALF = 2
 SOLVE_METAHALFDUPLICATE = 3
+SOLVE_EMPTYSTRING = 4
 
 turnOnDiscord = True
 
@@ -96,8 +97,11 @@ def cubeData(request):
 
 def puzzles(request):
     puzzleList = []
+    isGB = False
     if request.user.is_authenticated:
         userCorrectGuesses = SubmittedGuesses.objects.filter(correct=True, team=request.user)
+        if request.user.id == 1:
+            isGB = True
     else:
         userCorrectGuesses = None
     for puzzle in Puzzles.objects.filter(releaseStatus__lte = releaseStage(RELEASE_TIMES)):
@@ -126,7 +130,11 @@ def puzzles(request):
         realPuzzleList.append(i)
 
     nextRelease = calcNextRelease(RELEASE_TIMES)
-    return render(request, 'PHapp/puzzles.html', {'puzzleList':realPuzzleList, 'nextRelease':nextRelease})
+
+    messageList = [(i.msg, i.msgTime.astimezone(AEST).strftime("%d/%m/%Y %I:%M%p").lower()) for i in sorted(list(Announcements.objects.filter(erratum=True)), key=lambda x: x.msgTime)]
+    messageList.reverse()
+
+    return render(request, 'PHapp/puzzles.html', {'puzzleList':realPuzzleList, 'nextRelease':nextRelease, 'isGB':isGB, 'messageList':messageList})
 
 
 def puzzleInfo(request, act, scene):
@@ -159,8 +167,12 @@ def puzzleInfo(request, act, scene):
     totalRight = puzzle.solveCount
     totalWrong = puzzle.guessCount
 
+    wrongGuessingTeams = [guess.team for guess in SubmittedGuesses.objects.filter(puzzle=puzzle,correct=False).exclude(team=userGB)]
+    wGTL = sorted(countInList(wrongGuessingTeams), key=lambda x:-x[1])
+    wGTL = [[Teams.objects.get(authClone=i[0]), i[1]] for i in wGTL]
+
     return render(request, 'PHapp/puzzleStats.html', 
-        {'puzzle':puzzle, 'allSolves':allSolves, 'totalWrong':totalWrong, 'totalRight':totalRight, 'avTime':averageTimeString})
+        {'puzzle':puzzle, 'allSolves':allSolves, 'totalWrong':totalWrong, 'totalRight':totalRight, 'avTime':averageTimeString, 'wrongGuesses':wGTL})
 
 def puzzleInfoMiniMeta(request, act):
     return puzzleInfo(request, act, 5)
@@ -347,6 +359,7 @@ def solve(request, act, scene):
         solveform = SolveForm(request.POST)
         if solveform.is_valid():
             guess = stripToLetters(solveform.cleaned_data['guess'])
+
             specialAnswers = IncorrectAnswer.objects.filter(puzzle=puzzle, answer=guess)
 
             if guess == puzzle.answer or AltAnswers.objects.filter(puzzle=puzzle).filter(altAnswer=guess):
@@ -394,6 +407,10 @@ def solve(request, act, scene):
                 solveType = SOLVE_DUPLICATE
                 displayGuess = guess
 
+            elif guess == '':
+                solveType = SOLVE_EMPTYSTRING
+                displayGuess = False
+
             else:
                 # Incorrect guess
                 SubmittedGuesses.objects.create(
@@ -438,6 +455,46 @@ def solve(request, act, scene):
 def solveMiniMeta(request, act):
     # Just prettifies the URLs a bit
     return solve(request, act, 5)
+
+def guesslog(request, act, scene):
+    if request.user.is_authenticated:
+        if request.user.username != 'testaccount':
+            raise Http404()
+    else:
+        raise Http404()
+
+    if act == 7:
+        actNumber = 7
+    else:
+        actNumber = RomanToInt(act)
+        if not actNumber:
+            raise Http404()
+
+    if scene == 'S':
+        scene = 5
+    else:
+        try:
+            scene = int(scene)
+        except:
+            raise Http404()
+    
+    try:
+        puzzle = Puzzles.objects.get(act=actNumber,scene=scene)
+        correct = [puzzle.answer] + [i.altAnswer for i in AltAnswers.objects.filter(puzzle=puzzle)]
+    except:
+        raise Http404()
+
+    counted = countInList([i.guess for i in SubmittedGuesses.objects.filter(puzzle=puzzle).exclude(team=request.user)])
+    counted = sorted(counted, key=lambda x:x[0])
+    counted = sorted(counted, key=lambda x:-x[1])
+
+    for i in range(len(counted)):
+        if counted[i][0] in correct:
+            counted[i] += [True]
+        else:
+            counted[i] += [False]
+
+    return render(request, 'PHapp/guesslog.html', {'counted':counted, 'puzzle':puzzle})
 
 def teams(request):
     if not Teams.objects.all():
@@ -602,6 +659,15 @@ def teamInfo(request, teamId):
         team = Teams.objects.get(id=teamId)
     except:
         raise Http404()
+
+    if team.id == 1:
+        if request.user.is_authenticated:
+            if request.user.username != 'testaccount':
+                raise Http404()
+        else:
+            raise Http404()
+
+
     membersList = sorted(list(Individuals.objects.filter(team=team)), key=lambda x: x.name)
     correctGuesses = SubmittedGuesses.objects.filter(team=team.authClone, correct=True)
     correctList = []

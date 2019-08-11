@@ -4,7 +4,7 @@
 {% block content %}
 <div class="outer-container">
 <div class="inner-container">
-	<p>Note: sometimes errors are found in puzzles once they have been released. All such errata will be published on the <a href='/announcements/'>announcements page</a>. Thank you for your understanding.
+	<p>Note: sometimes errors are found in puzzles after they have been released. All such errata will be published on the <a href='/announcements/'>announcements page</a> or on the bottom of this page. Thank you for your understanding. If you believe there is an error in a puzzle, please let us know at <a href='mailto: mumspuzzlehunt2019@gmail.com'>mumspuzzlehunt2019@gmail.com</a>.
 	<table class="table table-bordered">
 		<thead>
 			<tr>
@@ -14,6 +14,9 @@
 				<td class="shrink">Solve / Solution</td>
 				<td class="shrink">Hints</td>
 				<td class="shrink">Solves / Incorrect guesses</td>
+				{% if isGB %}
+					<td class="shrink">Guesslog</td>
+				{% endif %}
 			</tr>
     </thead>
 		<tbody>
@@ -24,6 +27,9 @@
 				<td class="shrink">-</td>
 				<td class="shrink">-</td>
 				<td class="shrink">-</td>
+				{% if isGB %}
+					<td class="shrink">-</td>
+				{% endif %}
 			</tr>
 			{% if nextRelease.0 != 0 %}
 				{% for isPuzzle, puzzle, solved, correct, incorrect, worth in puzzleList %}
@@ -42,17 +48,39 @@
 								<td class="shrink"><a href="/solve/{{puzzle.solveURI}}">Solve</a></td>
 							{% endif %}
 							<td class="shrink"><a href='/hints/{{puzzle.solveURI}}'>Hints</a></td>
-							<td class="shrink"><a href='/puzzlestats/{{puzzle.solveURI}}'>{{correct}}/{{incorrect}}</a></td>
+							<td class="shrink"><a href='/puzzlestats/{{puzzle.solveURI}}'>{{correct}} / {{incorrect}}</a></td>
+							{% if isGB %}
+								<td class="shrink"><a href='/guesslog/{{puzzle.solveURI}}'>Guesslog</a></td>
+							{% endif %}
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="6" align="center" style="color:red; font-weight: bold;">{{puzzle}}</td>
+							{% if isGB %}
+								<td colspan="7" align="center" style="color:red; font-weight: bold;">{{puzzle}}</td>
+							{% else %}
+								<td colspan="6" align="center" style="color:red; font-weight: bold;">{{puzzle}}</td>
+							{% endif %}
 						</tr>
 					{% endif %}
 				{% endfor %}
 			{% endif %}
 		</tbody>
 	</table>
+
+	<br>
+	<h4>Errata list</h4>
+	<table>
+		<tbody>
+			{% for message, msgTime in messageList %}
+				<tr>
+					<td class="shrink align-top" style="padding-right: 10px; padding-top: 20px;">{{msgTime}}:</td>
+					<td style="padding-left: 10px; padding-top: 20px;">{{message | safe}}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<br>
 
 	{% if nextRelease.0 == 0 %}
 		<h4>Puzzles will be released in {{nextRelease.1}}.</h4>

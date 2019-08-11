@@ -1,0 +1,36 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+
+	<h4>Guess tally for <a href='/puzzlestats/{{puzzle.solveURI}}'>{{puzzle.hyperlinkText}}: {{puzzle.title}}</a></h4>
+	<br>
+	<table class="table table-bordered" style="table-layout: fixed; width: 100%">
+		<thead>
+			<tr>
+				<td style="width: 80px">Count</td>
+				<td>Guess</td>
+			</tr>
+		</thead>
+		<tbody>
+			{% for guess, count, isCorrect in counted %}
+				{% if isCorrect %}
+					<tr style="background:lightgreen">
+				{% else %}
+					<tr>
+				{% endif %}
+					<td style="width: 80px">{{count}}</td>
+					<td style="word-wrap: break-word">{{guess}}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+
+
+</div>
+</div>
+
+{% endblock %}

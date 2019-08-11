@@ -45,6 +45,9 @@
 		{% elif solveType == 3 %}
 			<h4 style='color:green'>You have already guessed "{{displayGuess}}"!</h4>
 			<h4 style='color:green'>For the record, it was correct. This does not affect your remaining guesses.</h4>
+		{% elif solveType == 4 %}
+			<h4 style='color:red'>Your guess contained no alphabets. Please try again.</h4>
+			<h5>This does not affect your remaining guesses.</h5>
 		{% endif %}
 
 		<h6>You have {{team.guesses}} guesses remaining.</h6>

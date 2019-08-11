@@ -20,9 +20,9 @@ class Puzzles(models.Model):
     answer = models.CharField(max_length=500, null=True, blank=True)
     winPun = models.CharField(max_length=300, null=True, blank=True)
     losePun = models.CharField(max_length=300, null=True, blank=True)
-    hint1 = models.CharField(max_length=200, null=True, blank=True)
-    hint2 = models.CharField(max_length=200, null=True, blank=True)
-    hint3 = models.CharField(max_length=200, null=True, blank=True)
+    hint1 = models.CharField(max_length=1000, null=True, blank=True)
+    hint2 = models.CharField(max_length=1000, null=True, blank=True)
+    hint3 = models.CharField(max_length=1000, null=True, blank=True)
     releaseStatus = models.IntegerField(null=True, default = -1)
     hyperlinkText = models.CharField(max_length=50,editable=False,null=True)
     solveURI = models.CharField(max_length=10,editable=False,null=True)
@@ -180,6 +180,7 @@ class Announcements(models.Model):
     id = models.AutoField(primary_key=True)
     msgTime = models.DateTimeField(auto_now_add=True, null=True)
     msg = models.TextField(max_length=1000, null=True)
+    erratum = models.BooleanField(default = False)
 
     class Meta:
         db_table = 'Announcements'
