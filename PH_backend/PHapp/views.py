@@ -130,7 +130,11 @@ def puzzles(request):
         realPuzzleList.append(i)
 
     nextRelease = calcNextRelease(RELEASE_TIMES)
-    return render(request, 'PHapp/puzzles.html', {'puzzleList':realPuzzleList, 'nextRelease':nextRelease, 'isGB':isGB})
+
+    messageList = [(i.msg, i.msgTime.astimezone(AEST).strftime("%d/%m/%Y %I:%M%p").lower()) for i in sorted(list(Announcements.objects.filter(erratum=True)), key=lambda x: x.msgTime)]
+    messageList.reverse()
+
+    return render(request, 'PHapp/puzzles.html', {'puzzleList':realPuzzleList, 'nextRelease':nextRelease, 'isGB':isGB, 'messageList':messageList})
 
 
 def puzzleInfo(request, act, scene):
