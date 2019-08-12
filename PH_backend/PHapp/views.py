@@ -535,6 +535,9 @@ def guesslog(request, act, scene):
 
     return render(request, 'PHapp/guesslog.html', {'counted':counted, 'puzzle':puzzle})
 
+def guesslogMeta(request):
+    return guesslog(request, 7, 2)
+
 def teams(request):
     if not Teams.objects.all():
         return render(request, 'PHapp/teams.html', {'teamsExist':False})
