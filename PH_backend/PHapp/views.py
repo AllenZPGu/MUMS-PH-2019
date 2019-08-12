@@ -63,7 +63,7 @@ def cubeData(request):
         responseData = [{'colors': [color for color in PUZZLE_COLOURS_BLANK[i]], 'text': ['']*6, 'links': ['']*6} for i in range(27)]
     if not huntOver and request.user.is_authenticated:
 #        CubeDataAccessRecord.objects.create(user = request.user)
-        correctGuesses = SubmittedGuesses.objects.filter(team=request.user, correct=True)
+        correctGuesses = SubmittedGuesses.objects.filter(team=request.user, correct=True).select_related('puzzle')
 
         metascomplete = [False] * 8
 
@@ -152,7 +152,8 @@ def puzzleInfo(request, act, scene):
         raise Http404()
 
     userGB = Teams.objects.get(id=1).authClone
-    allSolves = sorted([[guess, calcSingleTime(guess, RELEASE_TIMES)] for guess in SubmittedGuesses.objects.filter(correct=True, puzzle=puzzle).exclude(team=userGB)], key=lambda x:x[1])
+    allGuesses = SubmittedGuesses.objects.filter(puzzle=puzzle).exclude(team=userGB)
+    allSolves = sorted([[guess, calcSingleTime(guess, RELEASE_TIMES)] for guess in allGuesses.filter(correct=True) ], key=lambda x:x[1])
     if allSolves:
         avgTime = allSolves[0][1]
         for guess, time in allSolves[1:]:
@@ -167,7 +168,7 @@ def puzzleInfo(request, act, scene):
     totalRight = puzzle.solveCount
     totalWrong = puzzle.guessCount
 
-    wrongGuessingTeams = [guess.team for guess in SubmittedGuesses.objects.filter(puzzle=puzzle,correct=False).exclude(team=userGB)]
+    wrongGuessingTeams = [guess.team for guess in allGuesses.filter(correct=False)]
     wGTL = sorted(countInList(wrongGuessingTeams), key=lambda x:-x[1])
     wGTL = [[Teams.objects.get(authClone=i[0]), i[1]] for i in wGTL]
 
@@ -711,12 +712,13 @@ def teamInfo(request, teamId):
 
 
     membersList = sorted(list(Individuals.objects.filter(team=team)), key=lambda x: x.name)
-    correctGuesses = SubmittedGuesses.objects.filter(team=team.authClone, correct=True)
+    allGuesses = SubmittedGuesses.objects.filter(team=team.authClone).select_related('puzzle')
+    correctGuesses = allGuesses.filter(team=team.authClone, correct=True)
     correctList = []
     for guess in correctGuesses:
         if IsMetaPart1(guess.puzzle):
             continue
-        correctList += [(str(guess.puzzle), guess, prettyPrintDateTime(calcSingleTime(guess, RELEASE_TIMES)), SubmittedGuesses.objects.filter(team=team.authClone, correct=False, puzzle=guess.puzzle).count())]
+        correctList += [(str(guess.puzzle), guess, prettyPrintDateTime(calcSingleTime(guess, RELEASE_TIMES)), allGuesses.filter(correct=False, puzzle=guess.puzzle).count())]
     correctList.sort(key=lambda x:x[1].submitTime)
     anySolves = bool(correctList)
     avSolveTime = "{:02d}h {:02d}m {:02d}s".format(team.avHr, team.avMin, team.avSec) if anySolves else '-'
