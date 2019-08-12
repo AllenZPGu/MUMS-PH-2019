@@ -96,6 +96,8 @@ class Teams(models.Model):
     avMin = models.IntegerField(null=True)
     avSec = models.IntegerField(null=True)
     guesses = models.IntegerField(default=100)
+    solvedMetaOne = models.BooleanField(default = False)
+    solvedMetaTwo = models.BooleanField(default = False)
 
     class Meta:
         db_table = 'Teams'
