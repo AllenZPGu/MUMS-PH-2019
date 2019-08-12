@@ -230,7 +230,7 @@ def solveMeta(request):
     
     team = Teams.objects.get(authClone = request.user)
     GB = Teams.objects.get(id=1)
-    meta2Guesses = SubmittedGuesses.objects.filter(team=request.user, puzzle=meta2).exclude(team=GB)
+    meta2Guesses = SubmittedGuesses.objects.filter(team=request.user, puzzle=meta2).exclude(team=GB.authClone)
     correctGuesses = meta2Guesses.filter(correct=True)
     if correctGuesses:
         correctMeta2Answers = [meta2.answer] + list(AltAnswers.objects.filter(puzzle=meta2))
