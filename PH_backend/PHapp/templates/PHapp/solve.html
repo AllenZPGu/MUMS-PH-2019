@@ -58,6 +58,12 @@
 		{% elif solveType == 4 %}
 			<h4 style='color:red'>Your guess contained no alphabets. Please try again.</h4>
 			<h5>This does not affect your remaining guesses.</h5>
+		{% elif solveType == 5 %}
+			<h4 style='color:red'>{{altMessage.0}}</h4>
+			<h5>Your solution of <font style='color:green'><b>{{displayGuess}}</b></font> means you're nearly there but not quite...</h5>
+			<h4 style='color:red'>{{altMessage.1}}</h4>
+			<br>
+			<h5>This does not affect your remaining guesses.</h5>
 		{% endif %}
 
 		<h6>You have {{team.guesses}} guesses remaining.</h6>
