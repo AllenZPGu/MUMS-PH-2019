@@ -309,7 +309,8 @@ def solveMeta(request):
                 team.solvedMetaTwo = True
                 team.save()
 
-                meta2.solveCount = meta2.solveCount + 1
+                if team.id != 1:
+                    meta2.solveCount = meta2.solveCount + 1
                 meta2.save()
                 if turnOnDiscord:
                     try:
@@ -333,7 +334,8 @@ def solveMeta(request):
             else:
                 solveType = SOLVE_WRONG
                 displayGuess = guess
-                meta2.guessCount = meta2.guessCount + 1
+                if team.id != 1:
+                    meta2.guessCount = meta2.guessCount + 1
                 meta2.save()
                 team.guesses -= 1
                 team.save()
