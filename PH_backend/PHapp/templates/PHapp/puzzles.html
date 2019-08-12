@@ -34,6 +34,7 @@
 			{% if nextRelease.0 != 0 %}
 				{% for isPuzzle, puzzle, solved, correct, incorrect, worth in puzzleList %}
 					{% if isPuzzle %}
+					{% if puzzle.act != 7%}
 						<tr>
 							<td class="shrink">{{puzzle.hyperlinkText}}</td>
 							<td class="expand">
@@ -61,6 +62,7 @@
 								<td colspan="6" align="center" style="color:red; font-weight: bold;">{{puzzle}}</td>
 							{% endif %}
 						</tr>
+					{% endif %}
 					{% endif %}
 				{% endfor %}
 			{% endif %}
