@@ -25,9 +25,17 @@
 					{% endif %}
 						<td>{{rank}}</td>
 						<td>{{ausRank}}</td>
-						<td><a href='/team/{{team.id}}'>{{team.teamName}}</a></td>
+						{% if team.solvedMetaTwo %}
+							<td><img src="{% static 'PHapp/img/logo.png' %}" alt="Logo" style="height:25px; margin-right:15px"><a href='/team/{{team.id}}'>{{team.teamName}}</a></td>
+						{% else %}
+							<td><a href='/team/{{team.id}}'>{{team.teamName}}</a></td>
+						{% endif %}
 						<td>{{team.teamPoints}}</td>
-						<td>{{team.teamPuzzles}}</td>
+						{% if team.solvedMetaTwo %}
+							<td>{{team.teamPuzzles}} + Meta</td>
+						{% else %}
+							<td>{{team.teamPuzzles}}</td>
+						{% endif %}
 						<td>{{avSolveTimeString}}</td>
 					</tr>
 				{% endfor %}

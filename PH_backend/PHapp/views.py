@@ -230,7 +230,8 @@ def solveMeta(request):
         raise Http404()
     
     team = Teams.objects.get(authClone = request.user)
-    meta2Guesses = SubmittedGuesses.objects.filter(team=request.user, puzzle=meta2)
+    GB = Teams.objects.get(id=1)
+    meta2Guesses = SubmittedGuesses.objects.filter(team=request.user, puzzle=meta2).exclude(team=GB.authClone)
     correctGuesses = meta2Guesses.filter(correct=True)
     if correctGuesses:
         correctMeta2Answers = [meta2.answer] + list(AltAnswers.objects.filter(puzzle=meta2))
@@ -272,10 +273,24 @@ def solveMeta(request):
                     correct = True,
                     pointsAwarded = 0
                 )
+                team.solvedMetaOne = True
                 team.save()
 
                 solveType = SOLVE_METAHALF
                 altAns = guess if guess != meta1.answer else None
+
+                if turnOnDiscord:
+                    try:
+                        webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+                        webhookTitle = '**{}** solved the first part of the **META**'.format(team.teamName)
+                        webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+                        webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=47872)
+                        webhook.add_embed(webhookEmbed)
+                        webhook.execute()
+                    except:
+                        pass
+
+
             elif guess == meta2.answer or AltAnswers.objects.filter(puzzle=meta2, altAnswer=guess):
                 # This is a meta 2 answer
                 SubmittedGuesses.objects.create(
@@ -290,10 +305,21 @@ def solveMeta(request):
                 team.avHr = solveTime[1]
                 team.avMin = solveTime[2]
                 team.avSec = solveTime[3]
+                team.solvedMetaTwo = True
                 team.save()
 
                 meta2.solveCount = meta2.solveCount + 1
                 meta2.save()
+                if turnOnDiscord:
+                    try:
+                        webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+                        webhookTitle = '**{}** solved **META**'.format(team.teamName)
+                        webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+                        webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=47872)
+                        webhook.add_embed(webhookEmbed)
+                        webhook.execute()
+                    except:
+                        pass
 
                 return redirect(f'/solve/meta')
             else:
@@ -301,6 +327,8 @@ def solveMeta(request):
                 displayGuess = guess
                 meta2.guessCount = meta2.guessCount + 1
                 meta2.save()
+                team.guesses -= 1
+                team.save()
                 SubmittedGuesses.objects.create(
                     team = request.user,
                     puzzle = meta2,
@@ -308,8 +336,19 @@ def solveMeta(request):
                     correct = False,
                     pointsAwarded = 0
                 )
+
+                if turnOnDiscord:
+                    try:
+                        webhook = DiscordWebhook(url=settings.SOLVE_BOT_URL)
+                        webhookTitle = '**{}** incorrectly attempted **META**'.format(team.teamName)
+                        webhookDesc = 'Guess: {}\nPoints: {}, Solves: {}'.format(guess, team.teamPoints, team.teamPuzzles)
+                        webhookEmbed = DiscordEmbed(title=webhookTitle, description=webhookDesc, color=12255232)
+                        webhook.add_embed(webhookEmbed)
+                        webhook.execute()
+                    except:
+                        pass
                 
-                specialAnswers = IncorrectAnswer.objects.filter(puzzle=puzzle, answer=guess)
+                specialAnswers = IncorrectAnswer.objects.filter(puzzle=meta2, answer=guess)
                 if specialAnswers:
                     altMessage = (specialAnswers[0].title, specialAnswers[0].message)
 
@@ -496,6 +535,9 @@ def guesslog(request, act, scene):
             counted[i] += [False]
 
     return render(request, 'PHapp/guesslog.html', {'counted':counted, 'puzzle':puzzle})
+
+def guesslogMeta(request):
+    return guesslog(request, 7, 2)
 
 def teams(request):
     if not Teams.objects.all():
