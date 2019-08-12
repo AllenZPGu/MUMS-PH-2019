@@ -9,6 +9,16 @@
 		<h4>Enter a guess for <a href='/{{puzzle.pdfURI}}'>{{puzzle.hyperlinkText}}: {{puzzle.title}}</a></h4>
 		<br>
 
+		{% if puzzle.act == 7 %}
+			{% if team.solvedMetaOne %}
+				{% if solveType != 2 %}
+					<h5>Your previous attempted solution of <font style='color:green'><b>EIGHT HIDDEN TRIOS</b></font> means you're not quite there yet. Now it is left up to you to right what's been put down. Make sure you're not back to front.</h5>
+					<br>
+				{% endif %}
+			{% endif %}
+		{% endif %}
+		
+
         {% if solveType == 0 %}
             {% if altMessage %}
                 {% if altMessage.0 %}
@@ -32,14 +42,14 @@
 			<h5>For the record, it was <font style='color:red'>incorrect</font>. This does not affect your remaining guesses.</h5>
 			<br>
 		{% elif solveType == 2 %}
-			<h4 style='color:green'>Almost...</h4>
+			<h4 style='color:green'>Hahaha you don't think we'd have made it that	easy, did you?</h4>
 			{% if altAns %}
 				<h5>Your solution of <font style='color:green'><b>{{altAns}}</b></font> is acceptable, but the actual solution is:</h5>
-				<h4 style='color:green'>{{puzzle.answer}}</h4>
+				<h4 style='color:green'>EIGHT HIDDEN TRIOS.</h4>
 				<br>
-				<h4 style='color:green'>BUT you're not quite there yet...</h4>
+				<h4 style='color:green'>BUT you're not quite there yet. Now it is left up to you to right what's been put down. Make sure you're not back to front.</h4>
 			{% else %}
-				<h5>Your solution of <font style='color:green'><b>{{altAns}}</b></font> means you're not quite there yet...</h5>
+				<h5>Your solution of <font style='color:green'><b>EIGHT HIDDEN TRIOS</b></font> means you're not quite there yet. Now it is left up to you to right what's been put down. Make sure you're not back to front.</h5>
 			{% endif %}
 			<br>
 		{% elif solveType == 3 %}
