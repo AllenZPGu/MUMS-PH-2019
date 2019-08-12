@@ -31,6 +31,7 @@ SOLVE_DUPLICATE = 1
 SOLVE_METAHALF = 2
 SOLVE_METAHALFDUPLICATE = 3
 SOLVE_EMPTYSTRING = 4
+SOLVE_METAALT = 5
 
 turnOnDiscord = True
 
@@ -322,6 +323,13 @@ def solveMeta(request):
                         pass
 
                 return redirect(f'/solve/meta')
+
+            elif IncorrectAnswer.objects.filter(puzzle=meta2, answer=guess):
+                x = IncorrectAnswer.objects.filter(puzzle=meta2, answer=guess)[0]
+                solveType = SOLVE_METAALT
+                displayGuess = guess
+                altMessage = (x.title, x.message)
+
             else:
                 solveType = SOLVE_WRONG
                 displayGuess = guess
