@@ -570,7 +570,7 @@ def teams(request):
             allTeams.append([team, '-', 0, 0, 0])
 
     # Sort by points, then # of puzzles solved, then average solve time, then ID
-    allTeams = sorted(allTeams, key=lambda x:(-x[0].teamPoints, -x[0].teamPuzzles, 3600*x[2]+60*x[3]+x[4], x[0].id) )
+    allTeams = sorted(allTeams, key=lambda x:(-x[0].teamPoints, -puzzleSolveCountByTeam(x[0]), 3600*x[2]+60*x[3]+x[4], x[0].id) )
 
     for i in range(len(allTeams)):
         if allTeams[i][0].teamPuzzles:
