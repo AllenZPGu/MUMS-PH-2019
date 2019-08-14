@@ -531,10 +531,16 @@ def guesslog(request, act, scene):
     try:
         puzzle = Puzzles.objects.get(act=actNumber,scene=scene)
         correct = [puzzle.answer] + [i.altAnswer for i in AltAnswers.objects.filter(puzzle=puzzle)]
+        if actNumber == 7:
+            meta1 = Puzzles.objects.get(act=7,scene=1)
+            correct += [meta1.answer] + [i.altAnswer for i in AltAnswers.objects.filter(puzzle=meta1)]
+            allGuesses = [i.guess for i in SubmittedGuesses.objects.filter(puzzle__in=(meta1, puzzle)).exclude(team=request.user)]
+        else:
+            allGuesses = [i.guess for i in SubmittedGuesses.objects.filter(puzzle=puzzle).exclude(team=request.user)]
+        counted = countInList(allGuesses)
     except:
         raise Http404()
 
-    counted = countInList([i.guess for i in SubmittedGuesses.objects.filter(puzzle=puzzle).exclude(team=request.user)])
     counted = sorted(counted, key=lambda x:x[0])
     counted = sorted(counted, key=lambda x:-x[1])
 
