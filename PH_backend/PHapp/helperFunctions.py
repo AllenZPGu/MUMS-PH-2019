@@ -218,3 +218,9 @@ def countInList(aList):
 			returnDict[i] += 1
 	returnList = [[i, returnDict[i]] for i in returnDict]
 	return returnList
+
+def puzzleSolveCountByTeam(team):
+	if team.solvedMetaTwo:
+		return team.teamPuzzles + 1
+	else:
+		return team.teamPuzzles
