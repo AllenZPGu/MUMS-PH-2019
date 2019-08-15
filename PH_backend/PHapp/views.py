@@ -584,7 +584,11 @@ def solution(request, act, scene):
     except:
         raise Http404()
     
-    return render(request, f'PHapp/solutions/{actNumber}.{scene}.html', {'puzzle':puzzle})
+    now = AEST.localize(datetime.datetime.now())
+    if now > AEST.localize(datetime.datetime(2019, 8, 18, 21)):
+        return render(request, f'PHapp/solutions/{actNumber}.{scene}.html', {'puzzle':puzzle})
+    else:
+        return render(request, 'PHapp/solutions/unpublishedSolution.html', {'puzzle':puzzle})
 
 def solutionMeta(request, act, scene):
     if not huntFinished(RELEASE_TIMES):
@@ -596,23 +600,6 @@ def solutionMeta(request, act, scene):
         raise Http404()
 
     return render(request, 'PHapp/solutions/meta.html', {'puzzle':puzzle})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 def teams(request):
     if not Teams.objects.all():
