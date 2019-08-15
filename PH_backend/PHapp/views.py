@@ -585,7 +585,7 @@ def solution(request, act, scene):
         raise Http404()
     
     now = AEST.localize(datetime.datetime.now())
-    if now > AEST.localize(datetime.datetime(2019, 8, 18, 21)):
+    if now > AEST.localize(datetime.datetime(2019, 8, 23, 12)):
         return render(request, f'PHapp/solutions/{actNumber}.{scene}.html', {'puzzle':puzzle})
     else:
         return render(request, 'PHapp/solutions/unpublishedSolution.html', {'puzzle':puzzle})
