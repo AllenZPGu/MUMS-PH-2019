@@ -1,0 +1,89 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	<center>
+		<h4>{{puzzle.hyperlinkText}}</h4>
+		<h1><a href='/{{puzzle.pdfURI}}'>{{puzzle.title}}</a></h1>
+		<h4><a href='/puzzlestats/{{puzzle.act}}/{{puzzle.scene}}/'>{{puzzle.solveCount}} solves / {{puzzle.guessCount}} incorrect guesses</a></h4>
+		<h4>Solution: <font style='color:green'><b>{{puzzle.answer}}</b></font></h4>
+	</center>
+	
+	<p>We are presented with a few pairs of images, where each image seems to clue for something. The first image depicts Snowy from the <i>Tintin</i> comics, whose barks are represented in the English language versions as "WOAH". The second image shows an arrow pointing halfway along a racetrack, suggesting maybe we are "halfway there". This alludes to a <a href='https://knowyourmeme.com/memes/whoa-were-halfway-there'>popular internet meme based off Bon Jovi's song <i>Livin' on a Prayer</i></a>, where pictures descriptively represent a phrase rhyming with the line "woah, we're halfway there".</p>
+
+	<p>This is exactly the case with the remaining eight pairs of images. After identifying enough pictures, we note the pattern that within each pair, both images have the letter count indicated within the brackets. Furthermore, both images share the same initial letter. This can us identify and disambiguate the remaining pictures. For instance, the first pair of images clues for "BARNACLES on BROWN BEAR". </p>
+
+	<p>Now that this is done, we need a way to extract letters. Recalling that this whole meme is about us "being halfway there", we should try indexing the middle letters from all images (it helps that all images have odd-numbered lengths!).</p>
+
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<td>Word length</td>
+				<td>Image 1</td>
+				<td>Image 2</td>
+				<td>Letters extracted</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>9</td>
+				<td>BARN<b>A</b>CLES</td>
+				<td>BROW<b>N</b> BEAR</td>
+				<td>AN</td>
+			</tr>
+			<tr>
+				<td>7</td>
+				<td>MIS<b>S</b>ILE</td>
+				<td>MAL<b>W</b>ARE</td>
+				<td>SW</td>
+			</tr>
+			<tr>
+				<td>9</td>
+				<td>UMBR<b>E</b>LLAS</td>
+				<td>UNDE<b>R</b>WEAR</td>
+				<td>ER</td>
+			</tr>
+			<tr>
+				<td>9</td>
+				<td>CONT<b>I</b>NENT</td>
+				<td>CROS<b>S</b>HAIR</td>
+				<td>IS</td>
+			</tr>
+			<tr>
+				<td>9</td>
+				<td>MOUN<b>T</b>AINS</td>
+				<td>MARC<b>H</b> HARE</td>
+				<td>TH</td>
+			</tr>
+			<tr>
+				<td>11</td>
+				<td>FLUCT<b>U</b>ATION</td>
+				<td>FLYIN<b>G</b> CHAIR</td>
+				<td>UG</td>
+			</tr>
+			<tr>
+				<td>9</td>
+				<td>THRI<b>L</b>LERS</td>
+				<td>TEDD<b>Y</b> BEAR</td>
+				<td>LY</td>
+			</tr>
+			<tr>
+				<td>5</td>
+				<td>SO<b>F</b>AS</td>
+				<td>SW<b>E</b>AR</td>
+				<td>FE</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p>The extracted string reads "ANSWER IS THUG LYFE", where the solution of THUG LYFE is the story of the corsair from the title.</p>
+
+	<h4>Author's notes</h4>
+	<p>As a writer at an age where internet memes are a huge part of my life, it was natural that we needed to include a meme-y puzzle in this Hunt. Furthermore, since internet memes are highly accessible to most solvers of all levels, we decided to make this puzzle into an easy warm-up for the Hunt. The fact that this puzzle was the most-solved puzzle of the Hunt meant that we succeeded at this goal.</p>
+
+</div>
+</div>
+
+{% endblock %}

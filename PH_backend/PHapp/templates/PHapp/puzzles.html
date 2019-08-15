@@ -11,9 +11,12 @@
 				<td class="shrink"></td>
 				<td>Puzzle</td>
 				<td class="shrink">Points</td>
-				<td class="shrink">Solve / Solution</td>
+				<td class="shrink">Solve</td>
 				<td class="shrink">Hints</td>
 				<td class="shrink">Solves / Incorrect guesses</td>
+				{% if huntFinished %}
+					<td class="shrink">Solutions</td>
+				{% endif %}
 				{% if isGB %}
 					<td class="shrink">Guesslog</td>
 				{% endif %}
@@ -27,6 +30,9 @@
 				<td class="shrink">-</td>
 				<td class="shrink">-</td>
 				<td class="shrink">-</td>
+				{% if huntFinished %}
+					<td class="shrink">-</td>
+				{% endif %}
 				{% if isGB %}
 					<td class="shrink">-</td>
 				{% endif %}
@@ -49,17 +55,16 @@
 							{% endif %}
 							<td class="shrink"><a href='/hints/{{puzzle.solveURI}}'>Hints</a></td>
 							<td class="shrink"><a href='/puzzlestats/{{puzzle.solveURI}}'>{{correct}} / {{incorrect}}</a></td>
+							{% if huntFinished %}
+								<td class="shrink"><a href='/solution/{{puzzle.solveURI}}'>Solution</a></td>
+							{% endif %}
 							{% if isGB %}
 								<td class="shrink"><a href='/guesslog/{{puzzle.solveURI}}'>Guesslog</a></td>
 							{% endif %}
 						</tr>
 					{% else %}
 						<tr>
-							{% if isGB %}
-								<td colspan="7" align="center" style="color:red; font-weight: bold;">{{puzzle}}</td>
-							{% else %}
-								<td colspan="6" align="center" style="color:red; font-weight: bold;">{{puzzle}}</td>
-							{% endif %}
+							<td colspan="{{colspan}}" align="center" style="color:red; font-weight: bold;">{{puzzle}}</td>
 						</tr>
 					{% endif %}
 				{% endfor %}
