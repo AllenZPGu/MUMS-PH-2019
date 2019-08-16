@@ -10,7 +10,7 @@
 		<br>
 
 		{% if puzzle.act == 7 %}
-			{% if team.solvedMetaOne %}
+			{% if team and team.solvedMetaOne %}
 				{% if solveType != 2 %}
 					<h5>Your previous attempted solution of <font style='color:green'><b>EIGHT HIDDEN TRIOS</b></font> means you're not quite there yet. Now it is left up to you to right what's been put down. Make sure you're not back to front.</h5>
 					<br>
@@ -31,7 +31,9 @@
                 <h4 style='color:red'>{{altMessage.1}}</h4>
                 {% endif %}
                 <br>
+                {% if not huntOver %}
                 <h5>This does not affect your remaining guesses.</h5>
+                {% endif %}
             {% else %}
                 <h4 style='color:red'>Incorrect!</h4>
                 <h4 style='color:red'>{{puzzle.losePun}}</h4>
@@ -39,7 +41,7 @@
 			<br>
 		{% elif solveType == 1 %}
 			<h4 style='color:red'>You have already guessed <font style='color:green'><b>{{displayGuess}}</b></font></h4>
-			<h5>For the record, it was <font style='color:red'>incorrect</font>. This does not affect your remaining guesses.</h5>
+			<h5>For the record, it was <font style='color:red'>incorrect</font>. {% if not huntOver %}This does not affect your remaining guesses.{% endif %}</h5>
 			<br>
 		{% elif solveType == 2 %}
 			<h4 style='color:green'>Hahaha you don't think we'd have made it that	easy, did you?</h4>
@@ -66,7 +68,9 @@
 			<h5>This does not affect your remaining guesses.</h5>
 		{% endif %}
 
-		<h6>You have {{team.guesses}} guesses remaining.</h6>
+        {% if not huntOver %}
+        <h6>You have {{team.guesses}} guesses remaining.</h6>
+        {% endif %}
 	</center>
 
 	<div>
@@ -79,7 +83,8 @@
 		</form>
 	</div>
 
-	<br>
+    {% if previousGuesses %}
+    <br>
 	<button class="btn btn-info btn-block" type="button" data-toggle="collapse" data-target="#guessCollapse" aria-expanded="true" aria-controls="guessCollapse">
 		Click to display / hide your previous incorrect guesses.
 	</button>
@@ -93,7 +98,8 @@
 				{% endfor %}
 			</center>
 		</div>
-	</div>
+    </div>
+    {% endif %}
 
 
 
