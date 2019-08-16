@@ -39,6 +39,8 @@ urlpatterns = [
 	path('hints/<str:act>/S/', views.hintsMiniMeta),
 	path('guesslog/<str:act>/<str:scene>/', views.guesslog),
 	path('guesslog/meta/', views.guesslogMeta),
+	path('solution/<str:act>/<str:scene>/', views.solution),
+	path('solution/meta/', views.solutionMeta),
 	path('hints/meta/', views.hintsMeta),
 	path('registration/', views.teamReg),
 	path('teams/', views.teams),

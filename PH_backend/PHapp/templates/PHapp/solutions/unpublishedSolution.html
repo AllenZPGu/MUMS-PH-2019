@@ -1,0 +1,19 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	<center>
+		<h4>{{puzzle.hyperlinkText}}</h4>
+		<h1><a href='/{{puzzle.pdfURI}}'>{{puzzle.title}}</a></h1>
+		<h4><a href='/puzzlestats/{{puzzle.act}}/{{puzzle.scene}}/'>{{puzzle.solveCount}} solves / {{puzzle.guessCount}} incorrect guesses</a></h4>
+		<h4>Solution: <font style='color:green'><b>{{puzzle.answer}}</b></font></h4>
+		<br>
+		<h4>The solution for this puzzle will be published by 12pm AEST, 23rd August. Thank you for your patience.</h4>
+	</center>
+
+</div>
+</div>
+
+{% endblock %}

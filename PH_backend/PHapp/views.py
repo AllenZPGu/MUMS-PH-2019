@@ -135,7 +135,12 @@ def puzzles(request):
     messageList = [(i.msg, i.msgTime.astimezone(AEST).strftime("%d/%m/%Y %I:%M%p").lower()) for i in sorted(list(Announcements.objects.filter(erratum=True)), key=lambda x: x.msgTime)]
     messageList.reverse()
 
-    return render(request, 'PHapp/puzzles.html', {'puzzleList':realPuzzleList, 'nextRelease':nextRelease, 'isGB':isGB, 'messageList':messageList})
+    colspan = 6
+    colspan = colspan + 1 if isGB else colspan
+    colspan = colspan + 1 if huntFinished(RELEASE_TIMES) else colspan
+
+    return render(request, 'PHapp/puzzles.html', {'puzzleList':realPuzzleList, 
+        'nextRelease':nextRelease, 'isGB':isGB, 'messageList':messageList, 'huntFinished':huntFinished(RELEASE_TIMES), 'colspan':colspan})
 
 
 def puzzleInfo(request, act, scene):
@@ -554,6 +559,47 @@ def guesslog(request, act, scene):
 
 def guesslogMeta(request):
     return guesslog(request, 7, 2)
+
+def solution(request, act, scene):
+    if not huntFinished(RELEASE_TIMES):
+        raise Http404()
+
+    if act == 7:
+        actNumber = 7
+    else:
+        actNumber = RomanToInt(act)
+        if not actNumber:
+            raise Http404()
+
+    if scene == 'S':
+        scene = 5
+    else:
+        try:
+            scene = int(scene)
+        except:
+            raise Http404()
+
+    try:
+        puzzle = Puzzles.objects.get(act=actNumber,scene=scene)
+    except:
+        raise Http404()
+    
+    now = AEST.localize(datetime.datetime.now())
+    if now > AEST.localize(datetime.datetime(2019, 8, 23, 12)):
+        return render(request, f'PHapp/solutions/{actNumber}.{scene}.html', {'puzzle':puzzle})
+    else:
+        return render(request, 'PHapp/solutions/unpublishedSolution.html', {'puzzle':puzzle})
+
+def solutionMeta(request, act, scene):
+    if not huntFinished(RELEASE_TIMES):
+        raise Http404()
+
+    try:
+        puzzle = Puzzles.objects.get(act=7,scene=2)
+    except:
+        raise Http404()
+
+    return render(request, 'PHapp/solutions/meta.html', {'puzzle':puzzle})
 
 def teams(request):
     if not Teams.objects.all():
