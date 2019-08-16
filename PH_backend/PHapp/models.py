@@ -180,7 +180,7 @@ class IncorrectAnswer(models.Model):
 class Announcements(models.Model):
     id = models.AutoField(primary_key=True)
     msgTime = models.DateTimeField(null=True)
-    msg = models.TextField(max_length=1000, null=True)
+    msg = models.TextField(max_length=10000, null=True)
     erratum = models.BooleanField(default = False)
 
     def __str__(self):
