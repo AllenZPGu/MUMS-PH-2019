@@ -670,9 +670,9 @@ def showSolution(request, act, scene):
     
     now = AEST.localize(datetime.datetime.now())
     if now > AEST.localize(datetime.datetime(2019, 8, 23, 12)):
-        return render(request, f'PHapp/solutions/{actNumber}.{scene}.html', {'puzzle':puzzle})
+        return render(request, f'PHapp/solutions/{actNumber}.{scene}.html', {'puzzle':puzzle, 'huntOver': huntOver()})
     else:
-        return render(request, 'PHapp/solutions/unpublishedSolution.html', {'puzzle':puzzle})
+        return render(request, 'PHapp/solutions/unpublishedSolution.html', {'puzzle':puzzle, 'huntOver': huntOver()})
 
 def showSolutionMiniMeta(request, act):
     return showSolution(request, act, 5)
@@ -688,9 +688,9 @@ def showSolutionMeta(request):
 
     now = AEST.localize(datetime.datetime.now())
     if now > AEST.localize(datetime.datetime(2019, 8, 23, 12)):
-        return render(request, 'PHapp/solutions/meta.html', {'puzzle':puzzle})
+        return render(request, 'PHapp/solutions/meta.html', {'puzzle':puzzle, 'huntOver': huntOver()})
     else:
-        return render(request, 'PHapp/solutions/unpublishedSolution.html', {'puzzle':puzzle})
+        return render(request, 'PHapp/solutions/unpublishedSolution.html', {'puzzle':puzzle, 'huntOver': huntOver()})
 
 def teams(request):
     if not Teams.objects.all():
