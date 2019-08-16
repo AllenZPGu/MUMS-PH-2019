@@ -226,4 +226,4 @@ def puzzleSolveCountByTeam(team):
 		return team.teamPuzzles
 
 def huntOver():
-    releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES)
+    return releaseStage(RELEASE_TIMES) >= len(RELEASE_TIMES)
