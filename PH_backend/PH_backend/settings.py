@@ -65,7 +65,7 @@ WSGI_APPLICATION = 'PH_backend.wsgi.application'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 ## DEBUG = False
-DEBUG = False
+DEBUG = True
 
 #########################deployment checks
 SECURE_SSL_REDIRECT = True
