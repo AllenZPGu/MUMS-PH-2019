@@ -255,7 +255,7 @@ def solveMetaHuntOver(request):
             guess = stripToLetters(solveform.cleaned_data['guess'])
             if guess == meta2.answer or AltAnswers.objects.filter(puzzle=meta2,altAnswer=guess):
                 altAns = guess if guess != meta2.answer else None
-                return render(request, 'PHapp/solveCorrectHuntEnded.html', {'puzzle': meta2, 'altAns': altAns, 'huntOver':huntOver()})
+                return render(request, 'PHapp/solveCorrectHuntOver.html', {'puzzle': meta2, 'altAns': altAns, 'huntOver':huntOver()})
             elif guess == meta1.answer or AltAnswers.objects.filter(puzzle=meta1,altAnswer=guess):
                 altAns = guess if guess != meta1.answer else None
                 solveType = SOLVE_METAHALF
@@ -297,7 +297,7 @@ def solveHuntOver(request, act, scene):
             guess = stripToLetters(solveform.cleaned_data['guess'])
             if guess == puzzle.answer or AltAnswers.objects.filter(puzzle=puzzle,altAnswer=guess):
                 altAns = guess if guess != puzzle.answer else None
-                return render(request, 'PHapp/solveCorrectHuntEnded.html', {'puzzle': puzzle, 'altAns': altAns, 'huntOver':huntOver()})
+                return render(request, 'PHapp/solveCorrectHuntOver.html', {'puzzle': puzzle, 'altAns': altAns, 'huntOver':huntOver()})
             else:
                 solveType = SOLVE_WRONG
                 displayGuess = guess
@@ -590,7 +590,7 @@ def solve(request, act, scene):
     return render(request, 'PHapp/solve.html', 
         {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':puzzle, 'team':team, 'previousGuesses':previousGuesses, 'altMessage': altMessage, 'huntOver':huntOver()})
 
-@login_required
+@user_passes_test(check_loggedin_or_ended)
 def solveMiniMeta(request, act):
     # Just prettifies the URLs a bit
     return solve(request, act, 5)
