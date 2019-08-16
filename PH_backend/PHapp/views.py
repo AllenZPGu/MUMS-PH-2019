@@ -136,7 +136,7 @@ def puzzles(request):
 
     nextRelease = calcNextRelease(RELEASE_TIMES)
 
-    messageList = [(i.msg, i.msgTime.astimezone(AEST).strftime("%d/%m/%Y %I:%M%p").lower()) for i in sorted(list(Announcements.objects.filter(erratum=True)), key=lambda x: x.msgTime)]
+    messageList = [(i.msg, i.msgTime.astimezone(AEST).strftime("%d/%m/%Y %I:%M%p").lower()) for i in sorted(list(Announcements.objects.filter(erratum=True,msgTime__lte=AEST.localize(datetime.datetime.now()))), key=lambda x: x.msgTime)]
     messageList.reverse()
 
     colspan = 6
@@ -923,7 +923,7 @@ def debrief(request):
         return render(request, 'PHapp/home.html', {'huntOver':huntOver()})
 
 def announcements(request):
-    messageList = [(i.msg, i.msgTime.astimezone(AEST).strftime("%d/%m/%Y %I:%M%p").lower()) for i in sorted(list(Announcements.objects.all()), key=lambda x: x.msgTime)]
+    messageList = [(i.msg, i.msgTime.astimezone(AEST).strftime("%d/%m/%Y %I:%M%p").lower()) for i in sorted(list(Announcements.objects.filter(msgTime__lte=AEST.localize(datetime.datetime.now()))), key=lambda x: x.msgTime)]
     messageList.reverse()
     return render(request, 'PHapp/announcements.html', {'messageList':messageList, 'huntOver':huntOver()})
 

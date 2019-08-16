@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Cubelets(models.Model):
     id = models.AutoField(primary_key=True)
     cubeletId = models.IntegerField(null=True)
@@ -180,9 +179,13 @@ class IncorrectAnswer(models.Model):
 
 class Announcements(models.Model):
     id = models.AutoField(primary_key=True)
-    msgTime = models.DateTimeField(auto_now_add=True, null=True)
+    msgTime = models.DateTimeField(null=True)
     msg = models.TextField(max_length=1000, null=True)
     erratum = models.BooleanField(default = False)
+
+    def __str__(self):
+        from .globals import AEST
+        return self.msgTime.astimezone(AEST).strftime("%d/%m/%Y %I:%M%p").lower() + (' (E): ' if self.erratum else ': ') + str(self.msg)[:50] + ('...' if len(self.msg) > 50 else '')
 
     class Meta:
         db_table = 'Announcements'
