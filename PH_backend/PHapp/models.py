@@ -17,7 +17,6 @@ class Puzzles(models.Model):
     act = models.IntegerField(null=True, default=0)
     scene = models.IntegerField(null=True, default=0)
     pdfPath = models.CharField(max_length=200, null=True, blank=True)
-    solutionsPath = models.CharField(max_length=200, null=True)
     answer = models.CharField(max_length=500, null=True, blank=True)
     winPun = models.CharField(max_length=300, null=True, blank=True)
     losePun = models.CharField(max_length=300, null=True, blank=True)
@@ -63,21 +62,10 @@ class Puzzles(models.Model):
             pdfURI = f'puzzles/{IntToRoman(self.act)}.{self.scene} {self.title}.pdf'
         self.pdfURI = pdfURI
 
-    def updateSolutionURI(self):
-        from . helperFunctions import IntToRoman
-        if self.act == 7:
-            solutionURI = 'solutions/Meta - Solution.pdf'
-        elif self.scene == 5:
-            solutionURI = f'solutions/{IntToRoman(self.act)}.S {self.title} - Solution.pdf'
-        else:
-            solutionURI = f'solutions/{IntToRoman(self.act)}.{self.scene} {self.title} - Solution.pdf'
-        self.solutionURI = solutionURI
-
     def save(self, *args, **kwargs):
         self.updateHyperlinkText()
         self.updateSolveURI()
         self.updatePdfURI()
-        self.updateSolutionURI()
         super(Puzzles, self).save(*args, **kwargs)
 
     def __str__(self):
