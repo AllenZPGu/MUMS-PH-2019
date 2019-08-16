@@ -1,7 +1,7 @@
 from django import forms
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django.http import JsonResponse, FileResponse, Http404, HttpResponse
@@ -13,7 +13,7 @@ from django.views.decorators.http import last_modified
 from django.urls import reverse
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from .models import *
+from .models import Puzzles, Teams, SubmittedGuesses, Individuals, AltAnswers, IncorrectAnswer, Announcements, ResetTokens
 from .forms import *
 from django.conf import settings
 import json
@@ -23,8 +23,14 @@ import random
 import os
 from discord_webhook import DiscordWebhook, DiscordEmbed
 import smtplib, ssl
-from .helperFunctions import *
-from .globals import *
+from .helperFunctions import prettyPrintDateTime, stripToLetters, releaseStage, calcWorth, checkListAllNone, totalSolves, calcSolveTime, calcPuzzleTime, calcNextGuess, calcNextRelease, huntFinished, huntOver, IsMeta, IsMetaOrMiniMeta, IsMetaPart1, RomanToInt, IntToRoman, generateToken, countInList
+from .globals import AEST, RELEASE_TIMES
+
+def check_loggedin_or_ended(user):
+    return user.is_authenticated or huntOver()
+
+def check_loggedin_and_not_ended(user):
+    return user.is_authenticated and not huntOver()
 
 SOLVE_WRONG = 0
 SOLVE_DUPLICATE = 1
@@ -38,8 +44,7 @@ turnOnDiscord = True
 #releaseTimes = [aest.localize(datetime.datetime(2019, 6, 24, 12)) + datetime.timedelta(days=i) for i in range(10)]
 @never_cache
 def index(request):
-    huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
-    return render(request, 'PHapp/home.html', {'huntOver':huntOver})
+        return render(request, 'PHapp/home.html', {'huntOver':huntOver()})
 
 @never_cache
 def cubeDataLastModified(request):
@@ -57,12 +62,11 @@ def cubeDataLastModified(request):
 #@last_modified(cubeDataLastModified)
 @never_cache
 def cubeData(request):
-    huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
-    if huntOver:
+    if huntOver():
         responseData = [{'colors': [color for color in PUZZLE_COLOURS[i]], 'text': ['']*6, 'links': ['']*6} for i in range(27)]
     else:
         responseData = [{'colors': [color for color in PUZZLE_COLOURS_BLANK[i]], 'text': ['']*6, 'links': ['']*6} for i in range(27)]
-    if not huntOver and request.user.is_authenticated:
+    if not huntOver() and request.user.is_authenticated:
 #        CubeDataAccessRecord.objects.create(user = request.user)
         correctGuesses = SubmittedGuesses.objects.filter(team=request.user, correct=True).select_related('puzzle')
 
@@ -140,7 +144,7 @@ def puzzles(request):
     colspan = colspan + 1 if huntFinished(RELEASE_TIMES) else colspan
 
     return render(request, 'PHapp/puzzles.html', {'puzzleList':realPuzzleList, 
-        'nextRelease':nextRelease, 'isGB':isGB, 'messageList':messageList, 'huntFinished':huntFinished(RELEASE_TIMES), 'colspan':colspan})
+        'nextRelease':nextRelease, 'isGB':isGB, 'messageList':messageList, 'huntFinished':huntFinished(RELEASE_TIMES), 'colspan':colspan, 'huntOver': huntOver()})
 
 
 def puzzleInfo(request, act, scene):
@@ -179,7 +183,7 @@ def puzzleInfo(request, act, scene):
     wGTL = [[Teams.objects.get(authClone=i[0]), i[1]] for i in wGTL]
 
     return render(request, 'PHapp/puzzleStats.html', 
-        {'puzzle':puzzle, 'allSolves':allSolves, 'totalWrong':totalWrong, 'totalRight':totalRight, 'avTime':averageTimeString, 'wrongGuesses':wGTL})
+        {'puzzle':puzzle, 'allSolves':allSolves, 'totalWrong':totalWrong, 'totalRight':totalRight, 'avTime':averageTimeString, 'wrongGuesses':wGTL, 'huntOver':huntOver()})
 
 def puzzleInfoMiniMeta(request, act):
     return puzzleInfo(request, act, 5)
@@ -222,13 +226,94 @@ def showPuzzleMeta(request):
 def noGuessesLeft(request, team):
     # Login implicity required. This function only works if the hunt is not over!
     nextGuess = calcNextGuess(RELEASE_TIMES)
-    return render(request, 'PHapp/noGuesses.html', {'huntStage': nextGuess[0], 'nextGuesses': nextGuess[1]})
+    return render(request, 'PHapp/noGuesses.html', {'huntStage': nextGuess[0], 'nextGuesses': nextGuess[1], 'huntOver':huntOver()})
 
-@login_required
+def solveMetaHuntOver(request):
+    meta1 = Puzzles.objects.get(act=7, scene=1)
+    meta2 = Puzzles.objects.get(act=7, scene=2)
+
+    solveType = -1
+    displayGuess = None
+    altAns = None
+    altMessage = None
+    previousGuesses = []
+    team = None
+    if request.user.is_authenticated:
+        team = Teams.objects.get(authClone=request.user)
+        user_guesses = SubmittedGuesses.objects.filter(puzzle=meta2,team=request.user)
+        user_correct_guesses = user_guesses.filter(correct=True)
+        if user_correct_guesses:
+            correct_guess = user_correct_guesses[0]
+            points = correct_guess.pointsAwarded
+            altAns = correct_guess.guess if correct_guess.guess != meta2.answer else None
+            return render(request, 'PHapp/solveCorrect.html', {'puzzle':meta2, 'points':points, 'team':team, 'altAns':altAns, 'huntOver':huntOver})
+        previousGuesses = user_guesses.order_by('-submitTime').values_list('guess', flat=True)
+    
+    if request.method == 'POST':
+        solveform = SolveForm(request.POST)
+        if solveform.is_valid():
+            guess = stripToLetters(solveform.cleaned_data['guess'])
+            if guess == meta2.answer or AltAnswers.objects.filter(puzzle=meta2,altAnswer=guess):
+                altAns = guess if guess != meta2.answer else None
+                return render(request, 'PHapp/solveCorrectHuntOver.html', {'puzzle': meta2, 'altAns': altAns, 'huntOver':huntOver()})
+            elif guess == meta1.answer or AltAnswers.objects.filter(puzzle=meta1,altAnswer=guess):
+                altAns = guess if guess != meta1.answer else None
+                solveType = SOLVE_METAHALF
+            else:
+                solveType = SOLVE_WRONG
+                displayGuess = guess
+                specialAnswers = IncorrectAnswer.objects.filter(puzzle=meta2, answer=guess)
+                if specialAnswers:
+                    altMessage = (specialAnswers[0].title, specialAnswers[0].message)
+    
+    solveform = SolveForm()
+    return render(request, 'PHapp/solve.html', 
+        {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':meta2, 'team':team, 'previousGuesses':previousGuesses, 'altAns': altAns, 'altMessage': altMessage, 'huntOver':huntOver()})
+
+
+def solveHuntOver(request, act, scene):
+    puzzle = Puzzles.objects.get(act=act,scene=scene)
+
+    solveType = -1
+    displayGuess = None
+    altAns = None
+    altMessage = None
+    previousGuesses = []
+    team = None
+    if request.user.is_authenticated:
+        team = Teams.objects.get(authClone=request.user)
+        user_guesses = SubmittedGuesses.objects.filter(puzzle=puzzle,team=request.user)
+        user_correct_guesses = user_guesses.filter(correct=True)
+        if user_correct_guesses:
+            correct_guess = user_correct_guesses[0]
+            points = correct_guess.pointsAwarded
+            altAns = correct_guess.guess if correct_guess.guess != puzzle.answer else None
+            return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle, 'points':points, 'team':team, 'altAns':altAns, 'huntOver':huntOver()})
+        previousGuesses = user_guesses.order_by('-submitTime').values_list('guess', flat=True)
+    
+    if request.method == 'POST':
+        solveform = SolveForm(request.POST)
+        if solveform.is_valid():
+            guess = stripToLetters(solveform.cleaned_data['guess'])
+            if guess == puzzle.answer or AltAnswers.objects.filter(puzzle=puzzle,altAnswer=guess):
+                altAns = guess if guess != puzzle.answer else None
+                return render(request, 'PHapp/solveCorrectHuntOver.html', {'puzzle': puzzle, 'altAns': altAns, 'huntOver':huntOver()})
+            else:
+                solveType = SOLVE_WRONG
+                displayGuess = guess
+
+                specialAnswers = IncorrectAnswer.objects.filter(puzzle=puzzle,answer=guess)
+                if specialAnswers:
+                    altMessage = (specialAnswers[0].title, specialAnswers[0].message)
+    
+    solveform = SolveForm()
+    return render(request, 'PHapp/solve.html', {'solveform':solveform, 'solveType': solveType, 'team': team, 'displayGuess':displayGuess, 'puzzle':puzzle, 'previousGuesses':previousGuesses, 'altAns': altAns, 'altMessage': altMessage, 'huntOver':huntOver()})
+
+
+@user_passes_test(check_loggedin_or_ended)
 def solveMeta(request):
-    huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
-    if huntOver:
-        return render(request, 'PHapp/huntOver.html')
+    if huntOver():
+        return solveMetaHuntOver(request)
     meta1 = Puzzles.objects.get(act=7, scene=1)
     meta2 = Puzzles.objects.get(act=7, scene=2)
 
@@ -245,7 +330,7 @@ def solveMeta(request):
         if correctFinalGuesses:
             points = correctFinalGuesses[0].pointsAwarded
             altAns = correctFinalGuesses[0].guess if correctFinalGuesses[0].guess != meta2.answer else None
-            return render(request, 'PHapp/solveCorrect.html', {'puzzle':meta2, 'points':points, 'team':team, 'altAns': altAns})
+            return render(request, 'PHapp/solveCorrect.html', {'puzzle':meta2, 'points':points, 'team':team, 'altAns': altAns, 'huntOver':huntOver()})
     
     if not team.guesses:
         return noGuessesLeft(request, team)
@@ -374,9 +459,9 @@ def solveMeta(request):
     # previousGuesses = sorted(previousGuesses)
 
     return render(request, 'PHapp/solve.html', 
-        {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':meta2, 'team':team, 'previousGuesses':previousGuesses, 'altAns': altAns, 'altMessage': altMessage})
+        {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':meta2, 'team':team, 'previousGuesses':previousGuesses, 'altAns': altAns, 'altMessage': altMessage, 'huntOver':huntOver()})
 
-@login_required
+@user_passes_test(check_loggedin_or_ended)
 def solve(request, act, scene):
     # sanity check; we're not dealing with the Meta
     actNumber = RomanToInt(act)
@@ -389,9 +474,8 @@ def solve(request, act, scene):
     if releaseStage(RELEASE_TIMES) < puzzle.releaseStatus:
         raise Http404()
     
-    huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
-    if huntOver:
-        return render(request, 'PHapp/huntOver.html')
+    if huntOver():
+        return solveHuntOver(request, actNumber, scene)
 
     team = Teams.objects.get(authClone = request.user)
     guesses = SubmittedGuesses.objects.filter(team = request.user, puzzle = puzzle)
@@ -400,7 +484,7 @@ def solve(request, act, scene):
         correctGuess = correctGuessList[0]
         points = correctGuess.pointsAwarded
         altAns = correctGuess.guess if correctGuess.guess != puzzle.answer else None
-        return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle, 'points':points, 'team':team, 'altAns':altAns})
+        return render(request, 'PHapp/solveCorrect.html', {'puzzle':puzzle, 'points':points, 'team':team, 'altAns':altAns, 'huntOver':huntOver()})
 
     if not team.guesses:
         return noGuessesLeft(request, team)
@@ -504,9 +588,9 @@ def solve(request, act, scene):
     # previousGuesses = sorted(previousGuesses)
 
     return render(request, 'PHapp/solve.html', 
-        {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':puzzle, 'team':team, 'previousGuesses':previousGuesses, 'altMessage': altMessage})
+        {'solveform':solveform, 'solveType': solveType, 'displayGuess':displayGuess, 'puzzle':puzzle, 'team':team, 'previousGuesses':previousGuesses, 'altMessage': altMessage, 'huntOver':huntOver()})
 
-@login_required
+@user_passes_test(check_loggedin_or_ended)
 def solveMiniMeta(request, act):
     # Just prettifies the URLs a bit
     return solve(request, act, 5)
@@ -555,17 +639,17 @@ def guesslog(request, act, scene):
         else:
             counted[i] += [False]
 
-    return render(request, 'PHapp/guesslog.html', {'counted':counted, 'puzzle':puzzle})
+    return render(request, 'PHapp/guesslog.html', {'counted':counted, 'puzzle':puzzle, 'huntOver':huntOver()})
 
 def guesslogMeta(request):
     return guesslog(request, 7, 2)
 
-def solution(request, act, scene):
-    if not huntFinished(RELEASE_TIMES):
+def showSolution(request, act, scene):
+    if not huntOver():
         raise Http404()
 
     if act == 7:
-        actNumber = 7
+        return showSolutionMeta(request)
     else:
         actNumber = RomanToInt(act)
         if not actNumber:
@@ -586,11 +670,14 @@ def solution(request, act, scene):
     
     now = AEST.localize(datetime.datetime.now())
     if now > AEST.localize(datetime.datetime(2019, 8, 23, 12)):
-        return render(request, f'PHapp/solutions/{actNumber}.{scene}.html', {'puzzle':puzzle})
+        return render(request, f'PHapp/solutions/{actNumber}.{scene}.html', {'puzzle':puzzle, 'huntOver': huntOver()})
     else:
-        return render(request, 'PHapp/solutions/unpublishedSolution.html', {'puzzle':puzzle})
+        return render(request, 'PHapp/solutions/unpublishedSolution.html', {'puzzle':puzzle, 'huntOver': huntOver()})
 
-def solutionMeta(request, act, scene):
+def showSolutionMiniMeta(request, act):
+    return showSolution(request, act, 5)
+
+def showSolutionMeta(request):
     if not huntFinished(RELEASE_TIMES):
         raise Http404()
 
@@ -599,14 +686,18 @@ def solutionMeta(request, act, scene):
     except:
         raise Http404()
 
-    return render(request, 'PHapp/solutions/meta.html', {'puzzle':puzzle})
+    now = AEST.localize(datetime.datetime.now())
+    if now > AEST.localize(datetime.datetime(2019, 8, 23, 12)):
+        return render(request, 'PHapp/solutions/meta.html', {'puzzle':puzzle, 'huntOver': huntOver()})
+    else:
+        return render(request, 'PHapp/solutions/unpublishedSolution.html', {'puzzle':puzzle, 'huntOver': huntOver()})
 
 def teams(request):
     if not Teams.objects.all():
-        return render(request, 'PHapp/teams.html', {'teamsExist':False})
+        return render(request, 'PHapp/teams.html', {'teamsExist':False, 'huntOver':huntOver()})
 
     allTeams = []
-    totRank = 1
+    # totRank = 1
     ausRank = 1
 
     for team in Teams.objects.exclude(id = 1):
@@ -634,14 +725,13 @@ def teams(request):
     if request.user.is_authenticated:
         teamName = request.user.teams.teamName
     
-    return render(request, 'PHapp/teams.html', {'allTeams':allTeams, 'teamName':teamName, 'teamsExist':True})
+    return render(request, 'PHapp/teams.html', {'allTeams':allTeams, 'teamName':teamName, 'teamsExist':True, 'huntOver':huntOver()})
 
 def teamReg(request):
     if request.user.is_authenticated:
         return redirect('/')
 
-    huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
-    if huntOver:
+    if huntOver():
         return render(request, 'PHapp/huntOver.html')
 
     if request.method == 'POST':
@@ -717,19 +807,18 @@ def teamReg(request):
         userForm = UserCreationForm()
         regForm = TeamRegForm()
         indivFormSet = IndivRegFormSet()
-    return render(request, 'PHapp/teamReg.html', {'userForm':userForm, 'regForm':regForm, 'indivFormSet':indivFormSet})
+    return render(request, 'PHapp/teamReg.html', {'userForm':userForm, 'regForm':regForm, 'indivFormSet':indivFormSet, 'huntOver':huntOver()})
 
 
 @login_required
 def editTeamMembers(request):
-    huntOver = (releaseStage(RELEASE_TIMES) > len(RELEASE_TIMES))
-    if huntOver:
+    if huntOver():
         return render(request, 'PHapp/huntOver.html')
 
     team = Teams.objects.get(authClone = request.user)
     existing = len(Individuals.objects.filter(team=team))
     if existing >= 10:
-        return render(request, 'PHapp/editTeam.html', {'canEdit':False, 'team':team})
+        return render(request, 'PHapp/editTeam.html', {'canEdit':False, 'team':team, 'huntOver':huntOver()})
 
     EditFormSet = forms.formset_factory(IndivRegForm, formset=BaseIndivRegFormSet, extra=10-existing)
 
@@ -756,7 +845,7 @@ def editTeamMembers(request):
     
     else:
         indivFormSet = EditFormSet()
-    return render(request, 'PHapp/editTeam.html', {'canEdit':True, 'indivFormSet':indivFormSet, 'team':team, 'extra':10-existing})
+    return render(request, 'PHapp/editTeam.html', {'canEdit':huntOver(), 'indivFormSet':indivFormSet, 'team':team, 'extra':10-existing, 'huntOver':huntOver()})
 
 
 def teamInfo(request, teamId):
@@ -784,7 +873,7 @@ def teamInfo(request, teamId):
     correctList.sort(key=lambda x:x[1].submitTime)
     anySolves = bool(correctList)
     avSolveTime = "{:02d}h {:02d}m {:02d}s".format(team.avHr, team.avMin, team.avSec) if anySolves else '-'
-    return render(request, 'PHapp/teamInfo.html', {'team':team, 'members':membersList, 'donation':str(len(membersList)*2),'correctList':correctList, 'anySolves':anySolves, 'avSolveTime':avSolveTime})
+    return render(request, 'PHapp/teamInfo.html', {'team':team, 'members':membersList, 'donation':str(len(membersList)*2),'correctList':correctList, 'anySolves':anySolves, 'avSolveTime':avSolveTime, 'huntOver':huntOver()})
 
 def hints(request, act, scene):
     if act == 7:
@@ -813,7 +902,7 @@ def hints(request, act, scene):
     if releaseStage(RELEASE_TIMES) - puzzle.releaseStatus >= 3:
         toRender.append([3, puzzle.hint3])
         nextHint = None
-    return render(request, 'PHapp/hints.html', {'toRender':toRender, 'anyHints':anyHints, 'nextHint':nextHint, 'puzzle':puzzle})
+    return render(request, 'PHapp/hints.html', {'toRender':toRender, 'anyHints':anyHints, 'nextHint':nextHint, 'puzzle':puzzle, 'huntOver':huntOver()})
 
 def hintsMiniMeta(request, act):
     return hints(request, act, 5)
@@ -822,21 +911,21 @@ def hintsMeta(request):
     return hints(request, 7, 2)
 
 def faq(request):
-    return render(request, 'PHapp/faq.html')
+    return render(request, 'PHapp/faq.html', {'huntOver':huntOver()})
 
 def rules(request):
-    return render(request, 'PHapp/rules.html')
+    return render(request, 'PHapp/rules.html', {'huntOver':huntOver()})
 
 def debrief(request):
     if not huntFinished(RELEASE_TIMES):
         raise Http404()
     else:
-        return render(request, 'PHapp/home.html')
+        return render(request, 'PHapp/home.html', {'huntOver':huntOver()})
 
 def announcements(request):
     messageList = [(i.msg, i.msgTime.astimezone(AEST).strftime("%d/%m/%Y %I:%M%p").lower()) for i in sorted(list(Announcements.objects.all()), key=lambda x: x.msgTime)]
     messageList.reverse()
-    return render(request, 'PHapp/announcements.html', {'messageList':messageList})
+    return render(request, 'PHapp/announcements.html', {'messageList':messageList, 'huntOver':huntOver()})
 
 def loginCustom(request):
     if request.user.is_authenticated:
@@ -851,7 +940,7 @@ def loginCustom(request):
             
             if user == None:
                 loginForm = LoginForm()
-                return render(request, 'PHapp/login.html', {'loginForm':loginForm, 'wrong':True})
+                return render(request, 'PHapp/login.html', {'loginForm':loginForm, 'wrong':True, 'huntOver':huntOver()})
             else:
                 login(request, user)
                 try:
@@ -861,7 +950,7 @@ def loginCustom(request):
     else:
         loginForm = LoginForm()
 
-    return render(request, 'PHapp/login.html', {'loginForm':loginForm, 'wrong':False})
+    return render(request, 'PHapp/login.html', {'loginForm':loginForm, 'wrong':False, 'huntOver':huntOver()})
 
 def logoutCustom(request):
     logout(request)
@@ -898,20 +987,20 @@ def passwordChange(request):
 
                         send_mail(subject, plain_message, email_from, [email], html_message=html_message)
                     except:
-                        return render(request, 'PHapp/passwordChangeEmailDone.html', {'emailForm':emailForm, 'bad':True})
+                        return render(request, 'PHapp/passwordChangeEmailDone.html', {'emailForm':emailForm, 'bad':True, 'huntOver':huntOver()})
 
-                    return render(request, 'PHapp/passwordChangeEmailDone.html', {'emailForm':emailForm, 'bad':False})
+                    return render(request, 'PHapp/passwordChangeEmailDone.html', {'emailForm':emailForm, 'bad':False, 'huntOver':huntOver()})
                 else:
-                    return render(request, 'PHapp/passwordChangeEmailDone.html', {'emailForm':emailForm, 'bad':True})
+                    return render(request, 'PHapp/passwordChangeEmailDone.html', {'emailForm':emailForm, 'bad':True, 'huntOver':huntOver})
 
             else:
                 emailForm = PasswordChangeEmail()
-                return render(request, 'PHapp/passwordChangeEmail.html', {'emailForm':emailForm, 'wrong':True})
+                return render(request, 'PHapp/passwordChangeEmail.html', {'emailForm':emailForm, 'wrong':True, 'huntOver':huntOver()})
 
     else:
         emailForm = PasswordChangeEmail()
     
-    return render(request, 'PHapp/passwordChangeEmail.html', {'emailForm':emailForm, 'wrong':False})
+    return render(request, 'PHapp/passwordChangeEmail.html', {'emailForm':emailForm, 'wrong':False, 'huntOver':huntOver()})
 
 def passwordReset(request, userId, token):
     logout(request)
@@ -919,10 +1008,10 @@ def passwordReset(request, userId, token):
         tokenObj = ResetTokens.objects.get(token=token)
         user = tokenObj.user
         if not tokenObj.active or user.id != userId:
-            return render(request, 'PHapp/passwordReset.html', {'linkExpired':True})
+            return render(request, 'PHapp/passwordReset.html', {'linkExpired':True, 'huntOver':huntOver()})
         team = Teams.objects.get(authClone=user)
     except:
-        return render(request, 'PHapp/passwordReset.html', {'linkExpired':True})
+        return render(request, 'PHapp/passwordReset.html', {'linkExpired':True, 'huntOver':huntOver()})
 
     if request.method == 'POST':
         changeForm = SetPasswordForm(user, request.POST)
@@ -930,8 +1019,8 @@ def passwordReset(request, userId, token):
             changeForm.save()
             tokenObj.active = False
             tokenObj.save()
-            return render(request, 'PHapp/passwordResetDone.html')
+            return render(request, 'PHapp/passwordResetDone.html', {'huntOver':huntOver()})
     else:
         changeForm = SetPasswordForm(user)
 
-    return render(request, 'PHapp/passwordReset.html', {'changeForm':changeForm, 'linkExpired':False, 'user':user, 'team':team})
+    return render(request, 'PHapp/passwordReset.html', {'changeForm':changeForm, 'linkExpired':False, 'user':user, 'team':team, 'huntOver':huntOver()})

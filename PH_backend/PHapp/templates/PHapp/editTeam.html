@@ -57,8 +57,12 @@
 	</div>
 	</div>
 	</div>
+{% elif huntOver %}
+<div class="alert alert-danger" role="alert">
+		This page is no longer available, as the puzzle hunt is now over.
+    </div>
 {% else %}
-	<div class="alert alert-danger" role="alert">
+<div class="alert alert-danger" role="alert">
 		Your team already has 10 registered members.
 	</div>
 {% endif %}

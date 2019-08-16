@@ -37,8 +37,10 @@
           <a class="link-nav" style="color:yellow" href="/team/{{user.teams.id}}/">{{user.teams.teamName}}</a>
 					<a class="link-nav" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3HUMG3RCWHH8N&item_name=MUMS+Puzzle+Hunt&currency_code=AUD&source=url">Donate</a>
 					<a class="link-nav" href="/logout/">Logout</a>
-				{% else %}
-					<a class="link-nav" href="/registration/">Registration</a>
+                {% else %}
+                {% if not huntOver %}
+                    <a class="link-nav" href="/registration/">Registration</a>
+                {% endif %}
 					<a class="link-nav" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3HUMG3RCWHH8N&item_name=MUMS+Puzzle+Hunt&currency_code=AUD&source=url">Donate</a>
 					<a class="link-nav" href="/login/">Login</a>
 				{% endif %}

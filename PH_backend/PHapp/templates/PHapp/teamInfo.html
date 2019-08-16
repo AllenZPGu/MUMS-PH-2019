@@ -34,7 +34,7 @@
 	{% endfor %}
 	
 	{% if team.authClone == user %}
-		<h6><a href='/teamEdit/'>Add members to your team</a></h6>
+		{% if not huntOver %}<h6><a href='/teamEdit/'>Add members to your team</a></h6>{% endif %}
 		<h6>We recommend a <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3HUMG3RCWHH8N&item_name=MUMS+Puzzle+Hunt&currency_code=AUD&source=url">donation</a> of $2 AUD per member, or ${{donation}} for your team. Thank you for your support!! ❤</h6>
 	{% endif %}
 

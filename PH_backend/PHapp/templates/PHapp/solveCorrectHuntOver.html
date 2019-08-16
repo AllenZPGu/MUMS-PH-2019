@@ -1,0 +1,35 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	<center>
+		{% if puzzle.act == 7 %}
+			<h4>{{puzzle.winPun | safe}}</h4>
+			<br>
+			<h4>Congratulations! You have solved <font style='color:green'><b>{{puzzle.hyperlinkText}}: {{puzzle.title}}</b></font>.</h4>
+			<br>
+			<img src="{% static 'PHapp/img/logo.png' %}" alt="Logo" style="height:300px; padding:10px">
+		{% else %}
+			<h4>{{puzzle.winPun | safe}}</h4>
+			{% if puzzle.id == 8 %}
+				<img src="{% static 'PHapp/img/assange.png' %}" alt="The bridge troll" style="margin:10px">
+			{% endif %}
+			<br>
+			<h4>You have solved <b>{{puzzle.hyperlinkText}}: {{puzzle.title}}</b>.</h4>
+			<br>
+			
+			{% if altAns %}
+				<h5>Your solution of <font style='color:green'><b>{{altAns}}</b></font> is acceptable, but</h5>
+				<h4>the actual solution is: </h4>
+			{% else %}
+				<h4>The solution is: </h4>
+			{% endif %}
+			<h4 style='color:green'><b>{{puzzle.answer}}</b></h4>
+		{% endif %}
+	</center>
+</div>
+</div>
+
+{% endblock %}
