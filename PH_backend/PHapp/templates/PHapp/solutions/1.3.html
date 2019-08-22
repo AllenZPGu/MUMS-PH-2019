@@ -1,0 +1,94 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	<center>
+		<h4>{{puzzle.hyperlinkText}}</h4>
+		<h1><a href='/{{puzzle.pdfURI}}'>{{puzzle.title}}</a></h1>
+		<h4><a href='/puzzlestats/{{puzzle.act}}/{{puzzle.scene}}/'>{{puzzle.solveCount}} solves / {{puzzle.guessCount}} incorrect guesses</a></h4>
+		<h4>Solution: <font style='color:green'><b>{{puzzle.answer}}</b></font></h4>
+		<br>
+		<h4>Credits: Hugo Umbers, Zoe Schwerkolt</h4>
+		<br>
+	</center>
+	
+	<p>This puzzle is presented as a list of tickets, each with a QR code, a time, a seat number, and some extra information, varying across the tickets. If we scan the QR codes, we are taken to twelve different YouTube videos, each for a song from a different musical. In order, the musicals are: <i>Legally Blonde, Hamilton, Les Misérables, The Phantom of the Opera, Beauty and the Beast, The Book of Mormon, Grease 2, Mamma Mia! Here We Go Again, Cats, Matilda the Musical, Wicked, Little Women.</i></p>
+	
+	<p>Looking at the tickets, we might then realise that each ticket clues for one of the twelve musicals:</p>
+
+	<table class="table table-bordered">
+		<thead style="font-weight: bold;">
+			<tr>
+				<td>Ticket</td><td>Musical</td><td>Explanation</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr><td>Ship ticket from Charlestown to New York</td><td><i>Hamilton</i></td><td>Alexander Hamilton was born in Charlestown, Nevis and took a ship to New York at the start of the musical.</td></tr>
+			<tr><td>Movie screening of Sisters on 4 March</td><td><i>Little Women</i></td><td>The four March sisters are the protagonists of this musical.</td></tr>
+			<tr><td>Plane ticket from Los Angeles to Boston</td><td><i>Legally Blonde</i></td><td>Elle was a student at UCLA and then moved to Harvard.</td></tr>
+			<tr><td>Batobus hop on hop off ticket</td><td><i>Les Misérables</i></td><td>The Batobus is a scenic ferry along the Seine in Paris, where Les Misérables is set.</td></tr>
+			<tr><td>High School Talent Show ticket</td><td><i>Grease 2</i></td><td>A high school talent show features in this film.</td></tr>
+			<tr><td>Plane ticket from Kampala to Orlando</td><td><i>The Book of Mormon</i></td><td>Kampala is the capital of Uganda, where The Book of Mormon is set, and Elder Price wants to be transferred to his favourite place, Orlando.</td></tr>
+			<tr><td>Ferry ticket from Volos to Skopelos</td><td><i>Mamma Mia! Here We Go Again</i></td><td>The movie was filmed on the island Skopelos, just off mainland Greece.</td></tr>
+			<tr><td>Plane ticket from Kansas to Melbourne</td><td><i>Wicked</i></td><td>"Toto, I've a feeling we're not in Kansas anymore."</td></tr>
+			<tr><td>Escapologist and Acrobat double act</td><td><i>Matilda the Musical</i></td><td>Throughout the musical Matilda tells the story of an escapologist and acrobat couple who yearn to have a child, which ends up being the true story of Miss Honey's childhood.</td></tr>
+			<tr><td>Rose Bowl Game ticket</td><td><i>Beauty and the Beast</i></td><td>Hints at the rose the Beast keeps in a glass dome.</td></tr>
+			<tr><td>City Airport Train ticket</td><td><i>Cats</i></td><td>The acronym for the City Airport Train, which runs between the Vienna International Airport and Vienna city centre, is CAT.</td></tr>
+			<tr><td>Ticket to a masquerade ball</td><td><i>The Phantom of the Opera</i></td><td>The Phantom wears a mask for the majority of the musical.</td></tr>
+		</tbody>
+	</table>
+
+	<p>The only remaining pieces of information left on the tickets are the time and the seat number. If we match up the ticket to the QR code, and go to the point in the linked YouTube video indicated by the time on the matching ticket, we should find a single word from each song. If we order these words in the order of the QR codes, the resultant message is "SEAT LETTERS GIVE SONG TUNE AND SEAT NUMBER GIVES LINE THEN LETTER".</p>
+
+	<table class="table table-bordered">
+		<thead style="font-weight: bold;">
+			<tr>
+				<td>Musical</td><td>Musical number</td><td>QR code YouTube link</td><td>Time stamp</td><td>Extracted word</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr><td style='font-style: italic;'>Legally Blonde</td><td>"Serious"</td><td><a href="https://www.youtube.com/watch?v=FMuIaPpsh0Q">Link</a></td><td>1:09</td><td>SEAT</td></tr>
+			<tr><td style='font-style: italic;'>Hamilton</td><td>"Burn"</td><td><a href="https://www.youtube.com/watch?v=3Rj0NxT71M8">Link</a></td><td>1:00</td><td>LETTERS</td></tr>
+			<tr><td style='font-style: italic;'>Les Misérables</td><td>"Bring Him Home"</td><td><a href="https://www.youtube.com/watch?v=nNTlv5lwQsY">Link</a></td><td>2:13</td><td>GIVE</td></tr>
+			<tr><td style='font-style: italic;'>The Phantom of the Opera</td><td>"The Music of the Night"</td><td><a href="https://www.youtube.com/watch?v=d3NIK-nsI2g">Link</a></td><td>4:37</td><td>SONG</td></tr>
+			<tr><td style='font-style: italic;'>Beauty and the Beast</td><td>"Tale as Old as Time"</td><td><a href="https://www.youtube.com/watch?v=jZAYgGhvBEc">Link</a></td><td>2:46</td><td>TUNE</td></tr>
+			<tr><td style='font-style: italic;'>The Book of Mormon</td><td>"You and Me (But Mostly Me)"</td><td><a href="https://www.youtube.com/watch?v=njHiUggTjRo">Link</a></td><td>2:24</td><td>AND</td></tr>
+			<tr><td style='font-style: italic;'>Grease 2</td><td>"Cool Rider"</td><td><a href="https://www.youtube.com/watch?v=RYB317pljts">Link</a></td><td>2:20</td><td>SEAT</td></tr>
+			<tr><td style='font-style: italic;'>Mamma Mia! Here We Go Again</td><td>"Super Trouper"</td><td><a href="https://www.youtube.com/watch?v=zqv3YesdtRU">Link</a></td><td>2:27</td><td>NUMBER</td></tr>
+			<tr><td style='font-style: italic;'>Cats</td><td>"Shimbleshanks the Railway Cat"</td><td><a href="https://www.youtube.com/watch?v=k4JWNZSVhPs">Link</a></td><td>4:19</td><td>GIVES</td></tr>
+			<tr><td style='font-style: italic;'>Matilda the Musical</td><td>"The Hammer"</td><td><a href="https://www.youtube.com/watch?v=l0drrU9HB20">Link</a></td><td>2:45</td><td>LINE</td></tr>
+			<tr><td style='font-style: italic;'>Wicked</td><td>"One Short Day"</td><td><a href="https://www.youtube.com/watch?v=uKJyURMuxds">Link</a></td><td>2:41</td><td>THEN</td></tr>
+			<tr><td style='font-style: italic;'>Little Women</td><td>"Here Alone"</td><td><a href="https://www.youtube.com/watch?v=WhhTf8q8Bk4">Link</a></td><td>1:04</td><td>LETTER</td></tr>
+		</tbody>
+	</table>
+
+
+	<p>We should then look at the seat numbers on the tickets. If we order the seat numbers in the same order as their matching QR codes, as is consistent with the previous step of the puzzle, then we get 68C 26D 48E 32C 19E 37C 71E 12D 58E 38F 29F 15E. The first half of the message suggests that the seat letters should give a song tune, as does the title 'Musical Chairs'. Reading the letters off this ordering gives CDECECEDEFFE which the solver could either recognise as the tune of "Doe a Deer" from <i>The Sound of Music</i>, or by searching something along the lines of 'musical songs in C major', as was done by one of our test solvers. The rest of the message indicates that the seat numbers should provide the line, then the letter. The solver should then use these seat numbers to index the line number and letter number from "Doe a Deer":</p>
+
+	<center><i>
+	Doe, a deer, a female deer</br>
+	Ray, a drop of golden sun</br>
+	Me, a name I call myself</br>
+	Far, a long, long way to run</br>
+	Sew, a needle pulling thread</br>
+	La, a note to follow so</br>
+	Tea, a drink with jam and bread</br>
+	That will bring us back to do oh oh oh
+	</i></center>
+
+	<br>
+
+	<p>For example, seat 68 indicates line 6 (La, a note to follow so), and letter 8, i.e. 'T'. Repeating this for all twelve seats yields the phrase TO LIFE TO LIFE. A quick Google will reveal that this is a phrase from the number "To Life" in the musical <i>Fiddler on the Roof</i>. This is not quite the answer yet, since "to life" appears twice in this phrase. Diving into the lyrics of the number itself, we find that the line containing TO LIFE TO LIFE is completed by the word <b>L'CHAIM</b> (the Hebrew word for "to life"), which is the answer phrase.</p>
+
+	<br>
+
+	<h4>Authors' note:</h4>
+	<p>Apologies for the incorrectly copied QR code on the ninth ticket - it was a duplicate of ticket eight instead of the correct link. Thanks to those who pointed it out so it could quickly be rectified! One nice extra touch is that the puzzle Musical Chairs is about musicals, features 'musical chairs' – seats that sing out a song – and the children's game Musical Chairs is also known as Trip to Jerusalem, which links thematically with the final answer :)</p>
+
+
+</div>
+</div>
+
+{% endblock %}

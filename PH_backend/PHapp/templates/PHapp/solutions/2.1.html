@@ -9,16 +9,209 @@
 		<h1><a href='/{{puzzle.pdfURI}}'>{{puzzle.title}}</a></h1>
 		<h4><a href='/puzzlestats/{{puzzle.act}}/{{puzzle.scene}}/'>{{puzzle.solveCount}} solves / {{puzzle.guessCount}} incorrect guesses</a></h4>
 		<h4>Solution: <font style='color:green'><b>{{puzzle.answer}}</b></font></h4>
+		<br>
+		<h4>Credits: Allen Gu</h4>
+		<br>
 	</center>
 
 	<p>These patient notes seem quite bizarre; despite them containing quite a lot of medical jargon, none of them actually seem to describe actual medical conditions. After reading a few notes, we might notice that each note actually clues for an idiom involving a body part. This idiom is clued both descriptively and by a nonsense medical condition. For instance, "Unhealthy patient preference for sugar. Causing elevated dental glucose levels." (Ward 1 Bed 1) clues for SWEET TOOTH, which means liking sweet foods, but could also be a nonsense medical condition where dental glucose levels are elevated.</p>
 
-	<p>To help us identify the correct idiom, we note that every letter in the idiom corresponds to one word in its clue, with punctuation marks in the clue delimiting the idiom's words. For instance, SWEET TOOTH is two words of five letters each, while its clue (Ward 1 Bed 1) is two five-word phrases separated by a full stop.
+	<p>To help us identify the correct idiom, we note that every letter in the idiom corresponds to one word in its clue, with punctuation marks in the clue delimiting the idiom's words. For instance, the phrase SWEET TOOTH is two words of five letters each, while its clue (Ward 1 Bed 1) is two five-word phrases separated by a full stop.
 
 	<p>This letter-word correspondence also nicely lends us an extraction mechanism. Note that all clues contain the word "patient" somewhere. We extract the letter from the idiom that corresponds to the word "patient" in its clue. For instance, we extract the W from S<b>W</b>EET TOOTH since the word "patient" occurs in "Unhealthy <b>patient</b> preference for sugar. Causing elevated dental glucose levels."</p>
 
 	<p>The full list of idioms is below:</p>
+	<table class="table table-bordered">
+		<thead style="font-weight: bold;">
+			<tr>
+				<td><b>Bed</b></td>
+				<td><b>Idiom</b></td>
+				<td><b>Extracted letter</b></td>
+		</thead>
+		<tbody>
+			<tr><td colspan="3" align="center">Ward 1</td></tr>
+		 <tr>
+		  <td>1</td>
+		  <td>S<b>W</b>EET TOOTH</td>
+		  <td>W</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>2</td>
+		  <td>ACHILLES H<b>E</b>EL</td>
+		  <td>E</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>3</td>
+		  <td>S<b>A</b>VE FACE</td>
+		  <td>A</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>4</td>
+		  <td>COST AN ARM AND A LE<b>G</b></td>
+		  <td>G</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>5</td>
+		  <td>LEA<b>R</b>N BY HEART</td>
+		  <td>R</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>6</td>
+		  <td>KEEP AN <b>E</b>YE ON</td>
+		  <td>E</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>7</td>
+		  <td>SKIN OF YOUR T<b>E</b>ETH</td>
+		  <td>E</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>8</td>
+		  <td><b>W</b>ASH YOUR HANDS</td>
+		  <td>W</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>9</td>
+		  <td>LEND M<b>E</b> YOUR EARS</td>
+		  <td>E</td>
+		  
+		 </tr>
+		 <tr><td colspan="3" align="center">Ward 2</td></tr>
+		 <tr>
+		  <td>1</td>
+		  <td><b>S</b>TICK YOUR NECK OUT</td>
+		  <td>S</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>2</td>
+		  <td>RUL<b>E</b> OF THUMB</td>
+		  <td>E</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>3</td>
+		  <td>L<b>E</b>T YOUR HAIR DOWN</td>
+		  <td>E</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>4</td>
+		  <td>HEAD ST<b>A</b>RT</td>
+		  <td>A</td>
+		  
+		 </tr>
+		 <tr><td colspan="3" align="center">Ward 3</td></tr>
+		 <tr>
+		  <td>1</td>
+		  <td>BREAK A <b>L</b>EG</td>
+		  <td>L</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>2</td>
+		  <td>BRA<b>I</b>N DRAIN</td>
+		  <td>I</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>3</td>
+		  <td>OLD HA<b>N</b>D</td>
+		  <td>N</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>4</td>
+		  <td>NO BRAIN<b>E</b>R</td>
+		  <td>E</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>5</td>
+		  <td>OVER YOUR DEAD <b>B</b>ODY</td>
+		  <td>B</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>6</td>
+		  <td>ALL <b>E</b>ARS</td>
+		  <td>E</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>7</td>
+		  <td>PA<b>T</b> ON THE BACK</td>
+		  <td>T</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>8</td>
+		  <td>ELBO<b>W</b> GREASE</td>
+		  <td>W</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>9</td>
+		  <td>PULL YOUR L<b>E</b>G</td>
+		  <td>E</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>10</td>
+		  <td>COLD F<b>E</b>ET</td>
+		  <td>E</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>11</td>
+		  <td>LOSE YOUR <b>N</b>ERVE</td>
+		  <td>N</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>12</td>
+		  <td>MAKE YOUR BL<b>O</b>OD BOIL</td>
+		  <td>O</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>13</td>
+		  <td>TONGUE IN <b>C</b>HEEK</td>
+		  <td>C</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>14</td>
+		  <td>KEEP YOUR CHIN <b>U</b>P</td>
+		  <td>U</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>15</td>
+		  <td>SPINE<b>L</b>ESS</td>
+		  <td>L</td>
+		  
+		 </tr>
+		 <tr>
+		  <td>16</td>
+		  <td>GUT FEEL<b>I</b>NG</td>
+		  <td>I</td>
+		 </tr>
+		</tbody>
+	</table>
 
+	<p>This gives us the extracted message WE AGREE WE / SEE A / LINE BETWEEN OCULI. Applying the same mechanism, we realise this message clues for the solution of <b>EYE TO EYE</b>.</p>
+	<br>
+	<h4>Author's notes</h4>
+	<p>This puzzle was designed to be a fairly straightforward but fun puzzle. It was certainly fun for me to make!</p>
 </div>
 </div>
 

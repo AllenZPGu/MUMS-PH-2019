@@ -1,0 +1,114 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	<center>
+		<h4>{{puzzle.hyperlinkText}}</h4>
+		<h1><a href='/{{puzzle.pdfURI}}'>{{puzzle.title}}</a></h1>
+		<h4><a href='/puzzlestats/{{puzzle.act}}/{{puzzle.scene}}/'>{{puzzle.solveCount}} solves / {{puzzle.guessCount}} incorrect guesses</a></h4>
+		<h4>Solution: <font style='color:green'><b>{{puzzle.answer}}</b></font></h4>
+		<br>
+		<h4>Credits: Allen Gu</h4>
+		<br>
+	</center>
+
+	<p>We are presented with a few alien markings alongside a description of where these markings were found. It is hinted in the flavourtext that xenosymbologists have decoded what the markings mean; it is up to us to do the same.</p>
+
+	<p>Looking at Figure 1, some of these locations seem quite bizarre (eg. found near a <i>salad</i>??). We soon realise that each marking is actually an alternate way to depict the structure of a chemical found at the indicated location. This is confirmed by the "hostile elements" comment in the flavourtext. A full list of chemicals for Figure 1 is listed below:</p>
+
+	<table class="table table-bordered">
+		<thead style="font-weight: bold;">
+			<tr>
+				<td></td>
+				<td>Location</td>
+				<td>Chemical</td>
+				<td>Chemical formula</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>a)</td>
+				<td>Lake</td>
+				<td>Water</td>
+				<td>H<sub>2</sub>O</td>
+			</tr>
+			<tr>
+				<td>b)</td>
+				<td>Rotting fish</td>
+				<td>Trimethylamine</td>
+				<td>C<sub>3</sub>H<sub>9</sub>N</td>
+			</tr>
+			<tr>
+				<td>c)</td>
+				<td>Tyre pump</td>
+				<td>Air (gaseous nitrogen and oxygen)</td>
+				<td>N<sub></sub>2, O<sub>2</sub></td>
+			</tr>
+			<tr>
+				<td>d)</td>
+				<td>Exhaust pipe</td>
+				<td>Carbon dioxide</td>
+				<td>CO<sub>2</sub></td>
+			</tr>
+			<tr>
+				<td>e)</td>
+				<td>Salad</td>
+				<td>Vinegar (acetic acid)</td>
+				<td>C<sub>2</sub>H<sub>4</sub>O<sub>2</sub></td>
+			</tr>
+			<tr>
+				<td>f)</td>
+				<td>Distillery</td>
+				<td>Alcohol (ethanol)</td>
+				<td>C<sub>2</sub>H<sub>6</sub>O</td>
+			</tr>
+			<tr>
+				<td>g)</td>
+				<td>Petrol tank</td>
+				<td>Isooctane (2,2,4-Trimethylpentane)</td>
+				<td>C<sub>8</sub>H<sub>18</sub></td>
+			</tr>
+			<tr>
+				<td>h)</td>
+				<td>Cane field</td>
+				<td>Cane sugar (sucrose)</td>
+				<td>C<sub>12</sub>H<sub>22</sub>O<sub>11</sub></td>
+			</tr>
+			<tr>
+				<td>i)</td>
+				<td>Dynamite stick</td>
+				<td>Nitroglycerin</td>
+				<td>C<sub>3</sub>H<sub>5</sub>N<sub>3</sub>O<sub>9</sub></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p>The specifics of this structural representation's depiction of atoms is as follows:</p>
+	<ul>
+		<li>Carbon (C): intersection point of three or more lines</li>
+		<li>Nitrogen (N): solid black circle</li>
+		<li>Oxygen (O): clear circle</li>
+		<li>Hydrogen (H): black dots</li>
+	</ul>
+	<p>Atoms are bonded to neighbouring atoms via lines, except for hydrogen atoms, which is bonded to the nearest atoms. Double bonds are not depicted in any special way.</p>
+
+	<p>Turning our attention to Figure 2, we note that this monstrosity seems to have two distinct sections: a circular outer structure and an inner structure. Examining the outer structure first, we note that it is actually a chain, where the backbone is made up of repeating units of: a nitrogen, a carbon bonded to a variable side chain, and a carbon bonded to oxygen. A bit of searching of common polymers should reveal that the backbone represents a polypeptide backbone (polypeptides are the structural units of proteins). We can confirm that we are on the right track by noting that this alien marking is found near a dairy and egg farm; dairy and egg are both good sources of protein.</p>
+
+	<p>The next step is to determine the amino acid residues, which are characterised by the side chains coming off carbon atoms in the polypeptide backbone. Reading from the N-terminus (ie. starting from the top and reading clockwise), we find that the amino acid residues are, in order: histidine, isoleucine, glycine, histidine, alanine, phenylalanine, another phenylalanine, isoleucine, asparagine, isoleucine (again), threonine and tyrosine. Using the residues' single-letter abbreviations, the polypeptide spells <b>HIGH AFFINITY</b>.</p>
+
+	<p>Finally, let's consider the inner structure of Figure 2. It is not immediately apparent what chemical this structure depicts, but some atom counting later, we find that it has 10 carbons, 16 hydrogens, 2 nitrogens, 3 oxygens and a mystery element shown as a black square. Even without knowing what this mystery element is, there are several ways to find the chemical. One way is to find the <a href='https://en.wikipedia.org/wiki/List_of_compounds_with_carbon_number_10'>Wikipedia page for ten-carbon compounds</a> and Ctrl-F "C10H16N2O3", which immediately tells us that the only valid compound (with the mystery element being sulfur) is <b>biotin</b>, aka. vitamin B<sub>7</sub>. We can check by noting that biotin's chemical structure matches the alien structure, and also that eggs are an excellent source of vitamin B<sub>7</sub>.</p>
+
+	<p>Nearly there now! The two clues we have for the final answer is HIGH AFFINITY and BIOTIN. Googling "high affinity biotin" should instantly reveal that biotin has a very high binding affinity for a protein called streptavidin; in fact, the streptavidin-biotin bond is one of the strongest known non-covalent bonds in biochemistry. The answer to this puzzle is thus <b>STREPTAVIDIN</b>.</p>
+
+	<p><i>Note:</i> A related protein to streptavidin is avidin; since the biotin-avidin bond is also incredibly strong, we accepted AVIDIN as equally correct, but STREPTAVIDIN is the canonical answer for the meta puzzle.</p>
+
+	<br>
+
+	<h4>Author's notes</h4>
+	<p>The idea of depicting chemical structures in a non-standard way was inspired by <a href='http://dscript.org/'>dscript</a>, which draws chemical structures in a really pretty and almost calligraphic manner. During testsolving, this puzzle received mixed reviews; some loved it, while others thought it is unfair for a puzzle to explicitly require chemistry knowledge. In the end, we thought that the amount of chemistry knowledge required is nothing beyond a basic understanding of atoms and molecules and the ability to google polymers. The high solve rate (even beating out <a href='https://www.mumspuzzlehunt.com/puzzlestats/II/1/'>II.1 Royal MUMS Hospital</a>, which we thought was easier) seemed to prove that most teams were fine with this puzzle.</p>
+</div>
+</div>
+
+{% endblock %}
