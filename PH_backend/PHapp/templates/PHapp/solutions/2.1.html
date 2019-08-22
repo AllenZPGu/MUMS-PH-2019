@@ -4,15 +4,7 @@
 {% block content %}
 <div class="outer-container">
 <div class="inner-container">
-	<center>
-		<h4>{{puzzle.hyperlinkText}}</h4>
-		<h1><a href='/{{puzzle.pdfURI}}'>{{puzzle.title}}</a></h1>
-		<h4><a href='/puzzlestats/{{puzzle.act}}/{{puzzle.scene}}/'>{{puzzle.solveCount}} solves / {{puzzle.guessCount}} incorrect guesses</a></h4>
-		<h4>Solution: <font style='color:green'><b>{{puzzle.answer}}</b></font></h4>
-		<br>
-		<h4>Credits: Allen Gu</h4>
-		<br>
-	</center>
+	{% include "PHapp/solutions/genericHeader.html" %}  
 
 	<p>These patient notes seem quite bizarre; despite them containing quite a lot of medical jargon, none of them actually seem to describe actual medical conditions. After reading a few notes, we might notice that each note actually clues for an idiom involving a body part. This idiom is clued both descriptively and by a nonsense medical condition. For instance, "Unhealthy patient preference for sugar. Causing elevated dental glucose levels." (Ward 1 Bed 1) clues for SWEET TOOTH, which means liking sweet foods, but could also be a nonsense medical condition where dental glucose levels are elevated.</p>
 

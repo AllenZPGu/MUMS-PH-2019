@@ -4,15 +4,7 @@
 {% block content %}
 <div class="outer-container">
 <div class="inner-container">
-	<center>
-		<h4>{{puzzle.hyperlinkText}}</h4>
-		<h1><a href='/{{puzzle.pdfURI}}'>{{puzzle.title}}</a></h1>
-		<h4><a href='/puzzlestats/{{puzzle.act}}/{{puzzle.scene}}/'>{{puzzle.solveCount}} solves / {{puzzle.guessCount}} incorrect guesses</a></h4>
-		<h4>Solution: <font style='color:green'><b>{{puzzle.answer}}</b></font></h4>
-		<br>
-		<h4>Credits: Allen Gu</h4>
-		<br>
-	</center>
+	{% include "PHapp/solutions/genericHeader.html" %}  
 
 	<p>We are presented with a few alien markings alongside a description of where these markings were found. It is hinted in the flavourtext that xenosymbologists have decoded what the markings mean; it is up to us to do the same.</p>
 

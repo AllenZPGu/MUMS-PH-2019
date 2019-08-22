@@ -4,15 +4,7 @@
 {% block content %}
 <div class="outer-container">
 <div class="inner-container">
-	<center>
-		<h4>{{puzzle.hyperlinkText}}</h4>
-		<h1><a href='/{{puzzle.pdfURI}}'>{{puzzle.title}}</a></h1>
-		<h4><a href='/puzzlestats/{{puzzle.act}}/{{puzzle.scene}}/'>{{puzzle.solveCount}} solves / {{puzzle.guessCount}} incorrect guesses</a></h4>
-		<h4>Solution: <font style='color:green'><b>{{puzzle.answer}}</b></font></h4>
-		<br>
-		<h5>Credits: {{puzzle.credits}}</h5>
-		<br>
-	</center>
+	{% include "PHapp/solutions/genericHeader.html" %}  
 	
 	<p>In this beautifully typeset worksheet, we see that there are two questions. All subquestions of Question 1 turn out to be cryptic clues with the scores as answer lengths. Answers are in alphabetical order.</p>
 
@@ -41,7 +33,109 @@
 			<tr><td>(p)</td><td>SUPERGIANT</td><td>Anagram of "signature" and P (page) = SUPERGIANT (a huge star)</td></tr>
 		</tbody>
 	</table>
-W
+
+	<p>Next, Question 2 appears to be quick clues, and the answers are once again in alphabetical order.</p>
+	<ul style="list-style-type:none;">
+		<li>(a) ACID</li>
+		<li>(b) ALAN</li>
+		<li>(c) A.C.T.G.</li>
+		<li>(d) CHAI</li>
+		<li>(e) CURE</li>
+		<li>(f) KING</li>
+		<li>(g) MASH</li>
+		<li>(h) M.ENG</li>
+		<li>(i) NAND</li>
+		<li>(j) RENT</li>
+		<li>(k) RIOT</li>
+		<li>(l) ROOM</li>
+		<li>(m) RUSE</li>
+		<li>(n) SCAN</li>
+		<li>(o) STAR</li>
+		<li>(p) TACO</li>
+	</ul>
+
+	<p>The puzzle's title indicates that we should divide the answers to Question 1 (numerators) by the answers to Question 2 (denominators). When match one numerator with one denominator, we divide by cancelling out any shared letters as if the letters were algebraic variables on either side of a vinculum. The quotient can be anagrammed into a word. Where . Thus, in order of numerators:</p>
+
+	<table class="table table-bordered">
+		<thead style="font-weight: bold;">
+			<tr>
+				<td>Numerator</td><td>Denominator</td><td>Quotient</td><td>Possible anagrams</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr><td>CLEANERS</td><td>SCAN</td><td>LEER</td><td>LEER, REEL</td></tr>
+			<tr><td>COMPOSITOR</td><td>ROOM</td><td>CPSITO</td><td>OPTICS, PICOTS, TOPICS</td></tr>
+			<tr><td>DEMANDING</td><td>NAND</td><td>DEMIG</td><td>MIDGE</td></tr>
+			<tr><td>FRACTURES</td><td>CURE</td><td>FRATS</td><td>FARTS, RAFTS</td></tr>
+			<tr><td>FERRIMAGNETIC</td><td>MENG</td><td>FRRIAETIC</td><td>ARTIFICER</td></tr>
+			<tr><td>GERMINATED</td><td>RENT</td><td>GMIAED</td><td>IMAGED</td></tr>
+			<tr><td>ICOSAHEDRON</td><td>ACID</td><td>OSHERON</td><td>ONSHORE</td></tr>
+			<tr><td>MATRIARCHIES</td><td>MASH</td><td>TRIARCIE</td><td>CRITERIA</td></tr>
+			<tr><td>PARDONABLE</td><td>ALAN</td><td>PRDOBE</td><td>PROBED</td></tr>
+			<tr><td>PARTITION</td><td>RIOT</td><td>PATIN</td><td>INAPT, PAINT, PATIN, PITA</td></tr>
+			<tr><td>PISTACHIO</td><td>CHAI</td><td>PISTO</td><td>POSIT</td></tr>
+			<tr><td>PREDATORS</td><td>STAR</td><td>PREDO</td><td>PORED, ROPED</td></tr>
+			<tr><td>RELOCATED</td><td>TACO</td><td>RELED</td><td>ELDER</td></tr>
+			<tr><td>SNOOKERING</td><td>KING</td><td>SNOOER</td><td>NOOSER, SOONER</td></tr>
+			<tr><td>STAGECRAFT</td><td>ACTG</td><td>SERAFT</td><td>FASTER, STRAFE</td></tr>
+			<tr><td>SUPERGIANT</td><td>RUSE</td><td>PGIANT</td><td>TAPING</td></tr>
+		</tbody>
+	</table>
+
+	<p>When in doubt, just apply the mechanism again! Let's try and divide the quotients amongst themselves.</p>
+
+	<table class="table table-bordered">
+		<thead style="font-weight: bold;">
+			<tr>
+				<td>Quotient 1 (numerator)</td><td>Quotient 2 (denominator)</td><td>Quotients' quotient</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr><td>CPSITO</td><td>PISTO</td><td>C</td></tr>
+			<tr><td>FRRIAETIC</td><td>TRIARCIE</td><td>F</td></tr>
+			<tr><td>GMIAED</td><td>DEMIG</td><td>A</td></tr>
+			<tr><td>OSHERON</td><td>SNOOER</td><td>H</td></tr>
+			<tr><td>PRDOBE</td><td>PREDO</td><td>B</td></tr>
+			<tr><td>RELED</td><td>LEER</td><td>D</td></tr>
+			<tr><td>SERAFT</td><td>FRATS</td><td>E</td></tr>
+			<tr><td>PGIANT</td><td>PATIN</td><td>G</td></tr>
+		</tbody>
+	</table>
+
+	<p>The quotients' quotients are the first eight letters of the alphabet! This strongly suggests an ordering system. Perhaps we should order our first set of quotients by what their corresponding quotients' quotients are.</p>
+
+	<table class="table table-bordered">
+		<thead style="font-weight: bold;">
+			<tr>
+				<td>Quotients' quotient</td><td>Quotient</td><td>Possible anagrams of quotient</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr><td>A</td><td>GMIAED</td><td>IMAGED</td></tr>
+			<tr><td>A</td><td>DEMIG</td><td>MIDGE</td></tr>
+			<tr><td>B</td><td>PRDOBE</td><td>PROBED</td></tr>
+			<tr><td>B</td><td>PREDO</td><td>PORED, ROPED</td></tr>
+			<tr><td>C</td><td>CPSITO</td><td>OPTICS, PICOTS, TOPICS</td></tr>
+			<tr><td>C</td><td>PISTO</td><td>POSIT</td></tr>
+			<tr><td>D</td><td>RELED</td><td>ELDER</td></tr>
+			<tr><td>D</td><td>LEER</td><td>LEER, REEL</td></tr>
+			<tr><td>E</td><td>SERAFT</td><td>FASTER, STRAFE</td></tr>
+			<tr><td>E</td><td>FRATS</td><td>FARTS, RAFTS</td></tr>
+			<tr><td>F</td><td>FRRIAETIC</td><td>ARTIFICER</td></tr>
+			<tr><td>F</td><td>TRIARCIE</td><td>CRITERIA</td></tr>
+			<tr><td>G</td><td>PGIANT</td><td>TAPING</td></tr>
+			<tr><td>G</td><td>PATIN</td><td>INAPT, PAINT, PATIN, PITA</td></tr>
+			<tr><td>H</td><td>OSHERON</td><td>ONSHORE</td></tr>
+			<tr><td>H</td><td>SNOOER</td><td>NOOSER, SOONER</td></tr>
+		</tbody>
+	</table>
+
+	<p>Reading off the possible anagrams, we see that the unambiguous anagrams' first letters spell IMP??PE???ACT?ON. A few trials (and educated guesses) should reveal the final answer of <b>IMPROPER FRACTION</b>. The way we've been doing fractions in this puzzle is certainly improper!</p>
+
+	<br>
+
+	<h4>Authors' Notes</h4>
+
 </div>
 </div>
 
