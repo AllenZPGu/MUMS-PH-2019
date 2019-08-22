@@ -1,0 +1,72 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>What an bizarre recipe! Let's be honest here: these ingredients are so obscure that you probably haven't heard of half of them. And who would ever cook <i>nightingale</i>?? A wise move, then, is to search the ingredients up. Better yet is to <a href="https://www.google.com/search?q=vat+service+tree+turnip+marl+filbert+tuna+periwinkle+nightingale+mugwort+winter+barley&oq=vat+service+tree+turnip+marl+filbert+tuna+periwinkle+nightingale+mugwort+winter+barley&aqs=chrome..69i57.36255j0j4&sourceid=chrome&ie=UTF-8">google <i>all</i> of them together in one search</a> to determine if there are any patterns amongst them.</p>
+
+	<p>Sure enough, the search returns results related to the <a href="https://en.wikipedia.org/wiki/French_Republican_calendar">French Republican Calendar (FRC)</a>, which was an alternate calendar system introduced in 1793 during the French Revolution and scrapped twelve years later. We can confirm we're on the right track because the <i>flavour</i>text (haha) makes references to France, revolution ("upend traditional cooking") and the calendar. The title is, of course, a nod to <i>Madame la Guillotine</i>, one of the most infamous symbols of the French Revolution.</p>
+
+	<p>In the FRC, there are twelve months of thirty days each. The first day of first year (Year I) of the FRC corresponds to 21st September 1791 in the Gregorian calendar. In order to celebrate French agriculture, every day of the calendar has a unique agricultural object associated with it. These objects are the ingredients! For instance, the vat (first listed ingredient) corresponds to the 10th day of the month of Vendémiaire. The month's name, "Vendémiaire", is derived from a word meaning "grape harvester". This reflects the second part of the vat's ingredient listing in the recipe, which can be used as a checking mechanism. The dates corresponding to all the other ingredients can be determined similarly.</p>
+
+	<p>This leaves a number in each ingredient listing. Thus far, for each ingredient, we have determined a day and a month. That leaves the year; perhaps this is what the number clues for? In that case, each ingredient listing will clue for a specific date in history.  With the help of an appropriate online converter tool (<a href="https://stevemorse.org/jcal/french.html">example one here</a>), we can determine that date in the Gregorian calendar. For instance, a 44L vat clues for 10 Vendémiaire XLIV, which corresponds to 2nd October 1835. A quick search reveals the significance of this date: it is the accepted starting date of the Texan Revolution. (<i>Note:</i> We cannot simply read off Wikipedia that 10 Vendémiaire is 1st October, because that conversion is only valid for Year I or 1791 due to how leap years work. An online converter tool that takes into account leap years must be used.)</p>
+
+	<p>It turns out that all the ingredient listings clue for the start date of a major revolution in world history. Each revolution has a commonly accepted English adjectival name. The full list is provided below. Note that the ingredients turn out to be in calendar order.</p>
+
+	<table class="table table-bordered">
+		<thead style="font-weight: bold;">
+			<tr><td>Ingredient</td><td>Number</td><td>FRC date</td><td>Gregorian date</td><td>Revolution</td></tr>
+		</thead>
+		<tbody>
+			<tr><td>Vat</td><td>44</td><td>10 Vendémiaire XLIV</td><td>2nd October 1835</td><td>Texan Revolution</td></tr>
+			<tr><td>Service tree</td><td>119</td><td>29 Brumaire CXIX</td><td>20th November 1910</td><td>Mexican Revolution</td></tr>
+			<tr><td>Turnip</td><td>213</td><td>2 Frimaire CCXIII</td><td>22nd November 2004</td><td>Orange Revolution</td></tr>
+			<tr><td>Marl</td><td>186</td><td>17 Nivôse CLXXXVI</td><td>7th January 1978</td><td>Iranian Revolution</td></tr>
+			<tr><td>Filbert</td><td>207</td><td>14 Pluviôse CCVII</td><td>2nd February 1999</td><td>Bolivarian Revolution</td></tr>
+			<tr><td>Tuna</td><td>56</td><td>25 Ventôse LVI</td><td>15th March 1848</td><td>Hungarian Revolution</td></tr>
+			<tr><td>Periwinkle</td><td>226</td><td>11 Germinal CCXXVI</td><td>31st March 2018</td><td>Armenian Revolution</td></tr>
+			<tr><td>Nightingale</td><td>182</td><td>5 Floréal CLXXXII</td><td>25th April 1974</td><td>Carnation Revolution</td></tr>
+			<tr><td>Mugwort</td><td>161</td><td>7 Thermidor CLXI</td><td>26th July 1953</td><td>Cuban Revolution</td></tr>
+			<tr><td>Winter barley</td><td>38</td><td>7 Fructidor XXXVIII</td><td>25th August 1830</td><td>Belgian Revolution</td></tr>
+		</tbody>
+	</table>
+
+	<p>With the ingredients all nicely chopped up, let's move on to the preparation. We see that for each ingredient, there is a cooking time attached. We also notice that the cooking times seem off; they are weirdly specific to the second, but not only that, the seconds often are greater than 60!</p>
+
+	<p>A bit more researching reveals that the French not only altered their calendar system during their Revolution, but also changed how they kept time during the day. A <i>decimal time</i> system was introduced in 1793 as part of a broader effort of metrication. Unlike the other metric units, which have been adopted in <del>all</del> most countries today because they make a lot more sense than alternate units, decimal time didn't really catch on (sadly). Under decimal time, the day is divided into 10 hours of 100 minute each, and 100 seconds for each revolution (haha) of the minute hand. This means that the conversion is 1.44 standard minutes to every decimal minute. Assuming that the cooking times listed are in decimal time, multiplying each listed cooking time by 1.44 should convert it to standard minutes. </p>
+
+	<p>It turns out that all cooking times convert to integer values of standard minutes! Let's use these integers to index the revolutions. In cooking order:</p>
+
+	<table class="table table-bordered">
+		<thead style="font-weight: bold;">
+			<tr><td>Ingredient</td><td>Decimal minutes</td><td>Standard minutes</td><td>Revolution</td><td>Extracted letter</td></tr>
+		</thead>
+		<tbody>
+			<tr><td>Service tree</td><td>2.78</td><td>4</td><td>MEX<b>I</b>CAN</td><td>I</td></tr>
+			<tr><td>Mugwort</td><td>3.47</td><td>5</td><td>CUBA<b>N</b></td><td>N</td></tr>
+			<tr><td>Vat</td><td>0.69</td><td>1</td><td><b>T</b>EXAN</td><td>T</td></tr>
+			<tr><td>Periwinkle</td><td>2.78</td><td>4</td><td>ARM<b>E</b>NIAN</td><td>E</td></tr>
+			<tr><td>Turnip</td><td>1.39</td><td>2</td><td>O<b>R</b>ANGE</td><td>R</td></tr>
+			<tr><td>Filbert</td><td>3.47</td><td>5</td><td>BOLI<b>V</b>ARIAN</td><td>V</td></tr>
+			<tr><td>Winter barley</td><td>1.39</td><td>2</td><td>B<b>E</b>LGIAN</td><td>E</td></tr>
+			<tr><td>Marl</td><td>4.86</td><td>7</td><td>IRANIA<b>N</b></td><td>N</td></tr>
+			<tr><td>Nightingale</td><td>4.86</td><td>7</td><td>CARNAT<b>I</b>ON</td><td>I</td></tr>
+			<tr><td>Tuna</td><td>4.17</td><td>6</td><td>HUNGA<b>R</b>IAN</td><td>R</td></tr>
+		</tbody>
+	</table>
+
+	<p>The extracted letter spell our answer <b>INTERVENIR</b>, which is French for "to intervene". Military intervention is a frequent feature of revolutions. Fortunately, if you have successfully solved this puzzle in time, no intervention is required for you to prepare the perfect revolutionary dish.
+
+	<br>
+	<h4>Author's notes</h4>
+	<p>To quote fellow MUMS writer Dan Tao, "when I complete a puzzle, I'd like to feel that I learnt something interesting from it." The French Republican Calendar and French decimal time is, in my opinion, the perfect sort of obscure trivia. Thankfully, the trivia was still accessible enough that we had a few first-day solves. Hopefully you've enjoyed learning about this intriguing bit of history!</p>
+	<p>The first iteration of this puzzle was written completely in French; however, I dropped this after realising that it didn't really add to the puzzle in any meaningful way, but rather forced solvers to go through annoying translations step where mistranslations may occur. One thing that may have improved the puzzle is to list the ingredients not in calendar order, but rather alphabetical order by the revolutions. This would remove any naming ambiguity.</p>
+	<p><i>Disclaimer:</i> No tuna, nightingales nor monarchs were harmed in the making of this puzzle.</p>
+
+</div>
+</div>
+
+{% endblock %}
