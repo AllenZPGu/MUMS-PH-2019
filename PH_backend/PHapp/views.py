@@ -675,7 +675,7 @@ def showSolution(request, act, scene):
         return render(request, 'PHapp/solutions/unpublishedSolution.html', {'puzzle':puzzle, 'huntOver': huntOver()})
 
 def showSolutionMiniMeta(request, act):
-    return showSolution(request, act, 2)
+    return showSolution(request, act, 5)
 
 def showSolutionMeta(request):
     if not huntFinished(RELEASE_TIMES):
