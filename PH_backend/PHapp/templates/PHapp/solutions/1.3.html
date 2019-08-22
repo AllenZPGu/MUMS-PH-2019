@@ -4,15 +4,7 @@
 {% block content %}
 <div class="outer-container">
 <div class="inner-container">
-	<center>
-		<h4>{{puzzle.hyperlinkText}}</h4>
-		<h1><a href='/{{puzzle.pdfURI}}'>{{puzzle.title}}</a></h1>
-		<h4><a href='/puzzlestats/{{puzzle.act}}/{{puzzle.scene}}/'>{{puzzle.solveCount}} solves / {{puzzle.guessCount}} incorrect guesses</a></h4>
-		<h4>Solution: <font style='color:green'><b>{{puzzle.answer}}</b></font></h4>
-		<br>
-		<h4>Credits: Hugo Umbers, Zoe Schwerkolt</h4>
-		<br>
-	</center>
+	{% include "PHapp/solutions/genericHeader.html" %}  
 	
 	<p>This puzzle is presented as a list of tickets, each with a QR code, a time, a seat number, and some extra information, varying across the tickets. If we scan the QR codes, we are taken to twelve different YouTube videos, each for a song from a different musical. In order, the musicals are: <i>Legally Blonde, Hamilton, Les Misérables, The Phantom of the Opera, Beauty and the Beast, The Book of Mormon, Grease 2, Mamma Mia! Here We Go Again, Cats, Matilda the Musical, Wicked, Little Women.</i></p>
 	
