@@ -1,0 +1,48 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	<center>
+		<h4>{{puzzle.hyperlinkText}}</h4>
+		<h1><a href='/{{puzzle.pdfURI}}'>{{puzzle.title}}</a></h1>
+		<h4><a href='/puzzlestats/{{puzzle.act}}/{{puzzle.scene}}/'>{{puzzle.solveCount}} solves / {{puzzle.guessCount}} incorrect guesses</a></h4>
+		<h4>Solution: <font style='color:green'><b>{{puzzle.answer}}</b></font></h4>
+		<br>
+		<h5>Credits: {{puzzle.credits}}</h5>
+		<br>
+	</center>
+	
+	<p>In this beautifully typeset worksheet, we see that there are two questions. All subquestions of Question 1 turn out to be cryptic clues with the scores as answer lengths. Answers are in alphabetical order.</p>
+
+	<table class="table table-bordered">
+		<thead style="font-weight: bold;">
+			<tr>
+				<td></td><td>Answer</td><td>Cryptic explanation</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr><td>(a)</td><td>CLEANERS</td><td>CLEAR (wipe) around NE (noticable edges) + S (begin scrubbing) = CLEANERS (janitors)</td></tr>
+			<tr><td>(b)</td><td>COMPOSITOR</td><td>COM (first letters of creating our manuscript) + (I inside POST) (first letter of ink in letters) + OR (middle of word) = COMPOSITOR (typesetter)</td></tr>
+			<tr><td>(c)</td><td>DEMANDING</td><td>Double definition of difficult and ordering</td></tr>
+			<tr><td>(d)</td><td>FERRIMAGNETIC</td><td>Anagram of "written on grimy briefcase" after removing the letters in "missed by its owner" = FERRIMAGNETIC (property of yttrium iron garnet)</td></tr>
+			<tr><td>(e)</td><td>FRACTURES</td><td>FRURES (anagram of "surfer") around ACT (show) = FRACTURES (does the splits)</td></tr>
+			<tr><td>(f)</td><td>GERMINATED</td><td>Anagram of "garden time' = GERMINATED (sprouted)</td></tr>
+			<tr><td>(g)</td><td>ICOSAHEDRON</td><td>ICOS (first letters of in confusion ought she) + AHEDRO (anagram of "head or") + N (tail of coin) = ICOSAHEDRON (has twenty faces)</td></tr>
+			<tr><td>(h)</td><td>MATRIARCHIES</td><td>Anagram of "charities arm" = MATRIARCHIES (ant colonies or elephant herds)</td></tr>
+			<tr><td>(i)</td><td>PARDONABLE</td><td>DON (professor) inside PARABLE (allegory) = PARDONABLE (permissible)</td></tr>
+			<tr><td>(j)</td><td>PARTITION</td><td>PARTON (Dolly) around IT (pens "hit" without the starting h) and I (a) = PARTITION (break up)</td></tr>
+			<tr><td>(k)</td><td>PISTACHIO</td><td>Anagram of "sociopathic" without CO (unco) = PISTACHIO (nut)</td></tr>
+			<tr><td>(l)</td><td>PREDATORS</td><td>Anagram of "and sport deerskins" without KINDNESS = PREDATORS (hunters)</td></tr>
+			<tr><td>(m)</td><td>RELOCATED</td><td>RELATED (affiliated) around OC (anagram of CO from company) = RELOCATED (moved elsewhere)</td></tr>
+			<tr><td>(n)</td><td>SNOOKERING</td><td>Anagram of "snorkelling" around O (ball) - LL (remove half of "till") = SNOOKERING (in pool, trapping)</td></tr>
+			<tr><td>(o)</td><td>STAGECRAFT</td><td>Anagram of "great facts" = STAGECRAFT (about lights, costumes, scenery etc.)</td></tr>
+			<tr><td>(p)</td><td>SUPERGIANT</td><td>Anagram of "signature" and P (page) = SUPERGIANT (a huge star)</td></tr>
+		</tbody>
+	</table>
+W
+</div>
+</div>
+
+{% endblock %}

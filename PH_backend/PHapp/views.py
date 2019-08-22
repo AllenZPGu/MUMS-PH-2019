@@ -669,13 +669,13 @@ def showSolution(request, act, scene):
         raise Http404()
     
     now = AEST.localize(datetime.datetime.now())
-    if now > AEST.localize(datetime.datetime(2019, 8, 23, 12)):
+    if now > SOLUTION_TIME:
         return render(request, f'PHapp/solutions/{actNumber}.{scene}.html', {'puzzle':puzzle, 'huntOver': huntOver()})
     else:
         return render(request, 'PHapp/solutions/unpublishedSolution.html', {'puzzle':puzzle, 'huntOver': huntOver()})
 
 def showSolutionMiniMeta(request, act):
-    return showSolution(request, act, 5)
+    return showSolution(request, act, 2)
 
 def showSolutionMeta(request):
     if not huntFinished(RELEASE_TIMES):
@@ -687,7 +687,7 @@ def showSolutionMeta(request):
         raise Http404()
 
     now = AEST.localize(datetime.datetime.now())
-    if now > AEST.localize(datetime.datetime(2019, 8, 23, 12)):
+    if now > SOLUTION_TIME:
         return render(request, 'PHapp/solutions/meta.html', {'puzzle':puzzle, 'huntOver': huntOver()})
     else:
         return render(request, 'PHapp/solutions/unpublishedSolution.html', {'puzzle':puzzle, 'huntOver': huntOver()})

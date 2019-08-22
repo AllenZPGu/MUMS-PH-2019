@@ -29,6 +29,7 @@ class Puzzles(models.Model):
     metaPart1 = models.BooleanField(default=False)
     solveCount = models.IntegerField(default=0)
     guessCount = models.IntegerField(default=0) # Only counts incorrect guesses
+    credits = models.CharField(max_length=500, null=True, blank=True)
 
     def updateHyperlinkText(self):
         from . helperFunctions import IntToRoman
