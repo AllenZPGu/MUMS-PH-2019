@@ -1,0 +1,51 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+
+	<p>This puzzle took a little trip down memory lane to 15 years ago, when the <a href='https://researchers.ms.unimelb.edu.au/~mums/puzzlehunt/2004/'>first ever MUMS Puzzle Hunt</a> was created by a team that includes the now infamous Julian Assange.</p>
+
+	<p>When we first inspect this puzzle, we see that it is considerably different to the aesthetics of the other puzzles released so far in the Hunt — everything looks a lot simpler and a lot more threadbare. There appear to be four ‘mini-puzzles’ contained within this puzzle, and there is also a bit of story attached too — a quick Google of that story will take us to Act 2 of the <a href='https://researchers.ms.unimelb.edu.au/~mums/puzzlehunt/2004/'>2004 MUMS Puzzle Hunt</a>.</p>
+
+	<p>Here, we can note that Assange’s contributions match up to the four ‘mini-puzzles’ included within this puzzle. Solvers have a couple of options here — they can either opt to follow the solution guides from 2004, or attempt to solve the ‘mini-puzzles’ from scratch. For the sake of completeness, we shall opt for the latter option.</p>
+
+	<p><u>Mini-Puzzle #1: Caesar Cipher (<a href='https://researchers.ms.unimelb.edu.au/~mums/puzzlehunt/2004/answers.html?puzzle=3.4'>original solution</a>)</u></p>
+
+	<p>In this puzzle, we see an excerpt from Shakespeare’s <i>Julius Caesar</i>, with each of the lines written in reverse order. Upon making this observation, what we can then do is reverse the text, to yield an excerpt that reads something like this:</p>
+
+	<div style='font-family: "Courier"'>
+	<b>PINDARUS.</b>  Titinius is en <mark>c</mark>losed round about</br>
+	With horsemen, that make to him on the spur;</br>
+	Yet he spurs on. Now they are almost on him.</br>
+	Now, Titinius! Now s <mark>o</mark>me light. O, he lights too.</br>
+	He’s ta’en.</br>
+	Shout</br>
+	An <mark>d</mark>, hark! Th <mark>e</mark>y shout for joy.</br>
+	<b>CASSIUS</b>. Come do <mark>w</mark>n, behold no more.</br>
+	O, c <mark>o</mark>ward that I am, to live so long,</br>
+	To see my best f <mark>r</mark>iend ta’en before my face!</br>
+	<i>PIN <mark>D</mark>ARUS descends</i></br>
+	Come hither, sirrah:</br>
+	In Parthia did I take thee prisoner;</br>
+	And then I swore thee, saving of thy life,</br>
+	That whatsoever I did bid thee do,</br>
+	Thou shoul <mark>d</mark>st attempt it. Come now, keep thine oath;</br>
+	Now be a fre <mark>e</mark>man: and with this good sword,</br>
+	That ran through Caesar’s bowels, search this bosom.</br>
+	Stand no <mark>t</mark> to answer: here, take thou the hilts;</br>
+	And, when my f <mark>a</mark>ce is cover’d, as ‘tis now,</br>
+	Gu <mark>i</mark>de thou the sword.</br>
+	<i>PI <mark>N</mark>DARUS stabs him</i></br>
+	Caesar, thou art revenged,</br>
+	Even with the sword that kill’d thee.</br>
+	<i>Dies</i>
+	</div>
+
+
+</div>
+</div>
+
+{% endblock %}

@@ -102,3 +102,7 @@ table td.expand {
 	display: inline-block; 
 	vertical-align: center;
 }
+
+mark {
+	background-color: yellow;
+}
