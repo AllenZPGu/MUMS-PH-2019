@@ -64,7 +64,7 @@ body {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background-color:  black;
+	background-color:	black;
 }
 
 .fill {
@@ -86,7 +86,7 @@ table th.shrink {
 	width: 1px;
 }
 table th.expand {
-    width: 99%;
+	width: 99%;
 }
 
 table td.shrink {
@@ -94,7 +94,7 @@ table td.shrink {
 	width: 1px;
 }
 table td.expand {
-    width: 99%;
+	width: 99%;
 }
 
 .flag-emoji {
@@ -105,4 +105,21 @@ table td.expand {
 
 mark {
 	background-color: yellow;
+}
+
+.senbazuru_column {
+	vertical-align: text-top;
+	display: inline-block;
+	padding: 5px;
+	font-size: 24px;
+}
+
+.senbazuru_row {
+	vertical-align: text-top;
+}
+/* Clear floats after image containers */
+.senbazuru_row::after {
+	content: "";
+	clear: both;
+	display: table;
 }

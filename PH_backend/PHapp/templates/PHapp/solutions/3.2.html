@@ -1,0 +1,54 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>This puzzle is a jigsaw, arranged into the shape of keys on a keyboard. Solving the jigsaws gives the following sections of sheet music:</p>
+
+  <center><img src="{% static 'PHapp/img/solutions/3.2.1.png' %}" alt="1" style="width:700px; padding:10px;"></center>
+  <center><img src="{% static 'PHapp/img/solutions/3.2.2.png' %}" alt="2" style="width:700px; padding:10px;"></center>
+  <center><img src="{% static 'PHapp/img/solutions/3.2.3.png' %}" alt="3" style="width:700px; padding:10px;"></center>
+  <center><img src="{% static 'PHapp/img/solutions/3.2.4.png' %}" alt="4" style="width:700px; padding:10px;"></center>
+  <center><img src="{% static 'PHapp/img/solutions/3.2.5.png' %}" alt="5" style="width:700px; padding:10px;"></center>
+
+	<p>Since there is very little information on the page, we suspect the colours of the music are somehow important. When describing the colours of each section of music, we notice that the number of letters in each colour is the same as the sum of the two numbers in the respective time signature (for example, PINK has 2+2=4 letters). This is also hinted by the key signature (for example, PINK has a key signature of C, which when counting up from A, gives A, B♭, B, C, the fourth key). Finding colours which fit this pattern gives the colours:</p>
+
+  <ul>
+    <li>APRICOT</li>
+    <li>LAVENDER</li>
+    <li>LIME</li>
+    <li>PINK</li>
+    <li>TURQUOISE</li>
+  </ul>
+
+  <p>The final step of this puzzle is to extract an answer phrase. By considering the position of each note in the respective major scales, the following indexes are obtained:</p>
+  <ul>
+    <li>6 1 5 5 (E♭ major)</li>
+    <li>6 1 2 4 (E major)</li>
+    <li>4 1 3 2 (C major)</li>
+    <li>2 4 1 (C major)</li>
+    <li>8 8 5 6 (F major)</li>
+  </ul>
+
+  <p>Indexing into the colours gives the letters:</p>
+  <ul>
+    <li>OACC</li>
+    <li>DLAE</li>
+    <li>ELMI</li>
+    <li>IKP</li>
+    <li>SSUO</li>
+  </ul>
+
+  <p>These letters can then be placed in ascending order of the note length to produce the final answer <b>MUSICAL KALEIDOSCOPE</b>.</p>
+
+	<h4>Author's notes</h4>
+
+	<p>Puzzles involving sheet music have a rather unhappy history in Australian puzzle hunts, and this was no exception. The text placed below the keyboard was added in an effort to hint that the colours were important, but this may have been misleading to the solver. Unfortunately, due to extraordinarily limited time and people resources, while aspects of this puzzle were test-solved, this process was evidently not rigorous enough. As a consequence, we provided quite detailed hints from the outset. The other main issue that came about with this puzzle was the construction of the pdf, which meant that some teams were able to extract the completed images and the names of the colours from the pdf file, which was something we had not anticipated. Towards the end of the Hunt, a rather ambiguous erratum was issued for this puzzle, which again frustrated a lot of solvers. However, it wasn’t actually an issue with the puzzle, but a slight change to the story, which affected the meta. Sorry for any frustration this caused.</p>
+
+</div>
+</div>
+
+{% endblock %}

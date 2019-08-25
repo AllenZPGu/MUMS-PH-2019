@@ -1,0 +1,265 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>Upon opening this puzzle, we see a strange-looking Monopoly board, a long series of dice rolls, a large number of Chance and Community Chest cards, and then a second page with some Monopoly money and a series of houses. We can begin by examining the board to see if there are any differences with a standard Monopoly board, other than its arrangement. In this process, we spot a Monopoly piece (the top hat) on one of the tiles. Given that there is a single piece on the board, and a series of dice rolls, the we should then try to play out the game with the rolls of the dice. This doesn’t seem to yield anything immediately, until attempting to index the dice roll into the letters of the tile we land on in each row. For instance, starting at the top hat and rolling a 3 lands us at FENCHURCH ST STATION, the third letter of which is N. Doing the same for all 21 rolls results in the phrase NO OF LETTERS SEEN ON TILE.</p>
+
+	<p>This instructs us to count the number of letters on each of the forty tiles on the board, and somehow map them to the forty provided Chance and Community Chest cards. A logical place to start would be the square GO and the top left card. The GO square has 24 letters (not including digits and the pound sign). The 24th letter on the top left Chance card is R (not counting the letters in CHANCE). If we continue from GO and follow the board around, then map the letter numbers to the cards (read left to right, top to bottom) in a similar way, we obtain a string begining with RSNAFOTRAT... This look like gibberish, but we should complete the grid nonetheless:</p>
+	<br>
+	<center>
+	<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=187
+ style='width:140.0pt;margin-left:.1pt;border-collapse:collapse;mso-yfti-tbllook:
+ 1184;mso-padding-alt:0cm 5.4pt 0cm 5.4pt'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;height:15.75pt'>
+  <td width=19 style='width:14.0pt;border-top:solid windowtext 1.0pt;
+  border-left:solid windowtext 1.0pt;border-bottom:none;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>I<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border-top:solid windowtext 1.0pt;
+  border-left:none;border-bottom:none;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>O<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-top:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>O<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border-top:solid windowtext 1.0pt;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:none;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>T<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border-top:solid windowtext 1.0pt;
+  border-left:none;border-bottom:none;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>I<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-top:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>M<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-top:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>E<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border-top:solid windowtext 1.0pt;
+  border-left:none;border-bottom:none;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>S<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-top:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>N<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border-top:solid windowtext 1.0pt;
+  border-left:none;border-bottom:none;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>O<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1;height:15.75pt'>
+  <td width=19 style='width:14.0pt;border-top:none;border-left:solid windowtext 1.0pt;
+  border-bottom:none;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>T<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>E<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-bottom:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>S<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>T<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>O<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>T<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>A<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border-top:none;border-left:none;border-bottom:
+  solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>L<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>V<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>A<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2;height:15.75pt'>
+  <td width=19 style='width:14.0pt;border-top:none;border-left:solid windowtext 1.0pt;
+  border-bottom:none;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>L<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-bottom:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>U<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-bottom:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>E<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border-top:none;border-left:none;border-bottom:
+  solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>S<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-bottom:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>U<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border-top:none;border-left:none;border-bottom:
+  solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>N<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-bottom:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>G<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-bottom:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>A<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border-top:none;border-left:none;border-bottom:
+  solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>T<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>S<o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:3;mso-yfti-lastrow:yes;height:15.75pt'>
+  <td width=19 style='width:14.0pt;border-top:none;border-left:solid windowtext 1.0pt;
+  border-bottom:solid windowtext 1.0pt;border-right:none;padding:0cm 5.4pt 0cm 5.4pt;
+  height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>T<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-bottom:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>A<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-bottom:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>R<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-bottom:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>T<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-bottom:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>O<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-bottom:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>F<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-bottom:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>A<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-bottom:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>N<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border:none;border-bottom:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>S<o:p></o:p></span></p>
+  </td>
+  <td width=19 style='width:14.0pt;border-top:none;border-left:none;border-bottom:
+  solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:15.75pt'>
+  <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+  text-align:center;line-height:normal'><span>R<o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+</center>
+	<br>
+	<p>Reading the grid top left to bottom right, we see the message 100 TIMES NOTES' TOTAL VALUE SUNG AT START OF ANSR. The total value of the notes (Monopoly money) is £5256, which multiplied by 100 is 525600. Googling something like '525600 sung at start of' reveals that the phrase "Five hundred twenty-five thousand six hundred minutes" is the first line from the song "Seasons of Love", which is the opening number of the second act of the musical <i>Rent</i>.</p> 
+
+	<center><img src="{% static 'PHapp/img/solutions/3.1.png' %}" alt="525600" style="height:350px; padding:10px;"></center>
+
+	<p>The only remaining piece of the puzzle is the row of houses, which would appear to indicate the enumeration of the answer being (4,3,2). We deduce that the answer is thus <b>RENT ACT II</b>, since the very first thing the audience hears at the start of Rent Act II is the number "five hundred twenty-five thousand six hundred".</p>
+	<br>
+
+	<h4>Author's notes</h4>
+
+	<p>We designed this puzzle as one of our longer and more involved puzzles, given that it had multiple different steps. Test-solvers found this difficult, but were generally happy that the logical leaps were not unfair. We appreciate now, however, that these steps may have been clued better.
+	<p>Some easy fixes might have been:
+	<ul>
+		<li>making the top hat more obvious</li>
+		<li>separating the dice and the Community Chest and Chance cards onto separate pages so it was clear that the first step was to use the dice and only the dice</li>
+		<li>not relying on the dice for two separate steps of the puzzle</li>
+		<li>making it more obvious that we should start mapping cards from GO</li>
+	</ul>
+	<p>The main issue that came up when test solving was extracting the final answer phrase ‘RENT ACT II’ given the ambiguity in the wording of the concept 'the second act of the musical Rent', which is why the sequence of houses was provided, to make the letter sequence far clearer. Clearly this was not the only sticking point in the puzzle, though, and we apologise for any frustration you experienced (and understand there was a lot of it!). We appreciate any constructive feedback you can provide in the feedback survey.</p>
+
+	<p>Thanks to teams who entered guesses until the guess count settled on exactly 1000 by the end of the hunt. We thought this was very aesthetic :)</p>
+
+</div>
+</div>
+
+{% endblock %}

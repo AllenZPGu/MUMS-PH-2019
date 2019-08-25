@@ -1,0 +1,37 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>This puzzle appears to be some sort of knitting pattern, perhaps with some extra sentences at the beginning and the end. The first strategy may be to attempt constructing the pattern described by the instructions. One important thing to notice is that knitting charts are read (and constructed) from the bottom right, and each row is inverted as we flip the knitting needles around, so a purl (P) in one row is a knit (K) in the next, and vice versa. There are two possible options, one would be to read the pattern top to bottom, ignoring the row numbers, while the other is to use the row numbers even though they are out of order. The latter quickly appears to be the logical solution, with the full chart as follows:</p>
+
+  <center><img src="{% static 'PHapp/img/solutions/4.4.1.png' %}" alt="Knit 1" style="width:700px; padding:10px;"></center>
+
+  <p>There then appears to be ten words reading down in some sort of grid. We still have the extra sentences, of which there are ten, and the ordering of the first ten rows. The sentences can be determined to be thematic cryptic clues, and the answers are:</p>
+
+  <ul>
+    <li><b>ENJOY</b>: JOURNEY - UR (you are) all anagrammed = ENJOY (have fun)</li>
+    <li><b>GAUGE</b>: double definition ESTIMATE = GAUGE and MEASURE OF TENSION = GAUGE</li>
+    <li><b>SEW</b>: sounds like SO (therefore) = SEW (make stitches)</li>
+    <li><b>SEAM</b>: within uSE A Marker = SEAM (number of stitches)</li>
+    <li><b>CROCHET</b>: CO (first letters of Cast Off) + THE + CR (first and last letters of COLOUR) all anagrammed = CROCHET (using a hook)</li>
+    <li><b>KNIT</b>: KNI (LINK reversed and almost complete) + T (first letter of TO) = KNIT (use wool)</li>
+    <li><b>YARN</b>: first letters of You Are Now Ready = YARN (thread)</li>
+    <li><b>PURL</b>: R (right) + UP reversed + L (side) = PURL (stitch)</li>
+    <li><b>LOOP</b>: within LOOPS (SPOOL reversed) = LOOP (coil)</li>
+    <li><b>CLOTH</b>: LOT inside CH (half of INCH) = CLOTH (fabric)</li>
+  </ul>
+
+  <p>This can be made easier by using the number of letters in each answer, which can be determined from the arrangement of the words in the grid. This is clued by the ordering of the first ten rows: the 10th clue comes first (i.e. CLOTH), then the 6th (i.e. KNIT), and so on, which fills the grid as shown:</p>
+
+  <center><img src="{% static 'PHapp/img/solutions/4.4.2.png' %}" alt="Knit 2" style="width:700px; padding:10px;"></center>
+
+  <p>The phrase <b>HIGH JUMPER</b> can then be seen to be spelt out across the centre of the grid, which is the final answer.</p>
+
+</div>
+</div>
+
+{% endblock %}

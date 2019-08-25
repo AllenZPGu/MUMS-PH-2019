@@ -1,0 +1,86 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+
+	<p>The first page of this puzzle is a list of stick-themed clues, on sticks of varying lengths. The second is four arrangements of these sticks. The first step we can take is attempting to solve some of the clues, which are quickly revealed to be in alphabetical order. The full list is:</p>
+	<ul>
+		<li>ACID</li>
+		<li>COST</li>
+		<li>COUPE</li>
+		<li>DELAY</li>
+		<li>FADED</li>
+		<li>LIMPS</li>
+		<li>LOOKS</li>
+		<li>MORAL</li>
+		<li>ORCS</li>
+		<li>PADDLE</li>
+		<li>PIPE</li>
+		<li>RICE</li>
+		<li>RODS</li>
+		<li>SANK</li>
+		<li>SEEN</li>
+		<li>STACK</li>
+		<li>STICK</li>
+		<li>STONE</li>
+		<li>UNFIT</li>
+		<li>WINNER</li>
+		<li>XRAY</li>
+	</ul>
+
+	<p>Clearly, these words are meant to be fitted into the sticks on the next page. We may also realise that the length of the stick is directly proportional to the number of letters in the answer to each clue.</p> 
+
+	<p>After some work, we realise that placing the sticks in the piles so that overlapping letters are identical doesn’t work, so we should consider that there must be some other mechanism for allowing one stick to be placed on top of another. A reasonable conclusion is that while the overlapping letters don’t need to match when placing a stick on another stick, the words formed must still be valid words when read from above. In fact, the words on sticks are valid for every step of picking up the sticks as explained below. Using this strategy, the full piles are:</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/2.4.png' %}" alt="Sticks" style="height:800px; padding:10px;"></center>
+
+	<p>We conclude that the overlapping letters may reveal something. It turns out that if we pick up the sticks one by one and note down the letter(s) that are revealed, we find the message:</p>
+
+	<p>Top left pile:</p>
+	<ol>
+		<li>Picking up XRAY reveals S (LUMPS) and T (UNFIT)</li>
+		<li>Picking up UNFIT reveals I (LIMPS)</li>
+		<li>Picking up LIMPS reveals C (COOT) and K (LOOKS)</li>
+		<li>Picking up LOOKS reveals S (COST)</li>
+	</ol>
+
+	<p>Top right pile:</p>
+	<ol>
+		<li>Picking up RODS reveals U (COUPS)</li>
+		<li>Picking up STACK reveals S (ORCS) and E (COUPE)</li>
+		<li>Picking up ORCS reveals D (FADED) and I (WINDER)</li>
+		<li>Picking up FADED reveals N (WINNER)</li>
+	</ol>
+
+	<p>Bottom left pile:</p>
+	<ol>
+		<li>Picking up ACID reveals A (SACK) and L (DELAY)</li>
+		<li>Picking up DELAY reveals P (PIPS) and I (RICE)</li>
+		<li>Picking up RICE reveals N (SANK)</li>
+		<li>Picking up SANK reveals E (PIPE)</li>
+	</ol>
+
+	<p>Bottom right pile:</p>
+	<ol>
+		<li>Picking up STICK reveals S (SEEN) and P (PADDLE)</li>
+		<li>Picking up SEEN reveals O (MODAL)</li>
+		<li>Picking up PADDLE reveals R (MORAL) and T (ATONE)</li>
+		<li>Picking up MORAL reveals S (STONE)</li>
+	</ol>
+
+	<p>The revealed message is STICKS USED IN ALPINE SPORTS which clues for <b>SKI POLES</b>.
+	<br>
+	<h4>Authors' note:</h4>
+
+	<p>This puzzle was inspired by the game pick-up sticks, which involves picking up sticks from a pile without disturbing other sticks. Truly, everything can be turned into a puzzle!</p>
+
+	<p>It turns out that putting the answers in alphabetic order meant that the lengths of the first five sticks coincided with the lengths in the first pile, the lengths of the next six sticks coincided with the lengths in the second pile, etc. This was a complete coincidence! This may have been suggested by the fact that the answers were in alphabetical order, and in a single list - if they had been intended to be cluing for each separate pile, they would have been separated. Apologies to any team that noticed this red herring!</p>
+
+
+</div>
+</div>
+
+{% endblock %}

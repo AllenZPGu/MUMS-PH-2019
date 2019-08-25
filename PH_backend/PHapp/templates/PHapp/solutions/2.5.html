@@ -1,0 +1,662 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+
+	<p>We are presented with a crossword-like grid on a blue board which might be recognisable as the board from the game Mastermind, with a row of colours filled in at the bottom, and four black pegs beside them. The second page has a long list of clues each next to a series of coloured dots, but no word length. The clues are quite clearly cryptic, and we can begin by solving all the clues then attempting to fit them into the grid.</p>
+
+	<p>The bottom row of colours already filled in at the bottom of the grid seems to indicate that all of the grey boxes need to be filled in with colours, and the colours next to each clue might show the colours adjacent to the answers. This is supported by the fact that there is a clue next to an orange and a blue dot, which could clue for the word in the bottom right corner of the grid, and a couple of clues next to a yellow and a purple dot, which could be the word in the bottom left corner.</p>
+
+	<p>Solving a few of the clues quickly reveals that the answers are in alphabetical order, and the full list of answers is:</p>
+
+
+	<table class="table table-bordered">
+		<thead style="font-weight: bold;">
+			<tr>
+				<th>Colours</th>
+				<th>Answer</th>
+				<th>Cryptic explanation</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>AIOLI</b></td><td>
+			IOL (anagram of OIL) inside AI (machine) = AIOLI (sauce)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;&#11044;</span></td><td><b>AMITY</b></td><td>
+			reversed (Turner) within <span class=SpellE>garY</span> TIM And =
+			AMITY (friendship)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;&#11044;</span></td><td><b>ARROWS</b></td><td>
+			AR (first and last letters of ANGER) + ROWS (arguments) = ARROWS
+			(weapons)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span></td><td><b>AWFUL</b></td><td>
+			LAWFUL (legal) - L (student) = AWFUL (dreadful)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;&#11044;</span></td><td><b>BARBAROUS</b></td><td>
+			BAR + BAR (double counter) + OUS (first letters of Overestimates
+			Umbrella Stock) = BARBAROUS (horrible)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>BASEST</b></td><td>
+			B (first letter of BAD) + ASEST (anagram of ASSET) = BASEST (most
+			sinful)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;&#11044;</span></td><td><b>BREVITY</b></td><td>VY (first and last letters of VERY) + BITTER - T (last letter of
+			SWEET) all anagrammed = BREVITY (pith)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>CHAMPIONS</b></td><td>
+			ACCOMPLISHING - CLIG (odd letters of CULLING) all anagrammed =
+			CHAMPIONS (winners)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>COB</b></td><td>
+			within <span class=SpellE>cubiC</span> <span class=SpellE>OBject</span>
+			= COB (keeps corn)&nbsp;</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Arial",sans-serif;mso-fareast-font-family:"Times New Roman";
+			color:#00CF43'></span></td><td><b>CONDEMN</b></td><td>
+			CON (criminal) + DEMNS (anagram of mends) - S (society) = CONDEMN
+			(criticise)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>COOLHEADED</b></td><td>COOL (refreshing) + HEADED (directed) = COOLHEADED (calm)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>DELETE</b></td><td>within <span class=SpellE>sweDE</span> LET Estonian = DELETE
+			(remove)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>DEN</b></td><td>
+			anagram of END = DEN (hideout)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>DIMSIM</b></td><td>within <span class=SpellE>backyarD</span> I’M <span class=SpellE>SIMmering</span>
+			= DIMSIM (Aussie dumpling)</span><span style='font-size:12.0pt;font-family:
+			"Times New Roman",serif;mso-fareast-font-family:"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>DONUT</b></td><td>
+			DONUTR (anagram of ROTUND) - R (middle letter of LARGE) = DONUT
+			(sweet/&amp;lit)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>EGGS</b></td><td>
+			alternating letters of <span class=SpellE>EnGaGeS</span> = EGGS
+			(Easter chocolates)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>EONS</b></td><td>
+			anagram of NOSE = EONS (ages)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>EVEN</b></td><td>
+			N (first letter of Nebraska) + EVE (First Lady = first woman) all
+			reversed = EVEN (flat)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;&#11044;</span></td><td><b>HAY</b></td><td>odd letters of <span class=SpellE>HeAvY</span> = HAY (grass)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;&#11044;&#11044;</span></td><td><b>HONEYCOMB</b></td><td>HONEY (darling) + COMB (groom) = HONEYCOMB (sweet treat)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>HYBRID</b></td><td>HYBRIDAT (anagram of BIRTHDAY) - AT = HYBRID (mash-up)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>IDIOM</b></td><td>ID (I’d) + I + (first letter of IT) + OM (first and last letters
+			of OPTIMISM) = IDIOM (saying)</span><span style='font-size:12.0pt;font-family:
+			"Times New Roman",serif;mso-fareast-font-family:"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>IDOL</b></td><td>
+			sounds like IDLE (pointless) = IDOL (singing competition)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>IGNORE</b></td><td>
+			IGNOR (anagram of GIN OR) + E (drug) = IGNORE (turn a blind eye
+			to)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>KNIVES</b></td><td>
+			KNIS (anagram of SKIN) with VE (first and last letters of VALVE)
+			inside = KNIVES (blades)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span></td><td><b>LOTTO</b></td><td>
+			TT (first and last letters of TOILET) inside LOO (bathroom) =
+			LOTTO (game of chance)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span></td><td><b>MEAT</b></td><td>
+			within <span class=SpellE>taME</span> A Tiger = MEAT (steak, say)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>MOTION</b></td><td>
+			EMOTION (feeling) - E (remove first letter) = MOTION (movement)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>MUSIC</b></td><td>CUBISM - B (born) all anagrammed = MUSIC (art)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;&#11044;</span></td><td><b>OAFISH</b></td><td>
+			OA (first letters of Old-Arse) + FISH (creature of the seas) =
+			OAFISH (stupid)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>ODOUR</b></td><td>
+			O (first letter of OYSTERS) + DOUR (serious) = ODOUR (stench)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;&#11044;</span></td><td><b>OFFENCE</b></td><td>
+			sounds like A FENCE (a trafficker of stolen goods) = OFFENCE
+			(crime)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>OFFER</b></td><td>
+			OFF (cancelled) + ER (hesitation) = OFFER (proposal)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;&#11044;</span></td><td><b>OMIT</b></td><td>
+			reverse (reply) within <span class=SpellE>thaT</span> I’M Ok =
+			OMIT (forget)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>ONION</b></td><td>
+			ON (on) + I (on) + ON (on) = ONION (vegetable)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>ORAL</b></td><td>centre of <span class=SpellE>mORALs</span> = ORAL (unwritten)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span></td><td><b>OVERT</b></td><td>
+			R (Republican) + VOTE all anagrammed = OVERT (blatant)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>PLAY</b></td><td>
+			PLAYTEN (anagram of PENALTY) -TEN = PLAY (game)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>POLICE</b></td><td>
+			LOP (cut) reversed + ICE (drug) = POLICE (We’ll be watching you)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>ROSTI</b></td><td>anagram of RIOTS = ROSTI (hash brown)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span></td><td><b>SAD</b></td><td>DAS (almost DASH) reversed = SAD (down)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span></td><td><b>SCORE</b></td><td>
+			Double definition GAIN = SCORE and TWENTY = SCORE</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>SOLEMNLY</b></td><td>
+			SOLELY (only) around MN (middle of the alphabet) = SOLEMNLY
+			(seriously)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>SONGS</b></td><td>OGNSS (odd letters of <span class=SpellE>OrGaNiStS</span>)
+			anagrammed = SONGS (tunes)</span><span style='font-size:12.0pt;font-family:
+			"Times New Roman",serif;mso-fareast-font-family:"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span></td><td><b>SOUVLAKI</b></td><td>
+			FLAVOURS - FR (first letters of FROM ROUGHLY) anagrammed gives
+			SOUVLA + KI (half KILO) = SOUVLAKI (skewered meat)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span></td><td><b>SURGE</b></td><td>SURE (certain) around G (grand) = SURGE (swell)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;&#11044;</span></td><td><b>TARTS</b></td><td>
+			anagram of START = TARTS (pies)</span><span style='font-size:
+			12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>TIE</b></td><td>
+			double definition DRAW = TIE and STRING = TIE</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:#FDE60A'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>TREES</b></td><td>
+			E (Englishman) inside TRES (very French) = TREES (forest)</span><span
+			style='font-size:12.0pt;font-family:"Times New Roman",serif;mso-fareast-font-family:
+			"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#FF941D'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#007AFF'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>TYRANT</b></td><td>RANTS (shouts) - S (endlessly) after CITY - CI (half of city
+			falls) = TYRANT (dictator)</span><span style='font-size:12.0pt;font-family:
+			"Times New Roman",serif;mso-fareast-font-family:"Times New Roman"'></td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:
+			"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";color:red'>&#11044;&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#00CF43'>&#11044;</span><span
+			style='font-family:"Segoe UI Symbol",sans-serif;mso-fareast-font-family:"Times New Roman";
+			mso-bidi-font-family:"Segoe UI Symbol";color:#B760E3'>&#11044;</span></td><td><b>UGLY</b></td><td>HUGELY - HE = UGLY (hideous)</td></tr>
+
+
+			<tr><td><span style='font-family:"Segoe UI Symbol",sans-serif;
+			mso-fareast-font-family:"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";
+			color:red'>&#11044;</span><span style='font-family:"Segoe UI Symbol",sans-serif;
+			mso-fareast-font-family:"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";
+			color:#FDE60A'>&#11044;</span><span style='font-family:"Segoe UI Symbol",sans-serif;
+			mso-fareast-font-family:"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";
+			color:#007AFF'>&#11044;</span><span style='font-family:"Segoe UI Symbol",sans-serif;
+			mso-fareast-font-family:"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";
+			color:#B760E3'>&#11044;</span><span style='font-family:"Arial",sans-serif;
+			mso-fareast-font-family:"Times New Roman";color:#B760E3'></span></td><td><b>WOOD:</b></td><td> D (last letter of DEAD)
+			after WOO (chase) = WOOD (lumber)</span></td></tr>
+		</tbody>
+	</table>
+
+	<p>These can be fitted into the grid as follows:</p>
+	<center><img src="{% static 'PHapp/img/solutions/2.5.1.png' %}" alt="Mastermind 1" style="padding:10px;"></center>
+
+	<p>We now has a filled grid and are faced with the challenge of determining how to extract the letters. The red 3x3 box in the centre looks promising, but we recall there was a similar 3x3 box in <a href='https://www.mumspuzzlehunt.com/puzzles/I.S%20Letters%20and%20Numbers.pdf' target="_blank">I.S Letters and Numbers</a> which wasn’t used, and similarly in this puzzle it is not used again, and instead used for the meta. The other piece of information that hasn’t yet been used in this puzzle is the Mastermind board itself. Beside each row of colours is four small dots or peg holes, and in the final pre-filled row, these are filled with four black key pegs. This is the Mastermind representation of 'four code pegs of the right colour in the right position', i.e. the final state.</p>
+
+	<p>Essentially, in Mastermind, each row is compared with the final row of 
+	<span style='font-family:"Segoe UI Symbol",sans-serif;
+	mso-fareast-font-family:"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";
+	color:#FDE60A'>&#11044;</span>
+	<span style='font-family:"Segoe UI Symbol",sans-serif;
+	mso-fareast-font-family:"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";
+	color:#B760E3'>&#11044;</span>
+	<span style='font-family:"Segoe UI Symbol",sans-serif;
+	mso-fareast-font-family:"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";
+	color:#007AFF'>&#11044;</span>
+	<span style='font-family:"Segoe UI Symbol",sans-serif;
+	mso-fareast-font-family:"Times New Roman";mso-bidi-font-family:"Segoe UI Symbol";
+	color:#FF941D'>&#11044;</span>. In each row, one black key peg is awarded for a colour that is in its right cell, and a white peg is awarded for a colour that is present in the final row but not in its right cell. No pegs are awarded for colours that are not in the final row. Using this scoring method, all other rows’ key pegs can then be filled in as shown below:</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/2.5.2.png' %}" alt="Mastermind 2" style="padding:10px;"></center>
+
+	<p>Having done this, we need to extract letters from the grid. They key pegs directly line up with the rows with colours, so the we should consider using the key pegs to extract letters from each of these rows. In each coloured row, there are five letters, between zero and four black pegs, and between zero and four white pegs. It thus makes sense to assign each letter an index from 0 to 4. For each row, we extract the letter indexed by the number of black pegs, then the number of white pegs. For instance, in the top most row, we see one black peg and three white pegs. We thus take the second (index position 1) and fourth (index position 3) letters, which are M and A respectively. Doing this for the remaining rows, we get the message MAY THE ODDS BE EVER IN YOUR FAVOUR. A quick Google search or recognition of the phrase will reveal that this comes from Suzanne Collins' novel series <b>THE HUNGER GAMES</b>, which is thematically relevant with a large number of the words in the grid, and is the final answer phrase.</p>
+
+	<br>
+	<h4>Author's notes:</h4>
+
+	<p>Preliminary feedback indicated that many teams solved the grid but struggled with the final step of this puzzle, which was to use the key pegs to extract the final message. While we did hint in all three hints that Mastermind is the relevant mechanism here, we thought that that was enough since the mechanism of using the Mastermind key pegs (which is the integral part of the game) to index was spotted fairly quickly in test-solving. This was why we only explicitly hinted for the peg-index step in Hint 3. Apologies to teams who were frustrated at the perceived unhelpfulness of the early hints. In the future, we will endeavour to at least allude to the final step in early hints.</p>
+
+</div>
+</div>
+
+{% endblock %}

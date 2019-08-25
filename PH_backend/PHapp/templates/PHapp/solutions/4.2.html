@@ -1,0 +1,35 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>This puzzle consists of a series of sketches, some of which are duplicated. We can try to identify each sketch, and we may soon notice that the sketches encode pairs of homophones or near homophones. The pairs are listed below in the order they appear in the puzzle. The number of times each image has been duplicated is also indicated.</p>
+
+  <ul>
+    <li>LYRE OF LIAR (1)</li>
+    <li>KERNELS OF COLONELS (2)</li>
+    <li>SCENTS OF CENTS (5)</li>
+    <li>PICTURES OF PITCHERS (4)</li>
+    <li>FRYERS OF FRIARS (4)</li>
+    <li>ROW OF ROE (1)</li>
+    <li>MORNING OF MOURNING (1)</li>
+    <li>QUEUES OF CUES (2)</li>
+    <li>SALES OF SAILS (3)</li>
+    <li>TALES OF TAILS (3)</li>
+    <li>CELLARS OF SELLERS (2)</li>
+    <li>PRINTS OF PRINCE (4)</li>
+  </ul>
+
+  <p>This pattern of ___ OF ___ is also clued for in the title (Choices of Images → PICKS OF PICS), and the continuous line running through the OF in the title then through all other puzzles also suggests that the OF should be carried through each puzzle. Indexing the first word of each sketch with the number of times the sketch has been duplicated, we retrieve the phrase LETTERMULLEN. Google reveals that Lettermullen (also spelled Lettermullan) is a small islet in the north-west of Ireland, which leads to the answer phrase <b>ISLAND OF IRELAND</b>. </p>
+
+  <br>
+  <h4>Author's notes</h4>
+  <p>Many teams struggled with the final step of obtaining ISLAND OF IRELAND from LETTERMULLEN, possibly because ISLAND and IRELAND aren’t perfect homophones in some English varieties. We understand this source of frustration, but ultimately discrepancies between regional pronunciations are inherent in any puzzle with a phonetically based mechanism. We operate in Australian English and cater primarily to an Australian audience; in Australian English, which is non-rhotic, ISLAND and IRELAND are near homophones, as are PICTURES and PITCHERS, so this was entirely consistent with the mechanism of the puzzle.</p>
+
+</div>
+</div>
+
+{% endblock %}
