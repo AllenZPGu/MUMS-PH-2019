@@ -1,0 +1,195 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>A circular crossword grid, some un-numbered clues and some numbered clues. The un-numbered clues are quite vague, so let's start with the numbered clues, which are a bit more straightforward.</p>
+	<ol>
+		<li>MELBOURNE</li>
+		<li>ENGINE</li>
+		<li>EQUAL</li>
+		<li>LUPUS</li>
+		<li>SPIES</li>
+		<li>SHRIMP</li>
+		<li>PEN</li>
+		<li>NEAT</li>
+		<li>THUMB</li>
+		<li>BODMAS</li>
+		<li>SALSA</li>
+		<li>ARCO</li>
+		<li>ORBIT</li>
+		<li>THRILLER</li>
+		<li>REDFIN</li>
+		<li>NESS</li>
+		<li>SWEDES</li>
+		<li>SECEDE</li>
+		<li>EGG</li>
+		<li>GUMTREE</li>
+		<li>ENDEMIC</li>
+		<li>CASTE</li>
+		<li>EDAM</li>
+		<li>MQ</li>
+		<li>QUAFFING</li>
+		<li>GOO</li>
+		<li>OECD</li>
+		<li>DEVITY</li>
+		<li>YTTRIUM</li>
+		<li>MAT</li>
+		<li>TIC</li>
+		<li>CLUED</li>
+		<li>DRIB</li>
+		<li>BAIL</li>
+		<li>LINNETS</li>
+		<li>SITU</li>
+		<li>UNI</li>
+		<li>IXIAS</li>
+		<li>SAB</li>
+		<li>BT</li>
+		<li>TIA</li>
+		<li>ABASH</li>
+		<li>HAST</li>
+		<li>TANS</li>
+		<li>SEE</li>
+		<li>EH</li>
+		<li>HEARTLESS</li>
+		<li>SEROSA</li>
+		<li>ARS</li>
+		<li>SHD</li>
+		<li>DOE</li>
+		<li>EEL</li>
+		<li>LARI</li>
+		<li>IDOL</li>
+		<li>LU</li>
+		<li>UL</li>
+		<li>LHL</li>
+		<li>LAB</li>
+		<li>BIB</li>
+		<li>BAE</li>
+		<li>ERA</li>
+		<li>AXIS</li>
+		<li>SUM</li>
+		<li>MET</li>
+		<li>TIMER</li>
+		<li>ROOST</li>
+		<li>TUMOUR</li>
+		<li>ROPER</li>
+		<li>RAP</li>
+		<li>PAV</li>
+		<li>VAN</li>
+	</ol>
+
+	<p style="word-wrap: break-word;">We should quickly notice that the last letter of each anser is the same as the first letter of the next answer. This means that we can join up the answers into one long chain: MELBOURNENGINEQUALUPUSPIESHRIMPENEATHUMBODMASALSARCORBITHRILLEREDFINESSWEDESECEDEGGUMTREENDEMICASTEDAMQUAFFINGOOECDEVITYTTRIUMATICLUEDRIBAILINNETSITUNIXIASABTIABASHASTANSEEHEARTLESSEROSARSHDOEELARIDOLULHLABIBAERAXISUMETIMEROOSTUMOUROPERAPAVAN.</p>
+	<p>This chain is 242 letters long, which is the same number of cells in the circular grid. We note that the first and last letters of this chain (M and N) already appear in the grid, which confirms that we should try and fill in the grid with the letter chain. Starting from M, we wrap our chain clockwise. Once a ring is exhausted, the chain continues onto the next ring. This way, the chain is wrapped in a spiral shape around the grid. At this point, the title of this puzzle makes sense: a Roll Up is a confectionary featuring a fruity strip rolled in a spiral shape.</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/5.3.1.png' %}" style="width:70%; padding:10px;"></center>
+
+	<p>Looking at the radial spoke immediately to the left of the central line, we see that it spells SAFEGUARDIN. Its opposite spoke spells UARANTEEING. Both of these look like words meaning "protecting" (one of the un-numbered clues), except the former spoke is missing a terminal G and the latter spoke is missing a starting G. This suggests that the question mark in the middle of the grid should be a G, such that the two opposing spokes can be joined to spell SAFEGUARDIN(G)UARANTEEING.</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/5.3.2.png' %}" style="width:70%; padding:10px;"></center>
+
+	<p>In fact, each of the un-numbered clue pairs clues for a pair of words of equal length, the last letter of one being the first letter of the other. The truncated versions of both words appear on opposite spokes of the grid. The complete pairs are:</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/5.3.3.png' %}" style="width:70%; padding:10px;"></center>
+
+	<table class="table table-bordered">
+		<tr><th>Clue</th><th>Word 1</th><th>Word 2</th><th>Common letter</th><th>Word length</th></tr>
+	  <tr>
+	    <td>Cardiac stimulant / Cardiac stimulant</td>
+	    <td>HEARTTHROB</td>
+	    <td>BELLADONNA</td>
+	    <td>B</td>
+	    <td>10</td>
+	  </tr>
+	  <tr>
+	    <td>Clergyman / Clergyman</td>
+	    <td>BISHOP</td>
+	    <td>PRIEST</td>
+	    <td>P</td>
+	    <td>6</td>
+	  </tr>
+	  <tr>
+	    <td>E __ E / E __ E</td>
+	    <td>ELSE</td>
+	    <td>EASE</td>
+	    <td>E</td>
+	    <td>4</td>
+	  </tr>
+	  <tr>
+	    <td>Protecting / Protecting</td>
+	    <td>SAFEGUARDING</td>
+	    <td>GUARANTEEING</td>
+	    <td>G</td>
+	    <td>12</td>
+	  </tr>
+	  <tr>
+	    <td>Racing / Racing</td>
+	    <td>PRESTISSIMO</td>
+	    <td>OVEREXCITED</td>
+	    <td>O</td>
+	    <td>11</td>
+	  </tr>
+	  <tr>
+	    <td>Results in genetic selection / Result of genetic selection</td>
+	    <td>MISADAPT</td>
+	    <td>TRUEBRED</td>
+	    <td>T</td>
+	    <td>8</td>
+	  </tr>
+	  <tr>
+	    <td>Seasonal events / Seasonal events</td>
+	    <td>EQUINOXES</td>
+	    <td>SOLSTICES</td>
+	    <td>S</td>
+	    <td>9</td>
+	  </tr>
+	  <tr>
+	    <td>Show-offy / Show-offy</td>
+	    <td>VIBRATO</td>
+	    <td>OPULENT</td>
+	    <td>O</td>
+	    <td>7</td>
+	  </tr>
+	  <tr>
+	    <td>Smear / Smear</td>
+	    <td>MAR</td>
+	    <td>RUB</td>
+	    <td>R</td>
+	    <td>3</td>
+	  </tr>
+	  <tr>
+	    <td>Squash / Squash</td>
+	    <td>STOMP</td>
+	    <td>PRESS</td>
+	    <td>P</td>
+	    <td>5</td>
+	  </tr>
+	  <tr>
+	    <td>∴ / ∵</td>
+	    <td>AS</td>
+	    <td>SO</td>
+	    <td>S</td>
+	    <td>2</td>
+	  </tr>
+	</table>
+
+	<p>We notice that the word lengths of these answers are unique, from 2 to 12 letters long. Ordering by descending word length, the extracted letters spell <b>GOBSTOPPERS</b>, which are circular lollies with many multi-coloured layers.</p>
+
+	<br>
+
+	<h4>Author's note</h4>
+	<p>The answer GOBSTOPPERS was a perfect reason to write a thematic circular crossword. In hindsight, this puzzle would have been even more thematic if we didn't have one long word chain, but rather eleven smaller word chains, each corresponding to a layer or ring of the grid.</p>
+	<p>Constructing the grid actually turned out to be incredibly constrained. Most of this puzzle was constructed by hand with some help from a word bank, which is why there were two inelegancies.</p>
+	<ul>
+		<li>Ideally, opposing spokes would be perfect synonyms or antonyms. However, this was too hard to achieve so I had to relax this constraint and settle for the weaker mechanism of having opposing spokes be similar or thematically linked.</li> 
+		<li>In the numbered clues, the constraints placed on filling the grid resulted in a number of two-, three- and four-letter answers. These were suboptimal and kinda unaesthetic.</li>
+	</ul> 
+	<p>In hindsight, I should have invested some time into writing code to generate a better grid with better words.</p>
+	<p>Finally, the nature of this puzzle meant that there was very little room for error with the word chain. Solvers may have found themselves a few letters too long or too short. This was designed to be a difficult step which test-solvers considered fair; solvers are compelled to triple check their answers, to try alternate answers for ones that are iffy and to test a few different cases. I tried to alleviate some of the ambiguity by writing numbered clues that are arguably quite explicit. I did consider providing one full spoke as an additional check, but was advised against this by test-solvers. Apologies for teams that were stuck on this step; let us know in the feedback whether you considered this bit unfair.</p>
+
+</div>
+</div>
+
+{% endblock %}

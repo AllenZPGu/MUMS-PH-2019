@@ -1,0 +1,197 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>Opening the meta pdf, we see a set of cubic equations, each of which can be solved to give</p>
+	<p>
+		α = 13, β = 15, γ = 14 (I.S)</br>
+		δ = 4, ε = 7 (II.S)</br>
+		ζ = 4, η = 1, θ = 7 (III.S)</br>
+		ι = 9, κ = 4 (IV.S)</br>
+		λ = 2, µ = 7, ν = 5 (V.S)</br>
+		ξ = 12, o = 17, π = 5 (VI.S)</br>
+	</p>
+
+	<p>Indexing these numbers into the respective S puzzle answers gives </p>
+	<p>
+		α = E, β = D, γ = N 	(WORDSWITHFRIENDS)</br>
+		δ = H, ε = G (THEHUNGERGAMES)</br>
+		ζ = I, η = H, θ = D (HOMICIDE)</br>
+		ι = T, κ = O (SUMOWRESTLER)</br>
+		λ = E, µ = I, ν = T (WELLTRIS)</br>
+		ξ = R, o = S, π = I (LEANINGTOWEROFPISA)</br>
+	</p>
+
+	<p>Rearranging these Greek letters as provided reveals the phrase EIGHT HIDDEN TRIOS.</p>
+
+	<p>Congrats, meta solved! The meta pdf does directly state that this is the puzzle answer, so it would be safe to type it into the answer submission checker. Upon doing this, we are informed that we're actually not there yet, and instead "it is left up to you to right what's been put down". If we return to the home page, we notice that all the edge cubelets on the Rubik’s cube (at least on the faces corresponding to the days where the central S puzzle have been solved) light up. Previously, none of the edge cubelets were lit.</p>
+
+	<p>The most obvious we have to go on at the moment is the phrase EIGHT HIDDEN TRIOS. So far only the central S puzzle answers have already been used, leaving twenty-four other puzzle answers, which might nicely be sorted into eight trios. Looking closely at the answers reveals that there are hidden phrases contained within them, which can be grouped into (ordered) trios. These trios represent common or idiomatic phrases, such as the GOOD, the BAD and the UGLY. Arranged in alphabetical order of the trios:</p>
+	<ul>
+		<li>ORDINARY (GOOD)S (III.4)</br>
+				SCU(BA D)IVING (VI.3)</br>
+				TH(UG LY)FE (I.1)</li></br>
+
+		<li>OP S(HOP) (VI.1)</br>
+				(SKI P)OLES (II.4)</br>
+				HIGH (JUMP)ER (IV.4)</li></br>
+
+		<li>TURKISH DE(LIGHTS) (VI.4)</br>
+				TRI(CAMERA)LISM (III.3)</br>
+				IMPROPER FR(ACTION) (I.2)</li></br>
+
+		<li>EVE(READY) (IV.3)</br>
+				LCH(AIM) (I.3)</br>
+				ISLAND O(F IRE)LAND (IV.2)</li></br>
+
+		<li>GOB(STOP)PERS (V.3)</br>
+				HY(DROP)UMP (IV.1)</br>
+				INTERNET T(ROLL) (II.3)</li></br>
+
+		<li>GENE(TIC)ALLY MODIFIED ORGANISM (I.4)</br>
+				REN(T AC)T II (III.1)</br>
+				EYE (TO E)YE (II.1)</li></br>
+
+		<li>R(UN O)UT (V.2)</br>
+				MUSICAL KALEI(DOS)COPE (III.2)</br>
+				NANOME(TRES) (V.1)</li></br>
+
+		<li>INTER(VENI)R (V.4)</br>
+				STREPTA(VIDI)N (II.2)</br>
+				A(VICI)I (VI.2)</li></br>
+	</ul>
+
+	<p>It's not immediately apparent what we can do next, so we consider any other sources of information. We may recall the 3x3 squares that appeared in each central S puzzle on each day but have been ignored up to now.</p>
+
+	<p>In Act I, the centre 3x3 tiles are outlined with a white box, and the contents in the solved state of the puzzle are:</p>
+	<center><img src="{% static 'PHapp/img/solutions/meta.1.png' %}" style="width:15%; padding:10px;"></center>
+	<p>In Act II, the centre 3x3 squares are outlined with a red box, and the contents in the solved state of the puzzle are:</p>
+	<center><img src="{% static 'PHapp/img/solutions/meta.2.png' %}" style="width:15%; padding:10px;"></center>
+	<p>In Act III, a 3x3 section of the sudoku is outlined with a white box, and the solved state of the puzzle is:
+	<center><img src="{% static 'PHapp/img/solutions/meta.3.png' %}" style="width:15%; padding:10px;"></center>
+	<p>If we colour the rooms by the name of the occupant, and replace each ?? with its letter representation, the resultant 3x3 square will be:</p>
+	<center><img src="{% static 'PHapp/img/solutions/meta.4.png' %}" style="width:15%; padding:10px;"></center>
+	<p>In Act IV, the bottom left corner had a 3x3 of cranes indicating the colours and letters, in the same manner as described by the rest of the puzzle, in that the number of strokes is equal to the equivalent letter.</p>
+	<center><img src="{% static 'PHapp/img/solutions/meta.5.png' %}" style="width:15%; padding:10px;"></center>
+	<p>This results in the equivalent 3x3 square of</p>
+	<center><img src="{% static 'PHapp/img/solutions/meta.6.png' %}" style="width:15%; padding:10px;"></center>
+	<p>In Act V, parts of the tetrominoes had thick black outlines, and solving the puzzle results in the following 3x3 square:</p>
+	<center><img src="{% static 'PHapp/img/solutions/meta.7.png' %}" style="width:15%; padding:10px;"></center>
+	<p>In Act VI, when all towers are stacked one on top of the other, and red and green pieces removed, if you looked down on the tower, you would see the following 3x3 square, where the letters are made up of the unused symbols:</p>
+	<center><img src="{% static 'PHapp/img/solutions/meta.8.png' %}" style="width:15%; padding:10px;"></center>
+
+	<p>Looking at the unsolved-but-now-lit-up Rubik's Cube on the home page, we notice that these 3x3 squares map onto the faces of their respective S puzzles because the corner colours (in some orientation) match those on the Cube. Thus we should place the letters in the 3x3s on their appropriate cube faces. If we solve the Cube, the following is what we see:
+
+	<center><img src="{% static 'PHapp/img/solutions/meta.12.png' %}" style="width:80%; padding:10px;"></center>
+
+
+	<p>Reading the faces in rainbow order (red, orange, yellow, green, blue, white), we can find the phrase FIRS / TLET/ TERC / ORNE / RANS / WERS, or FIRST LETTER CORNER ANSWERS.</p>
+
+	<p>If we look at the solved Cube again, we notice that each face <i>still</i> has four corners numbered 1, 2, 3 and 4; the difference is that for a given face, the four corners may not correspond to the same acts.</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/meta.13.png' %}" style="width:80%; padding:10px;"></center>
+
+	<p>On the solved cube, reading in order of the acts then scenes gives us the following ordering of answers. We take the first letters from each of these answers to give us the phrase EIGHT ALGORITHMS IN STORIES. </p>
+
+	<table class="table table-bordered">
+	  <tr>
+	    <th>Face</th>
+	    <th>Scene 1</th>
+	    <th>Scene 2</th>
+	    <th>Scene 3</th>
+	    <th>Scene 4</th>
+	  </tr>
+	  <tr>
+	    <td>I (red)</td>
+	    <td>II.1 <b>E</b>YE TO EYE</td>
+	    <td>IV.2 <b>I</b>SLAND OF IRELAND</td>
+	    <td>V.3 <b>G</b>OBSTOPPERS</td>
+	    <td>IV.4 <b>H</b>IGH JUMPER</td>
+	  </tr>
+	  <tr>
+	    <td>II (white)</td>
+	    <td>I.1 <b>T</b>HUG LYFE</td>
+	    <td>VI.2 <b>A</b>VICII</td>
+	    <td>I.3 <b>L</b>CHAIM</td>
+	    <td>I.4 <b>G</b>ENETICALLY MODIFIED ORGANISM</td>
+	  </tr>
+	  <tr>
+	    <td>III (orange)</td>
+	    <td>VI.1 <b>O</b>P SHOP</td>
+	    <td>V.2 <b>R</b>UN OUT</td>
+	    <td>II.3 <b>I</b>NTERNET TROLL</td>
+	    <td>VI.4 <b>T</b>URKISH DELIGHTS</td>
+	  </tr>
+	  <tr>
+	    <td>IV (yellow)</td>
+	    <td>IV.1 <b>H</b>YDROPUMP</td>
+	    <td>III.2 <b>M</b>USICAL KALEIDOSCOPE</td>
+	    <td>VI.3 <b>S</b>CUBA DIVING</td>
+	    <td>V.4 <b>I</b>NTERVENIR</td>
+	  </tr>
+	  <tr>
+	    <td>V (green)</td>
+	    <td>V.1 <b>N</b>ANOMETRES</td>
+	    <td>II.2 <b>S</b>TREPTAVIDIN</td>
+	    <td>III.3 <b>T</b>RICAMERALISM</td>
+	    <td>III.4 <b>O</b>RDINARY GOODS</td>
+	  </tr>
+	  <tr>
+	    <td>VI (blue)</td>
+	    <td>III.1 <b>R</b>OLY POLY</td>
+	    <td>I.2 <b>I</b>MPROPER FRACTION</td>
+	    <td>IV.3 <b>E</b>VEREADY</td>
+	    <td>II.4 <b>S</b>KI POLES</td>
+	  </tr>
+	</table>
+
+
+	<p>Given there are eight ‘hidden trios’ and eight ‘algorithms in stories’, it makes sense to match these up; that is, each trio of answers corresponds to one algorithm that we can find in the stories. Reading through the stories, we find a high frequency of the words LEFT, RIGHT, UP, DOWN, FRONT and BACK, the standard moves to solve a Rubik’s cube. To disambiguate, each of these words indicate one turn clockwise of the respective face. If we extract all the moves from the stories given by the trios, we end up with the following eight algorithms:</p>
+
+	<table class="table table-bordered">
+		<tr><th>Answers and trios</th><th>Stories</th><th>Moves</th></tr>
+		<tr><td>ORDINARY (GOOD)S / SCU(BA D)IVING / TH(UG LY)FE</td> <td>III.4 / VI.3 / I.1</td>  <td>LDDFFBBLLLUUFF / RUFFDDFFFUUUBB / RRRBDDDLLLDDD</td></tr>
+		<tr><td>OP S(HOP) / (SKI P)OLES / HIGH (JUMP)ER</td>  <td>VI.1 / II.4 / IV.4</td> <td>RBBRRRBBUULUU / RRUUFFFLLBUBB / DDBLLLBBBUUD</td></tr>
+		<tr><td>TURKISH DE(LIGHTS) / TRI(CAMERA)LISM / IMPROPER FR(ACTION)</td>  <td>VI.4 / III.3 / I.2</td> <td>UURRRFFUUFF / RRRFFDDLLRRD / FFRFFLDDLLLFU</td></tr>
+		<tr><td>EVE(READY) / L’CH(AIM) / ISLAND O(F IRE)LAND</td> <td>IV.3 / I.3 / IV.2</td>  <td>BBLDDBBDDRRR / DDBBRULDDF / DDDLUUULBDF</td></tr>
+		<tr><td>GOB(STOP)PERS / HY(DRO P)UMP / INTERNET T(ROLL)</td> <td>V.3 / IV.1 / II.3</td>  <td>LLUULBBLDDB / DDUUUBFDDUUU / FFFUUUFFDUUUL</td></tr>
+		<tr><td>GENE(TIC)ALLY MODIFIED ORGANISM / REN(T AC)T II / EYE (TO E)YE</td> <td>I.4 / III.1 / II.1</td>  <td>LLUUBBRRLLLBB / RRRLLDDDRRFFLUU / BBBUUFFFRFFDDR</td></tr>
+		<tr><td>R(UN O)UT / MAGIC KALEI(DOS)COPE / NANOME(TRES)</td> <td>V.2 / II.2 / V.1</td>  <td>FFRRUURRRBBRRBB / RRUURRRUUUFFLL / DDDRRRBBRRRUFF</td></tr>
+		<tr><td>INTER(VENI)R / STREPTA(VIDI)N / A(VICI)I</td> <td>V.4 / II.2 / VI.2</td>  <td>RRLFFLLLDDFFDDRRR / DDBBBUUUFFLLLBB / RRDDDRRRLLLBBBUUU</td></tr>
+	</table>
+
+	<p>If we apply each of the eight algorithms separately to a solved Rubik’s cube, we are left with eight different cubes. The key is to notice that cubes share faces with adjacent cubes when the trios are in alphabetic order. This forms the following set of cubes which could be ‘glued’ together (on their shared faces) to form a 3x3x24 block:</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/meta.9.png' %}" style="width:100%; padding:10px;"></center>
+
+	<center><img src="{% static 'PHapp/img/solutions/meta.10.png' %}" style="width:80%; padding:10px;"></center>
+
+	<p>The final step of this puzzle is to notice that the end faces of this 3x3x24 block is very regular. The entire face is white except for the edge cubelets (red, blue, yellow and green squares), each adjacent to a 3x24 face. Let's look at the 3x24 face that is adjacent to the red cubelet; we should ignore all colours that are not red. Do the same for the other three 3x24 faces, reading only the squares that are the right colour. If we do so, the following message can be found.</p>
+
+	<p>(<i>Note:</i> If we haven't noticed that the cubes are glued in alphabetical order of the trios, we may be tempted to form a cube donut, since the end faces of the 3x3x24 blocks alre also 'gluable'. We should, however, notice that these faces are much more regular then rest, and so should refrain from gluing as such.)</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/meta.11.png' %}" style="width:80%; padding:10px;"></center>
+
+	<p>The message reads NACL LATTICE, which refers to the <b>FACE CENTRED CUBIC</b> crystal lattice structure of crystalline sodium chloride.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+</div>
+
+{% endblock %}
