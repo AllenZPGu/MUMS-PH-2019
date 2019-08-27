@@ -1,0 +1,26 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>We see seven colourful Jenga-style towers each with a line or curve on it. Let's simply stack up the towers as one would in Jenga. If we then look at the towers from above, as though they were translucent, we can see a pattern of letters formed by the markings:</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/6.5.1.png' %}" style="width:100%; padding:10px;"></center>
+
+	<p>The corners, reading left to right, produce the message STACK TOWERS LEFT ON TOP REMOVE RED + GREEN, while the edges don't produce anything readable. It appears that we should then stack each of these towers on top of each other and remove the red and green pieces, producing:</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/6.5.2.png' %}" style="width:12%; padding:10px;"></center>
+
+	<p>Where the black tiles represent the removed red/green tiles. It would now be consistent with the game of Jenga for the tower to fall down in some way, however the title 'Infallible' hints at the fact that the tower does not behave in this way, and the solver might notice some letter-like shapes along the front of the tower. More clearly:</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/6.5.3.png' %}" style="width:8%; padding:10px;"></center>
+
+	<p>This appears to spell the message 55.86 M TALL. A quick Google reveals that the structure with this dimension is the <b>LEANING TOWER OF PISA</b>, which, despite its shaky foundations, has not yet fallen after over 800 years!</p>
+
+</div>
+</div>
+
+{% endblock %}

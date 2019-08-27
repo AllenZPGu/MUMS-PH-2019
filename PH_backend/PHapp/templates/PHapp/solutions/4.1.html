@@ -1,0 +1,302 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>When solvers open this puzzle up, the first things that they’ll see are the three Venn diagrams, each with a different circle outlined in red. Below each Venn diagram is a set of seven images, which look like they correspond to the numbers indicated on the Venn diagram.</p>
+
+  <p>At this stage of the puzzle, the logic of the puzzle should be quite clear — identify what the images correspond to, identify their respective sets on each Venn diagram (including the sets circled in red), and determine what might belong in the intersection of the three red sets.</p>
+
+  <p>So let’s do that!</p>
+
+  <p>If we perform some reverse image searching and some Pictionary-ing, we should end up with a list that looks something like this:</p>
+
+  <ol>
+    <li>BRINE</li>
+    <li>CLAMP</li>
+    <li>ROUND</li>
+    <li>SNARL</li>
+    <li>RAZOR SHELL</li>
+    <li>SOAK</li>
+    <li>SCALD</li>
+    <li>FLY</li>
+    <li>WATERFALL</li>
+    <li>SUBSTITUTE</li>
+    <li>TACKLE</li>
+    <li>MILK DRINK</li>
+    <li>ROCK CLIMB</li>
+    <li>SOFT-BOILED</li>
+    <li>HAIL</li>
+    <li>SECRET SWORD</li>
+    <li>MEGAHORN</li>
+    <li>POWER WHIP</li>
+    <li>ERUPTION</li>
+    <li>WATER SPOUT</li>
+    <li>ORIGIN PULSE</li>
+  </ol>
+
+  <p>Even with only a handful of images correctly identified, it should not take us long to realise — either via general knowledge or a quick Google search — that these images actually correspond to Pokémon moves!</p>
+
+  <p>With that in mind, let’s look at each Pokémon move and its many characteristics to try to determine what these sets actually are. (Both Bulbapedia and the Pokémon Database are fantastic resources to use here.)</p>
+
+  <table class="table table-bordered">
+    <tr>
+      <th>Move #</th>
+      <th>Move Name</th>
+      <th>Type</th>
+      <th>Gen.</th>
+      <th>Contest</th>
+      <th>PP</th>
+      <th>Power</th>
+    </tr>
+    <tr>
+      <td colspan="7" align="center"><b>VENN DIAGRAM #1</b></td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td><b>BRINE</b></td>
+      <td><font style="color: red; font-weight: bold;">Water</font></td>
+      <td>IV</td>
+      <td>Tough</td>
+      <td>10</td>
+      <td>65</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><b>CLAMP</b></td>
+      <td><font style="color: red; font-weight: bold;">Water</font></td>
+      <td>I</td>
+      <td>Tough</td>
+      <td>15</td>
+      <td>35</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><b>ROUND</b></td>
+      <td>Normal</td>
+      <td><b>V</b></td>
+      <td>Beautiful</td>
+      <td>15</td>
+      <td>60</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><b>SNARL</b></td>
+      <td>Dark</td>
+      <td><b>V</b></td>
+      <td>Tough</td>
+      <td>15</td>
+      <td>55</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>RAZOR SHELL</td>
+      <td><font style="color: red; font-weight: bold;">Water</font></td>
+      <td><b>V</b></td>
+      <td>Cool</td>
+      <td>10</td>
+      <td>75</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>SOAK</td>
+      <td><font style="color: red; font-weight: bold;">Water</font></td>
+      <td><b>V</b></td>
+      <td>Cute</td>
+      <td>20</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td><b>SCALD</b></td>
+      <td><font style="color: red; font-weight: bold;">Water</font></td>
+      <td><b>V</b></td>
+      <td>Tough</td>
+      <td>15</td>
+      <td>80</td>
+    </tr>
+    <tr>
+      <td colspan="7" align="center"><b>VENN DIAGRAM #2</b></td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td><b>FLY</b></td>
+      <td>Flying</td>
+      <td><font style="color: red; font-weight: bold;">I</font></td>
+      <td>Clever</td>
+      <td>15</td>
+      <td>90</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td><b>WATERFALL</b></td>
+      <td>Water</td>
+      <td><font style="color: red; font-weight: bold;">I</font></td>
+      <td>Tough</td>
+      <td>15</td>
+      <td>80</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>SUBSTITUTE</td>
+      <td><b>Normal</b></td>
+      <td><font style="color: red; font-weight: bold;">I</font></td>
+      <td>Cute</td>
+      <td>10</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>TACKLE</td>
+      <td><b>Normal</b></td>
+      <td><font style="color: red; font-weight: bold;">I</font></td>
+      <td>Tough</td>
+      <td>35</td>
+      <td>40</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td><b>MILK DRINK</b></td>
+      <td><b>Normal</b></td>
+      <td>II</td>
+      <td>Cute</td>
+      <td>10</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td><b>ROCK CLIMB</b></td>
+      <td><b>Normal</b></td>
+      <td>IV</td>
+      <td>Tough</td>
+      <td>20</td>
+      <td>90</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td><b>SOFT-BOILED</b></td>
+      <td><b>Normal</b></td>
+      <td><font style="color: red; font-weight: bold;">I</font></td>
+      <td>Cute</td>
+      <td>10</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td colspan="7" align="center"><b>VENN DIAGRAM #3</b></td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>HAIL</td>
+      <td>Ice</td>
+      <td>III</td>
+      <td><b>Beautiful</b></td>
+      <td><b>10</b></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>SECRET SWORD</td>
+      <td>Fighting</td>
+      <td>V</td>
+      <td><b>Beautiful</b></td>
+      <td><b>10</b></td>
+      <td>85</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>MEGAHORN</td>
+      <td>Bug</td>
+      <td>II</td>
+      <td>Cool</td>
+      <td><b>10</b></td>
+      <td><font style="color: red; font-weight: bold;">120</font></td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>POWER WHIP</td>
+      <td>Grass</td>
+      <td>IV</td>
+      <td>Tough</td>
+      <td><b>10</b></td>
+      <td><font style="color: red; font-weight: bold;">120</font></td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>ERUPTION</td>
+      <td>Fire</td>
+      <td>III</td>
+      <td><b>Beautiful</b></td>
+      <td>5</td>
+      <td><font style="color: red; font-weight: bold;">150</font></td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>WATER SPOUT</td>
+      <td>Water</td>
+      <td>III</td>
+      <td><b>Beautiful</b></td>
+      <td>5</td>
+      <td><font style="color: red; font-weight: bold;">150</font></td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>ORIGIN PULSE</td>
+      <td>Water</td>
+      <td>VI</td>
+      <td><b>Beautiful</b></td>
+      <td><b>10</b></td>
+      <td><font style="color: red; font-weight: bold;">110</font></td>
+    </tr>
+  </table>
+
+  <p>In Venn Diagram #1:</p>
+  <ul>
+    <li>The red set that includes moves 1, 2, 5, 6, and 7 can be identified to be water-type moves.</li>
+    <li>The set that includes moves 1, 2, 3, 4, and 7 can be identified to be moves with five letters in their name.</li>
+    <li>The set that includes moves 3, 4, 5, 6, and 7 can be identified to be generation V moves.</li>
+  </ul>
+
+  <p>In Venn Diagram #2:</p>
+  <ul>
+    <li>The red set that includes moves 8, 9, 10, 11, and 14 can be identified to be generation I moves.</li>
+    <li>The set that includes moves 10, 11, 12, 13, and 14 can be identified to be normal-type moves.</li>
+    <li>The set that includes moves 8, 9, 12, 13, and 14 may be rather difficult to spot at first, but Googling all five of the move names reveals the set to be field moves, or moves that can be used outside of battle.</li>
+  </ul>
+
+  <p>In Venn Diagram #3:</p>
+  <ul>
+    <li>The red set that includes moves 17, 18, 19, 20, and 21 can be identified to be moves with power > 100.</li>
+    <li>The set that includes moves 15, 16, 19, 20, and 21 can be identified to be beautiful moves at a Pokémon contest.</li>
+    <li>The set that includes moves 15, 16, 17, 18, and 21 can be identified to be moves with PP = 10.</li>
+  </ul>
+
+  <p>Now that we have identified each of the sets, there remains only one thing left for us to do — work out which move lies at the intersection of the three red sets. If we refer to tables present on Bulbapedia or the Pokémon Database, we soon realise that there exists only one move that is water-type, from generation I, and has a power greater than 100. This move is <b>HYDRO PUMP</b>.</p>
+
+  <br>
+
+  <h4>Author's notes</h4>
+
+  <p>This puzzle’s author considers himself to be a bit of a Pokémon nobody. Seriously. Apart from the handful of hours that I had spent plugging away at Pokémon Emerald during my childhood, I really don’t have much Pokémon knowledge to show for it.</p>
+
+  <p>So, with consultation from ‘certified’ Pokémon experts (special thanks to Alex Ritter), I *set* out to make this puzzle as achievable as possible for solvers that had absolutely zero Pokémon knowledge. This involved choosing moves that could be clued easily (EG/ the images for “Razor Shell” were rather difficult to misinterpret, and a phrase like “Razor Shell” is quite distinctive, with approximately half of the first-page Google search results yielding something Pokémon-related) and choosing sets that were rather straightforward to work out (EG/ the red sets of water-type, generation I, and power > 100).</p>
+
+  <p>However, this approach did unwittingly make the puzzle a lot easier — teams did not technically need to identify all nine sets. All they had to do was work out what the red sets corresponded to, and then work out the move that was clued for from then on in.
+  </p>
+
+  <p>In addition, the images had been revised a number of times to make it easier for the solvers — an example of a change that was made included the ‘fixing’ of one image per word, so a move like “Razor Shell” would have two images associated with it.
+  </p>
+
+  <p>However, based on the solve times and solve rates, we are now of the opinion that this puzzle might have been overly simplified, robbing solvers of a more climactic “Eureka!” moment.</p>
+
+  <p>And, to finish, a quick apology about the major erratum that was associated with the puzzle. An issue arose in the design and final upload process, resulting in the wrong circles being highlighted for the second and third Venn diagrams, which may have inordinately confused our solvers. This error was particularly unfortunate, as the mistake in the puzzle was left unnoticed in the puzzle for over two hours. Whoops.</p>
+
+
+
+
+</div>
+</div>
+
+{% endblock %}

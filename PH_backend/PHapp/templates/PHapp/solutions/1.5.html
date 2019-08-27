@@ -1,0 +1,47 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>When we open this puzzle we are faced with a Scrabble board with the tiles for SYMBOLOGY already placed, a number of tiles beneath the board, and what appears to be a set of clues, each a series of emojis. The first few clues were designed to be relatively simple, with answers of MAN, US, FAIRY and BUS. We should then realise that the number of letters next to each clue indicates the number of tiles to be added to the board, rather than the total number of letters in the answer. These first few clues can also each be placed on the board with no ambiguity in the location, which seems to indicate that the answers should be placed on the board one-by-one in order. Some clues also have two series of emojis separated by a slash, which could indicate that the tile placement results in two words being formed. As the puzzle progresses, it is unclear where some answers could be placed, with multiple possible options, but by the end there is only one possible solution. </p>
+
+	<p>The complete list of answers, in order, is:</p>
+
+	<ul>
+		<li>MAN</li>
+		<li>US</li>
+		<li>FAIRY</li>
+		<li>BUS</li>
+		<li>AMIGO</li>
+		<li>MAGE / MANE</li>
+		<li>TIPTOE</li>
+		<li>DUTCH</li>
+		<li>MONOCLES</li>
+		<li>ET</li>
+		<li>PICK / IMAGE</li>
+		<li>PAGE</li>
+		<li>ROAD</li>
+		<li>SOCK / IMAGES</li>
+		<li>CORK</li>
+		<li>UP / UH</li>
+		<li>SAX / SOCKS</li>
+		<li>SUN / ROADS</li>
+		<li>BONE</li>
+		<li>RUN</li>
+	</ul>
+
+	<p>The tiles at the bottom of the page are the tiles that can be placed. The completed Scrabble grid should look like:</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/1.5.png' %}" alt="Scrabble board" style="height:600px; padding:10px;"></center>
+
+	<p>After placing all the tiles, we would consider what to do next, and scoring as one would in a game of Scrabble seems sensible, especially considering the scoring tiles on the grid. Scoring the words in order as they are placed on the grid according to the Scrabble rules, so that the double/triple letter/word scoring tiles are only applied the first time a tile is placed on them, the scores are 23 5 2 22 5 18 19 9 15 14 2 25 14 5 23 20 15 25 9 14 3. Using the simple substitution of A=1, B=2, etc, this yields WEB VERSION BY NEWTOY INC. A quick Google reveals the web version of Scrabble made by Newtoy Inc is <b>WORDS WITH FRIENDS</b>.</p>
+
+	<p><i>Note:</i> The white 3x3 box doesn’t actually affect this puzzle at all, and is relevant to the meta.</p>
+
+</div>
+</div>
+
+{% endblock %}

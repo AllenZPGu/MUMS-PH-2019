@@ -1,0 +1,88 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>We are immediately presented with a grid of a large number of cranes. The title, Senbazuru, translates to ‘1000 cranes’ in Japanese, which is a Japanese tradition made famous worldwide by Sadako Sasaki. The cranes are clearly made of a varying number of strokes, and translating the number of strokes directly to the letter this would represent (i.e. 1=A, 2=B, etc.), when read from top to bottom and right to left, as Japanese is traditionally read, gives the message:</p>
+
+  <p align="center">GO TO ORIGAMI DOT ME SLASH CRANE SLASH AND FOLLOW THE STEPS UP TO AND INCLUDING STEP TWENTY SIX. YOU SHOULD HAVE A DIAMOND LIKE SHAPE WITH TWO LEG LIKE FLAPS AT THE BOTTOM. ROTATE IT ONE HUNDRED AND EIGHTY DEGREES SO THE LEGS ARE AT THE TOP. FOLD THE LEFT SIDE FLAP ACROSS TO THE RIGHT AND DO THE SAME ON THE REVERSE SIDE. YOU NOW HAVE TWO LEGS ON THE BOTTOM POKING OUT OF AN INVERTED KITE SHAPE. FOLD THE TOP FLAP DOWN NEARLY TO THE TIP OF THE KITE. FOLD THIS SAME FLAP UP NEARLY TO THE TOP TO MAKE A PLEAT THEN MAKE A CREASE AND UNFOLD. OPEN THE TWO TRIANGULAR FLAPS THEN PUSH UP ALONG THE CREASE YOU JUST MADE AND SQUASH FLAT INTO A PENTAGONAL SHAPE. TURN OVER. CUT A VERTICAL LINE CENTRALLY FROM THE TIP TO A BIT MORE THAN HALFWAY DOWN THE INVERTED KITE. FOR EACH FLAP FORMED FOLD ALONG THE LINE BETWEEN THE TIP OF THIS CUT AND THE UPPER POINT OF THE BODY BEHIND IT SO THE FLAPS ARE FOLDED OUTWARDS AND TILT DOWNWARDS ON AN ANGLE. TURN OVER. FOLD THE BOTTOM HALF OF EACH LEG OUTWARDS TO MAKE FEET. DRAW A THICK BLACK HORIZONTAL LINE BETWEEN THE WIDEST POINTS OF THE BODY. DRAW A THICK BLACK VERTICAL LINE FROM THE CENTRE OF THIS LINE TO THE BASE OF THE BODY. DRAW ON THE FACE INDICATED BY THE LEFT FACING CRANES. WHAT HAVE YOU MADE</p>
+
+  <p>Following these origami instructions produces the following steps:</p>
+
+  <div class="senbazuru_row" align="center">
+    <div class="senbazuru_column">
+      1. <img src="{% static 'PHapp/img/solutions/4.5.1.png' %}" style="width:300px; padding:10px;">
+    </div>
+    <div class="senbazuru_column">
+      2. <img src="{% static 'PHapp/img/solutions/4.5.2.png' %}" style="width:300px; padding:10px;">
+    </div>
+    <div class="senbazuru_column">
+      3. <img src="{% static 'PHapp/img/solutions/4.5.3.png' %}" style="width:300px; padding:10px;">
+    </div>
+  </div>
+
+  <div class="senbazuru_row" align="center">
+    <div class="senbazuru_column">
+      4. <img src="{% static 'PHapp/img/solutions/4.5.4.png' %}" style="width:300px; padding:10px;">
+    </div>
+    <div class="senbazuru_column">
+      5. <img src="{% static 'PHapp/img/solutions/4.5.5.png' %}" style="width:300px; padding:10px;">
+    </div>
+    <div class="senbazuru_column">
+      6. <img src="{% static 'PHapp/img/solutions/4.5.6.png' %}" style="width:300px; padding:10px;">
+    </div>
+  </div>
+
+  <div class="senbazuru_row" align="center">
+    <div class="senbazuru_column">
+      7. <img src="{% static 'PHapp/img/solutions/4.5.7.png' %}" style="width:300px; padding:10px;">
+    </div>
+    <div class="senbazuru_column">
+      8. <img src="{% static 'PHapp/img/solutions/4.5.8.png' %}" style="width:300px; padding:10px;">
+    </div>
+    <div class="senbazuru_column">
+      9. <img src="{% static 'PHapp/img/solutions/4.5.9.png' %}" style="width:300px; padding:10px;">
+    </div>
+  </div>
+
+  <div class="senbazuru_row" align="center">
+    <div class="senbazuru_column">
+      10. <img src="{% static 'PHapp/img/solutions/4.5.10.png' %}" style="width:300px; padding:10px;">
+    </div>
+    <div class="senbazuru_column">
+      11. <img src="{% static 'PHapp/img/solutions/4.5.11.png' %}" style="width:300px; padding:10px;">
+    </div>
+    <div class="senbazuru_column">
+      12. <img src="{% static 'PHapp/img/solutions/4.5.12.png' %}" style="width:300px; padding:10px;">
+    </div>
+  </div>
+
+  <div class="senbazuru_row" align="center">
+    <div class="senbazuru_column">
+      13. <img src="{% static 'PHapp/img/solutions/4.5.13.png' %}" style="width:300px; padding:10px;">
+    </div>
+  </div>
+
+  <p>The face made by the left-facing cranes is given by:</p>
+
+  <center>
+    <img src="{% static 'PHapp/img/solutions/4.5.14.png' %}" style="width:400px; padding:10px;">
+  </center>
+
+  <p>So the final origami result is:</p>
+  <center>
+    <img src="{% static 'PHapp/img/solutions/4.5.15.png' %}" style="width:500px; padding:10px;">
+  </center>
+
+  <br>
+
+  <h4>Author's notes</h4>
+  <p>While having 1000 cranes to decode and transcribe may seem like a daunting task for solvers, we didn't think this was particularly unfair because we wanted puzzles of a range of difficulty and time-intensity in this Hunt. We do understand that this may have been out of scope for teams that have limited time and people resources and are not competing competitively. The structure of this hunt gave teams in such a situation a wide choice of puzzles to attempt. Furthermore, the solve statistics indicated that a healthy number of teams were eventually able to crack this puzzle, demonstrating that it was indeed achievable.</p>
+
+</div>
+</div>
+
+{% endblock %}

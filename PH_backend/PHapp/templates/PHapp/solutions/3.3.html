@@ -1,0 +1,59 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>We're now halfway through Act III (and almost halfway through the Hunt in general), so it's about time we took a nice relaxing break and attend some parties. It seems like we've been invited to three parties. The first, with its green and yellow balloons, fairy bread and Vegemite, seems to take place in Australia. The second box offering black-and-white balloons, pavlova and kiwi fruits clearly indicate New Zealand. Finally, a nice tea party with Victoria sponge and red-blue-white balloons points us towards the United Kingdom. These three countries are, of course, Commonwealth nations with very similar government structures.</p>
+
+  <p>Within the three boxes are what look like twelve dates. Party times, perhaps? Our suspicions are aroused by noticing that none of the months nor days exceed 7 in value: highly unusual for calendar dates. In fact, searching those dates will lead us nowhere, since they aren't actually dates and don't point to specific days in history.</p>
+
+  <p>Rather, we should focus solely on the year, which are uniformly in black. After some research into how 1980, 1958, 1946 and 1913 are relevant to Australia, we realise that these are all years in which national general elections occurred. Similarly, New Zealand and the UK have also held general elections in the years listed within their boxes.</p>
+
+  <p>Unlike many other countries, general elections held in these three countries often involve multiple parties vying for seats in their respective Parliaments in the hope of forming government. These parties have party colours associated with them, as well as leaders who may become Prime Ministers if their parties win. For example, in the <a href='https://en.wikipedia.org/wiki/1980_Australian_federal_election' target='_blank'>1980 Australian federal election</a>, the largest two contesting parties are the Liberal/National Country coalition (blue) led by Malcolm Fraser, and the Labor Party (red) led by Bill Hayden. In the puzzle, the first 'date' corresponding to this 1980 election features a blue 4 and red 3. Taking the 4th letter of the blue party's leader's surname (FRASER) and 3rd letter of the red party's leader's surname (HAYDEN) gives us the letters SY.</p>
+
+  <p>We can continue similarly for all twelve elections.</p>
+
+  <table class='table table-bordered'>
+    <thead style="font-weight: bold;">
+      <th>Election year</th>
+      <th>Party 1 (index)</th>
+      <th>Party 1 leader</th>
+      <th>Party 2 (index)</th>
+      <th>Party 2 leader</th>
+      <th>Extracted letters</th>
+    </thead>
+    <tbody>
+      <tr><td colspan="6" align="center"><b>Australia</b></td></tr>
+      <tr><td>1980</td><td>Liberal/NCP coalition (4)</td><td>FRA<b>S</b>ER</td><td>Labor (3)</td><td>HA<b>Y</b>DEN</td><td>SY</td></tr>
+      <tr><td>1958</td><td>Liberal/Country coalition (7)</td><td>MENZIE<b>S</b></td><td>Labor (4)</td><td>EVA<b>T</b>T</td><td>ST</td></tr>
+      <tr><td>1946</td><td>Labor (6)</td><td>CHIFL<b>E</b>Y</td><td>Liberal/Country coalition (1)</td><td><b>M</b>ENZIES</td><td>EM</td></tr>
+      <tr><td>1913</td><td>Commonwealth Liberal (2)</td><td>C<b>O</b>OK</td><td>Labor (1)</td><td><b>F</b>ISHER</td><td>OF</td></tr>
+      <tr><td colspan="6" align="center"><b>New Zealand</b></td></tr>
+      <tr><td>1931</td><td>United/Reform coalition (1)</td><td><b>C</b>OATES</td><td>Labour (1)</td><td><b>H</b>OLLAND</td><td>CH</td></tr>
+      <tr><td>1984</td><td>Labour (2)</td><td>L<b>A</b>NGE</td><td>National (1)</td><td><b>M</b>ULDOON</b>T</td><td>AM</td></tr>
+      <tr><td>1993</td><td>National (1)</td><td><b>B</b>OLGER</td><td>Labour (5)</td><td>MOOR<b>E</b></td><td>BE</td></tr>
+      <tr><td>2017</td><td>Labour (5)</td><td>ARDE<b>R</b>N</td><td>National (6)</td><td>ENGLI<b>S</b>H</td><td>RS</td></tr>
+      <tr><td colspan="6" align="center"><b>United Kingdom</b></td></tr>
+      <tr><td>1923</td><td>Conservative (6)</td><td>BALDW<b>I</b>N</td><td>Labour (6)</td><td>MACDO<b>N</b>ALD</td><td>IN</td></tr>
+      <tr><td>1945</td><td>Labour (2)</td><td>A<b>T</b>TLEE</td><td>Conservative (6)</td><td>CHURC<b>H</b>ILL</td><td>TH</td></tr>
+      <tr><td>2001</td><td>Labour (5)</td><td>BLAI<b>R</b></td><td>Conservative (5)</td><td>HAGU<b>E</b></td><td>RE</td></tr>
+      <tr><td>1970</td><td>Conservative (2)</td><td>H<b>E</b>ATH</td><td>Labour (4)</td><td>WIL<b>S</b>ON</td><td>ES</td></tr>
+    </tbody>
+  </table>
+
+  <p>The message that emerges is SYSTEM OF CHAMBERS IN THREES. This refers to <b>TRICAMERALISM</b>, an uncommon political system where there are three legislative chambers.
+
+  <br>
+
+	<h4>Authors' notes</h4>
+
+	<p>The idea for this puzzle was conceived wayyyy back in 2016, just before the US presidential election. That prototype was solely based on US presidential elections, but turned out too easy to crack since all the years are multiples of 4. We thus adapted it for three countries with semi-irregular elections. The final draft of this puzzle was written, as it happens, around the time of the 2019 Australian federal elections in May.</p>
+  <p>It was a fairly straightforward idea and turned out to be the second most solved puzzle of the Hunt, which was somewhat expected. A few teams guessed "TRICAMERAL", but unfortunately we cannot accept this answer since the clue phrase explicitly asks for a system (ie. a noun and not an adjective).</p>
+
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,269 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>When we first crack open this puzzle, we should take note of three key features — the title “Central Dogma”, which, upon Googling, uncovers information about the processes of transcription and translation in molecular biology; the rapidly unwinding strand of DNA present on the first page of the puzzle; and the list of clues / ‘codons’ supplied on the second page of the puzzle.</p>
+
+	<p>There are a couple of important details that we should note:</p>
+	<ol>
+		<li>There are 24 clues / ‘codons’ provided and there are 24 white spaces separated by 3 gold spaces on the DNA strand. This indicates that we ought to fill whatever answers to our clues in the white spaces, and then fill in the gold spaces as more information comes to light.</li>
+		<li>We should also realise that the double-stranded helix is meant to represent a strand of DNA, and that the single-stranded piece of nucleic acid with a 7-methylguanosine (m7G) cap is meant to represent a strand of messenger RNA. As such, the sketch on the first page of the puzzle is meant to represent transcription, or the conversion of DNA to RNA.</li>
+	</ol>
+
+	<p>Armed with the above observations, we should attempt to solve the clues. The clues themselves are arranged in alphabetical order, so we should not be looking for additional information in the ordering of the answers to these clues.</p>
+
+	<table class="table table-bordered">
+		<thead style="font-weight: bold;">
+		  <tr>
+		    <th>Clue</th>
+		    <th>Answer</th>
+		    <th>3 letter abbreviation</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+		    <td>A baseball statistic that tallies the number of players that reach home due to the actions of a batter</td><td>Run(s) Batted In</td><td>RBI</td>
+		  </tr>
+		  <tr>
+		    <td>A disbanded Canadian heavy metal band; their final album “The New Black” was released in 2006</td><td>Strapping Young Lad</td><td>SYL</td>
+		  </tr>
+		  <tr>
+		    <td>A group that had a 50-seat swing towards it in a 2015 election</td><td>Scottish National Party</td><td>SNP</td>
+		  </tr>
+		  <tr>
+		    <td>A long-running late-night comedy show that is entering its 45th season later this year</td><td>Saturday Night Live</td><td>SNL</td>
+		  </tr>
+		  <tr>
+		    <td>A nuclear imaging technique that relies on a certain isotope of fluorine</td><td>Positron Emission Tomography</td><td>PET</td>
+		  </tr>
+		  <tr>
+		    <td>A unit of pressure preferred by those utilising an antiquated and nonsensical measurement system</td><td>Pounds per Square Inch</td><td>PSI</td>
+		  </tr>
+		  <tr>
+		    <td>An expression of affection in textspeak</td><td>I Love You</td><td>ILY</td>
+		  </tr>
+		  <tr>
+		    <td>An iteration of the fictional law firm in Suits</td><td>Pearson Specter Litt</td><td>PSL</td>
+		  </tr>
+		  <tr>
+		    <td>An umbrella term for fields involving networks based around phones, computers, and the Internet</td><td>Information and Communication Technology</td><td>ICT</td>
+		  </tr>
+		  <tr>
+		    <td>Colloquially described as the ‘phonebook of the internet’</td><td>Domain Name System</td><td>DNS</td>
+		  </tr>
+		  <tr>
+		    <td>Companies that manufacture this includes AMD and Nvidia</td><td>Graphics Processor Unit</td><td>GPU</td>
+		  </tr>
+		  <tr>
+		    <td>Companies that manufacture this includes Garmin and TomTom</td><td>Global Positioning System</td><td>GPS</td>
+		  </tr>
+		  <tr>
+		    <td>Examples of this include carpal tunnel syndrome and tennis elbow</td><td>Repetitive Strain Injury</td><td>RSI</td>
+		  </tr>
+		  <tr>
+		    <td>How a UK police officer describes somebody of Chinese descent</td><td>Identity Code 5</td><td>IC5</td>
+		  </tr>
+		  <tr>
+		    <td>La version française de “PLS”</td><td>S’il Vous Plaît</td><td>SVP</td>
+		  </tr>
+		  <tr>
+		    <td>Prevalent in eosinophilic asthma, the molecular target of mepolizumab</td><td>Interleukin 5</td><td>IL-5</td>
+		  </tr>
+		  <tr>
+		    <td>Rosalind Franklin contributed to the discovery of this macromolecule</td><td>Deoxyribonucleic Acid</td><td>DNA</td>
+		  </tr>
+		  <tr>
+		    <td>Swords in Minecraft can score 6.4, 8.0, 9.6, and 11.2 in this metric</td><td>Damage Per Second</td><td>DPS</td>
+		  </tr>
+		  <tr>
+		    <td>The entity responsible for monetary policy in Australia</td><td>Reserve Bank of Australia</td><td>RBA</td>
+		  </tr>
+		  <tr>
+		    <td>The levels of this in the blood are tightly controlled by pancreatic hormones</td><td>Glucose</td><td>GLU</td>
+		  </tr>
+		  <tr>
+		    <td>The region of the nephron located after the Bowman’s capsule</td><td>Proximal Convoluted Tubule</td><td>PCT</td>
+		  </tr>
+		  <tr>
+		    <td>The United Kingdom currently has 73 of these — after 31st October 2019, they may have none</td><td>Member of European Parliament</td><td>MEP</td>
+		  </tr>
+		  <tr>
+		    <td>There are three types of this macromolecule involved in the process described by this puzzle</td><td>Ribonucleic Acid</td><td>RNA</td>
+		  </tr>
+		  <tr>
+		    <td>What Altuve, Westbrook, McDavid, and Brady had in common in 2017</td><td>Most Valuable Player </td><td>MVP</td>
+		  </tr>
+		</tbody>
+	</table>
+
+	<p>During the solving process, it should not take us long to realise that all of the clues correspond to three-letter acronyms/abbreviations, which should make our hunt for answers considerably easier. Furthermore, we should also note the suspiciously similar nature of some of these three-letter acronyms/abbreviations, which should push us to consider the next step of the puzzle.</p>
+
+	<p>If we string together the similar-looking three-letter acronyms/abbreviations, we could construct a word ladder that would look a little something like this:</p>
+
+	<table class="table table-bordered">
+		<thead style="font-weight: bold;">
+		  <tr>
+		    <th>Position</th>
+		    <th>Answer (3 letter abbreviation)</th>
+		    <th>Answer (Full)</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+		    <td>1</td><td>DNA</td><td>Deoxyribonucleic Acid</td>
+		  </tr>
+		  <tr>
+		    <td>2</td><td>DNS</td><td>Domain Name System</td>
+		  </tr>
+		  <tr>
+		    <td>3</td><td>DPS</td><td>Damage Per Second</td>
+		  </tr>
+		  <tr>
+		    <td>4</td><td>GPS</td><td>Global Positioning System</td>
+		  </tr>
+		  <tr>
+		    <td>5</td><td>GPU</td><td>Graphics Processor Unit</td>
+		  </tr>
+		  <tr>
+		    <td>6</td><td>GLU</td><td>Glucose</td>
+		  </tr>
+		  <tr style="background-color: yellow;">
+		    <td>G1</td><td>???</td><td>???</td>
+		  </tr>
+		  <tr>
+		    <td>7</td><td>ILY</td><td>I Love You</td>
+		  </tr>
+		  <tr>
+		    <td>8</td><td>IL-5</td><td>Interleukin 5</td>
+		  </tr>
+		  <tr>
+		    <td>9</td><td>IC5</td><td>Identity Code 5</td>
+		  </tr>
+		  <tr>
+		    <td>10</td><td>ICT</td><td>Information and Communication Technology</td>
+		  </tr>
+		  <tr>
+		    <td>11</td><td>PCT</td><td>Proximal Convoluted Tubule</td>
+		  </tr>
+		  <tr>
+		    <td>12</td><td>PET</td><td>Positron Emission Tomography</td>
+		  </tr>
+		  <tr style="background-color: yellow;">
+		    <td>G2</td><td>???</td><td>???</td>
+		  </tr>
+		  <tr>
+		    <td>13</td><td>MEP</td><td>Member of European Parliament</td>
+		  </tr>
+		  <tr>
+		    <td>14</td><td>MVP</td><td>Most Valuable Player</td>
+		  </tr>
+		  <tr>
+		    <td>15</td><td>SVP</td><td>S’il Vous Plaît</td>
+		  </tr>
+		  <tr>
+		    <td>16</td><td>SNP</td><td>Scottish National Party</td>
+		  </tr>
+		  <tr>
+		    <td>17</td><td>SNL</td><td>Saturday Night Live</td>
+		  </tr>
+		  <tr>
+		    <td>18</td><td>SYL</td><td>Strapping Young Lad</td>
+		  </tr>
+		  <tr style="background-color: yellow;">
+		    <td>G3</td><td>???</td><td>???</td>
+		  </tr>
+		  <tr>
+		    <td>19</td><td>PSL</td><td>Pearson Specter Litt</td>
+		  </tr>
+		  <tr>
+		    <td>20</td><td>PSI</td><td>Pounds per Square Inch</td>
+		  </tr>
+		  <tr>
+		    <td>21</td><td>RSI</td><td>Repetitive Strain Injury</td>
+		  </tr>
+		  <tr>
+		    <td>22</td><td>RBI</td><td>Run(s) Batted In</td>
+		  </tr>
+		  <tr>
+		    <td>23</td><td>RBA</td><td>Reserve Bank of Australia</td>
+		  </tr>
+		  <tr>
+		    <td>24</td><td>RNA</td><td>Ribonucleic acid</td>
+		  </tr>
+		</tbody>
+	</table>
+
+	<p>Note that one of our observations — that the sketch on the first page described transcription (DNA → RNA) — plays an important role here. It confirms that the beginning and end of the ladder are DNA and RNA respectively, and informs us to avoid placing DNA and RNA adjacent to one another on the word ladder.</p>
+
+	<p>With the word ladder constructed, we can now get to work surmising what three-letter acronyms/abbreviations could be entered into the golden spaces G1, G2, and G3.</p>
+	
+	<p>Our options for each are as follows:</p>
+
+	<table class="table table-bordered">
+		<thead style="font-weight: bold;">
+		  <tr>
+		    <th>Position</th>
+		    <th>Answer (3 letter abbreviation)</th>
+		    <th>Answer (Full)</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+		    <td>G1</td><td>GLY or ILU</td><td>???</td>
+		  </tr>
+		  <tr>
+		    <td>G2</td><td>MET or PEP</td><td>???</td>
+		  </tr>
+		  <tr>
+		    <td>G3</td><td>PYL or SSL</td><td>???</td>
+		  </tr>
+		</tbody>
+	</table>
+
+	<p>A search of what these abbreviations mean should reveal that GLY, MET and PYL are three-lettered amino acid codes in positions G1, G2 and G3 respectively. These correspond to glycine (GLY or G), methionine (MET or M) and pyrrolysine (PYL or O). Converting the amino acids from their three-letter codes to their one-letter codes in this way should uncover yet another thematic three-letter acronym: “GMO”. Given that this puzzle was all about finding abbreviations, we conclude that the answer to this puzzle is the phrase for which GMO is an abbreviation: <b>GENETICALLY MODIFIED ORGANISM</b>.</p>
+
+	<p><i>Note:</i> If we were to try GMO as our final answer, we would receive an “Almost!” message, asking us “Please fully express your tripeptide product!”. This should point us to the answer of GENETICALLY MODIFIED ORGANISM.</p>
+
+	<br>
+
+	<h4>Author's note</h4>
+	<p>This puzzle was initially inspired by somebody uttering “DNA Ladder” a few too many times in the laboratory. We originally intended for the puzzle to consist entirely of three-letter acronyms/abbreviations from the world of biomedicine. Thankfully, we soon realised that that idea was far too esoteric and constrained, and we opted to expand the pool of possible three-letter acronyms/abbreviations to include ones that are used in all walks of life and perhaps even daily parlance. However, the essence of the original idea was retained, with the theme of the puzzle remaining bio-themed, and abstractly exploring the “central dogma” of molecular biology — that of transcription of DNA to mRNA, followed by the translation of three-lettered codons to amino acids and a final protein product. The degree of freedom in writing this puzzle was both surprisingly large (literally any three-letter acronym/abbreviation under the sun) and surprisingly small (not a lot of acronyms end in -YL, for example) at various times, which certainly made this puzzle a lot more difficult to put together than first imagined.</p>
+
+	<p>There were also a few issues in this puzzle that we would like to address.</p>
+	<ol>
+		<li><p>The clue “the levels of this in the blood are tightly controlled by pancreatic hormones” was subject to its fair share of controversy. Some teams realised rather quickly that the intended word that was clued was “glucose”, and opted for its appropriate abbreviation of GLC. This is the correct abbreviation for glucose. Unfortunately, we did not realise this and opted for the erroneous abbreviation of GLU (which typically corresponds to the amino acid neurotransmitter, glutamate).</p>
+
+		<p>Other solvers opted for the three-letter acronym of BSL (blood sugar level), as they believed that all of the clues would correspond to three-letter acronyms. This was a valid concern that was raised during our test-solving process, but was dismissed on four counts:</p>
+		<ul>
+			<li>the fact that the clue contained both “blood” and “levels” made it unlikely that BSL was being clued for;</li>
+			<li>if the word ladder were to be constructed using BSL instead of GLU, it would prove to be a rather difficult effort that would require solvers to rethink their strategy;</li>
+			<li>the use of an abbreviation as opposed to an acronym was always going to be inevitable for this clue, as there did not exist any widely accessible or thematically on-point acronyms available for GLU, besides, perhaps, yet another North American rock band (God Lives Underwater); and</li>
+			<li>abbreviations are used later in the solving process in reference to the three-letter amino acid codes.</li>
+		</ul>
+		<br>
+		<p>The simplest remedy for this concern would involve changing the clue to something that would unambiguously suggest “glutamate”.</p></li>
+
+	<li><p>Assuming that solvers obtained the correct set of three-letter acronyms/abbreviations, they would then reach the step where they would need to fill in the gaps (highlighted in gold) on the word ladder. While there might be some ambiguity possible in each of the three gaps (Gap 1 could be either GLY / ILU,  Gap 2 could be either MET / PEP, and Gap 3 could be either PYL / SSL), we were hoping that teams would realise that these referred to the three-letter codes of amino acids, or, at least, were willing to Google and come to this conclusion.</p>
+
+	<p>Whether this is a truly ‘fair’ step remains to be seen, and this is further complicated by the fact that pyrrolysine (O; Pyl) is not one of the 20 ‘standard’ amino acids (amino acids that are used by human beings). However, one could certainly argue that this is reasonable, as pyrrolysine:</p>
+
+	<ul>
+		<li>is, by definition, a proteinogenic amino acid (i.e. an organic compound containing an amino and a carboxyl functional group, and is involved in the generation of proteins);</li>
+		<li>is mentioned on the relevant Wikipedia pages as one of the 22 proteinogenic amino acids; and</li>
+		<li>has its own one-letter (O) and three-letter codes (Pyl), two facts which are put to good use in this puzzle.</li>
+	</ul>
+	<br>
+	<p>While we would have ideally liked to change GMO to another thematic acronym that consisted of friendlier letters, the constraints placed upon the puzzle answers by the meta puzzle made this an overwhelmingly difficult and fruitless task. </p></li>
+
+	<li><p>The final step of this puzzle required solvers to obtain “GMO” from the word ladder and to consider the steps that they have taken to reach this point. The more astute solvers would soon realise that this puzzle is built around three-letter acronyms/abbreviations and, as such, would submit “GENETICALLY MODIFIED ORGANISM” to score the points. The clarity of this final step was the subject of much debate among the puzzle-writing team, and we decided to remedy this inaccuracy by introducing an “Almost!” submission response for the guess “GMO” that initially read “Please fully express your tripeptide product!”. However, we now realise that this may have introduced an additional layer of ambiguity, with teams interpreting the hint quite literally and guessing things like “GLYCYLMETHIONYLPYRROLYSINE”, and, in more extreme cases, guessing, presumably, the bases of the relevant mRNA transcripts like “GGUAUGUAG”, etc. While we could be rather dismissive of these guesses, we do believe that there exists a valid concern on this point, and that this is a prime example of providing too much information, to the detriment of the solvers. </p>
+
+	<p>The simplest remedy for this concern would involve the removal of the “Almost!” hint, force solvers to think for themselves, and to ask them to reach the independent conclusion that the full phrase is required to pick up the solve.</p></li>
+
+</div>
+</div>
+
+{% endblock %}

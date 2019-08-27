@@ -1,0 +1,49 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>This puzzle is presented as a detective case file with statements from six suspects giving information about which room they were each in, and with which murder weapon. There is also a ‘Floor Plan’ which is a greater-than-killer sudoku grid, with the usual Cluedo rooms placed in a similar style to their usual arrangement within the grid.</p>
+
+	<p>The first page of the puzzle is a logic puzzle, which can be solved separately to the greater-than-killer sudoku (with a few simple assumptions, which could have also been ascertained by solving both parts at the same time). One such assumption is that two rooms are adjacent if they both share borders with the same orange tile, so rooms are not adjacent when they are ‘diagonally adjacent’. Mrs. White’s statement confirms that the Conservatory is empty and Rev. Green’s statement confirms that the Library is empty. According to his own statement, Colonel Mustard is in a room which is adjacent to three rooms (all of which are empty), and the only non-empty rooms which satisfy this are the Dining Room, the Ball Room and the Billiard Room, all of which are adjacent to the Cellar, so this room must be empty (this could have also been assumed from the Cluedo game, where no player can be in the Cellar). Colonel Mustard cannot be in the Dining Room, or there would only be four other non-empty rooms to fit five people. Therefore Colonel Mustard must be in the Ball Room or the Billiard Room, and Mrs. White must also be in one of these rooms, since they are the only two rooms adjacent to the Conservatory.</p>
+
+	<p>According to Prof. Plum’s statement, there are only two rooms adjacent to his, both with a woman in them. The possible remaining rooms he could be in are the Kitchen (as long as Mrs. White is in the Ball Room, rather than Colonel Mustard) or the Lounge. Both of these rooms are adjacent to the Dining Room, so there must be a woman in the Dining Room. This cannot be Mrs. White (she is adjacent to the Conservatory) and it cannot be Mrs. Peacock because Mrs. Peacock’s weapon was the dagger (as attested by Miss Scarlett) and the Dining Room’s weapon was the rope (as attested by Mrs. Peacock). Therefore Miss Scarlett must be in the Dining Room with the rope. </p>
+
+	<p>Mrs. Peacock is at most two rooms away from Miss Scarlett (according to Miss Scarlett’s statement) so she must be in the Kitchen, the Lounge or the Hall. However, there is a candlestick in the only non-empty room adjacent to her, and if she were in the Kitchen both rooms would be non-empty, and if she were in the Lounge, there is already a rope in a non-empty room adjacent to her, so Mrs. Peacock must be in the Hall with the dagger. Rev. Green is in a room adjacent to the Library, and the only remaining room he could be in is the Study, so Rev. Green must be in the Study with the candlestick, since he is adjacent to Mrs. Peacock. The only other remaining room next to the Library is the Billiard Room, so the shot must have been fired from here (according to Rev. Green’s statement), and Mrs. White can’t have used the revolver (according to her own statement), so Colonel Mustard must be in the Billiard Room with the revolver. Therefore Mrs. White must be in the Ball Room with the lead pipe (since she can’t have used the spanner, according to her own statement). This leaves Prof. Plum with the spanner, and he must be in the Kitchen since there is only one non-empty room adjacent to Mrs. Peacock (according to her own statement).</p>
+
+	<p>The suspect list is in alphabetical order, as is the list of murder weapons, however the list of statements is not, which might suggest that this order is important. So, in the order of suspects’ statements, the solution to the logic puzzle is:</p>
+
+	<ul style="list-style-type:none;">
+		<li>Miss Scarlett - rope - Dining Room</li>
+		<li>Rev. Green - candlestick - Study</li>
+		<li>Mrs. Peacock - dagger - Hall</li>
+		<li>Mrs. White - lead pipe - Ball Room</li>
+		<li>Colonel Mustard - revolver - Billiard Room</li>
+		<li>Prof. Plum - spanner - Kitchen</li>
+	</ul>
+
+	<p>The greater-than-killer sudoku can also be solved so that each cage adds up to the total provided, and when the greater than/less than/equal signs appear, the totals of the cages obey these relations. The solution is:</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/3.5.png' %}" alt="Killer Cluedoku solution" style="height:600px; padding:10px;"></center>
+	
+
+	<p>The solver must then consider how to extract a final answer. We might then notice that in each of the rooms where a suspect has been found (and in all rooms except the Cellar and the Library, both of which are almost immediately revealed to be empty), there is a single 1x2 cage without any indication of the total. If we match up the contents of these cages with the suspects that are in each room, we have:</p>
+
+	<ul style="list-style-type:none;">
+		<li>Miss Scarlett - rope - Dining Room - 9,2</li>
+		<li>Rev. Green - candlestick - Study - 4,9</li>
+		<li>Mrs. Peacock - dagger - Hall - 7,5</li>
+		<li>Mrs. White - lead pipe - Ball Room - 1,6</li>
+		<li>Colonel Mustard - revolver - Billiard Room - 5,2</li>
+		<li>Prof. Plum - spanner - Kitchen - 8,1</li>
+	</ul>
+
+	<p>Indexing these numbers into the (Suspect, Murder weapon) pairs gives LOGICEMINEMS. Googling this results in the Logic (ft. Eminem) song HOMICIDE which fits nicely with the ‘killer’ theme of the puzzle, as well as the logic theme.</p>
+
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,355 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+  <p>In direct contrast to the first puzzle of Day 5, this puzzle strives to remain as minimalistic as possible, and so there really isn’t much information to glean from first glance — for all its bells and whistles, this is really just a puzzle comprising of a hint-y title and five images. That being said, the five images pack a surprising amount of information, so let’s dive right in!</p>
+
+  <p>When we inspect the images, a few key features should stand out:</p>
+  <ul>
+    <li>The pool balls seem to be positioned in very specific spots, with a lot of the balls being placed along a line or placed in a symmetrical manner. In addition, the markings present on the pool table also provide assistance with the location of the pool balls. This seems to indicate that the positioning of the balls is somewhat crucial to the puzzle.</li>
+    <li>In each image, there are three pool balls that have their numbers exposed, indicating that the balls in these specific positions are rather important, and that there may be some indexing shenanigans at work here.</li>
+    <li>In four of the images, there is a cue present, which may encode for some additional information that might not be immediately apparent.</li>
+  </ul>
+
+  <p>If we consider each of these key features for each of these images, we might realise that these images actually correspond to sporting positions of other ball sports (hence the title).</p>
+
+  <p>The first image corresponds to that of basketball (<a href="https://en.wikipedia.org/wiki/Basketball_positions" target="_blank">reference image</a>). The key features represented are as follows:</p>
+  <ul>
+    <li>5 pool balls correspond to 5 players on each team.</li>
+    <li>The “D” on the pool table represents the three-point line.</li>
+    <li>The cue represents the direction of attack.</li>
+  </ul>
+
+  <p>The second image corresponds to that of an NFL offense (<a href="https://en.wikipedia.org/wiki/American_football_positions" target="_blank">reference image</a>). The key features represented are as follows:</p>
+  <ul>
+    <li>11 pool balls correspond to 11 players on the offense.</li>
+    <li>The pool balls are lined up behind the baulk line, which represents the line of scrimmage.</li>
+    <li>The cue represents the direction of attack.</li>
+  </ul>
+
+  <p>The third image corresponds to that of a baseball defence (<a href="https://en.wikipedia.org/wiki/Baseball_positions" target="_blank">reference image</a>). The key features represented are as follows:</p>
+  <ul>
+    <li>9 pool balls correspond to 9 fielders on the defence.</li>
+    <li>The corner of the pool table is used to approximate the baseball diamond.</li>
+    <li>There is no cue present as it would be difficult to represent the precise direction of attack.</li>
+  </ul>
+
+  The fourth image corresponds to that of a rugby union team formation (<a href="https://en.wikipedia.org/wiki/Rugby_union_positions" target="_blank">reference image</a>). The key features represented are as follows:
+  <ul>
+    <li>15 pool balls correspond to 15 players on each team.</li>
+    <li>The pool balls are lined up behind the baulk line, which represents the line of scrimmage.</li>
+    <li>The cue represents the direction of attack.</li>
+  </ul>
+
+  <p>The fifth image corresponds to that of a netball team (a Google Image search for “netball positions” should yield this). The key features represented are as follows:</p>
+  <ul>
+    <li>7 pool balls correspond to 7 players on each team.</li>
+    <li>The pool balls are contained in a rectangular ‘court’ bound by the pool table cushions and the cue.</li>
+    <li>The cue represents the direction of attack.</li>
+  </ul>
+
+  <p>We can therefore construct some tables such as these:</p>
+
+  <table class="table table-bordered">
+    <tr>
+      <th>Position #</th>
+      <th>Position Name</th>
+      <th>Index on pool ball</th>
+      <th>Letter</th>
+    </tr>
+    <tr><td colspan="4" align="center"><b>Image 1: Basketball</b></td></tr>
+    <tr>
+      <td>1</td>
+      <td>Point Guard</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Shooting Guard</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Small Forward</td>
+      <td>2</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Power Forward</td>
+      <td>10</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Centre</td>
+      <td>3</td>
+      <td>N</td>
+    </tr>
+    <tr><td colspan="4" align="center"><b>Image 2: NFL Offense</b></td></tr>
+    <tr>
+      <td rowspan="11">reading from</br>left to right</td>
+      <td>Wide Receiver</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Left Tackle</td>
+      <td>8</td>
+      <td>K</td>
+    </tr>
+    <tr>
+      <td>Left Guard</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Centre</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Quarterback</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Fullback</td>
+      <td>6</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>Halfback</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Right Guard</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Right Tackle</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Tight End</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Wide Receiver</td>
+      <td>3</td>
+      <td>D</td>
+    </tr>
+    <tr><td colspan="4" align="center"><b>Image 3: Baseball</b></td></tr>
+    <tr>
+      <td>1</td>
+      <td>Pitcher</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Catcher</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>First Base(man)</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Second Base(man)</td>
+      <td>6</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Third Base(man)</td>
+      <td>3</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Shortstop</td>
+      <td>1</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Left Field(er)</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Centre Field(er)</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Right Field(er)</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr><td colspan="4" align="center"><b>Image 4: Rugby Union</b></td></tr>
+    <tr>
+      <td>1</td>
+      <td>Loosehead Prop</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Hooker</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Tighthead Prop</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Lock / Second Row</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Lock / Second Row</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Blindside Flanker</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Openside Flanker</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Number Eight</td>
+      <td>3</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Scrum Half</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Fly Half</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>Left Wing</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>Inside Centre</td>
+      <td>1</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>Outside Centre</td>
+      <td>4</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>Right Wing</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>Full Back</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Position #</td>
+      <td>Position Name</td>
+      <td>Index</td>
+      <td>Letter</td>
+    </tr>
+    <tr><td colspan="4" align="center"><b>Image 5: Netball</b></td></tr>
+    <tr>
+      <td rowspan="6">reading from</br>top to bottom</td>
+      <td>Goal Attack</td>
+      <td>8</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>Wing Attack</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Centre</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Wing Defence</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Goal Defence</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Goal Keeper</td>
+      <td>4</td>
+      <td>L </td>
+    </tr>
+  </table>
+
+  <p>We now obtain the final clue phrase of MANKAD DISMISSAL. A quick Google search uncovers a reference to yet another team ball sport with funky position names, and we learn that a Mankad dismissal refers to a rather unsportsmanlike type of <b>RUN OUT</b>, made infamous by Indian bowler Vinoo Mankad.</p>
+
+  <br>
+
+  <h4>Author's note</h4>
+
+  <p>The original iteration of this puzzle consisted of bird’s eye camera angles for all five images, and the use of string to make all of the relevant court/field markings. However, we felt as though that would be far too obvious for our solvers, so we decided to change things up a bit by incorporating the markings present on the pool table only, and by changing up the camera angles to make the sporting positions far less recognisable.</p>
+
+  <p>Another slight concern was the presence of the white cue balls in each of the images. While some teams may have been distracted by the decidedly fishy (think ‘whitebait’, rather than ‘red herring’…) cue balls, we argued in favour of their retention as we were, after all, attempting to simulate actual games of pool, and such games would make no sense without a cue ball.</p>
+
+  <p>A fun fact that I found out while constructing this puzzle is that “RUN OUT” is not only a cricketing term, which was something that I was familiar with, but it is also a term in cue sports meaning to make all of the required shots in a game without the opponent ever getting to the table or getting back to the table, making it a remarkably thematic answer to this puzzle.</p>
+
+  <p>And, finally, special thanks to Charlie’s Auto Museum for allowing us to use their pool table to stage this photo shoot — a great place to spend your time if you’re up and around Arthurs Seat on the Mornington Peninsula.</p>
+
+</div>
+</div>
+
+{% endblock %}

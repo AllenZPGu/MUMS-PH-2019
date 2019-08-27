@@ -1,0 +1,142 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+
+	<p>This puzzle took a little trip down memory lane to 15 years ago, when the <a href='https://researchers.ms.unimelb.edu.au/~mums/puzzlehunt/2004/'>first-ever MUMS Puzzle Hunt</a> was created by a team that includes the now infamous Julian Assange.</p>
+
+	<p>When we first inspect this puzzle, we see that it is considerably different to the aesthetics of the other puzzles released so far in the Hunt — everything looks a lot simpler and a lot more threadbare. There appear to be four ‘mini-puzzles’ contained within this puzzle, and there is also a bit of story attached too — a quick Google of that story will take us to Act 2 of the <a href='https://researchers.ms.unimelb.edu.au/~mums/puzzlehunt/2004/'>2004 MUMS Puzzle Hunt</a>.</p>
+
+	<p>Here, we can note that Assange’s contributions to the 2004 Hunt match up to the four 'mini-puzzles' included within this puzzle. Solvers have a couple of options here — they can either opt to follow the solution guides from 2004, or attempt to solve the ‘mini-puzzles’ from scratch. For the sake of completeness, we shall opt for the latter option.</p>
+
+	<p><u>Mini-Puzzle #1: Caesar Cipher (<a href='https://researchers.ms.unimelb.edu.au/~mums/puzzlehunt/2004/answers.html?puzzle=3.4' target="_blank">original solution</a>)</u></p>
+
+	<p>In this puzzle, we see an excerpt from Shakespeare’s <i>Julius Caesar</i>, with each of the lines written in reverse order. Upon making this observation, what we can then do is reverse the text, to yield an excerpt that reads something like this:</p>
+
+	<div style='font-family: "Courier"'>
+	<b>PINDARUS.</b>  Titinius is en <mark>c</mark>losed round about</br>
+	With horsemen, that make to him on the spur;</br>
+	Yet he spurs on. Now they are almost on him.</br>
+	Now, Titinius! Now s <mark>o</mark>me light. O, he lights too.</br>
+	He’s ta’en.</br>
+	Shout</br>
+	An <mark>d</mark>, hark! Th <mark>e</mark>y shout for joy.</br>
+	<b>CASSIUS</b>. Come do <mark>w</mark>n, behold no more.</br>
+	O, c <mark>o</mark>ward that I am, to live so long,</br>
+	To see my best f <mark>r</mark>iend ta’en before my face!</br>
+	<i>PIN <mark>D</mark>ARUS descends</i></br>
+	Come hither, sirrah:</br>
+	In Parthia did I take thee prisoner;</br>
+	And then I swore thee, saving of thy life,</br>
+	That whatsoever I did bid thee do,</br>
+	Thou shoul <mark>d</mark>st attempt it. Come now, keep thine oath;</br>
+	Now be a fre <mark>e</mark>man: and with this good sword,</br>
+	That ran through Caesar’s bowels, search this bosom.</br>
+	Stand no <mark>t</mark> to answer: here, take thou the hilts;</br>
+	And, when my f <mark>a</mark>ce is cover’d, as ‘tis now,</br>
+	Gu <mark>i</mark>de thou the sword.</br>
+	<i>PI <mark>N</mark>DARUS stabs him</i></br>
+	Caesar, thou art revenged,</br>
+	Even with the sword that kill’d thee.</br>
+	<i>Dies</i>
+	</div>
+
+	<p>We soon realise that this excerpt contains a number of rather suspicious-looking spaces, and if we take the letter after each suspicious-looking space, we receive the phrase "CODEWORD/DETAIN". This seems to suggest that <b>DETAIN</b> is the answer to our first mini-puzzle. In the original 2004 puzzle, the answer word was indicated by the word CODEWORD, so we copied this mechanism.</p>
+
+	<p>Thematically, we can confirm that DETAIN is indeed the desired word by noting that this specific passage from <i>Julius Caesar</i> concerns Cassius' suicide after (erroneously) assuming that his friend Titinius had been captured in battle.</p>
+
+	<p><u>Mini-Puzzle #2: Abstract(ion) (<a href='https://researchers.ms.unimelb.edu.au/~mums/puzzlehunt/2004/answers.html?puzzle=2.3' target="_blank">original solution</a>)</u></p>
+
+	<p>In this puzzle, we see an excerpt from a research paper of some sort, and a quick web search should enable us to find the <a href='https://arxiv.org/abs/astro-ph/0203152' target="_blank">original paper</a>. If we compare the two papers side by side, we soon realise that a number of words have been replaced. The replaced words have been marked accordingly below:</p>
+
+	<div style='font-family: "Courier"'>
+		<p>astro-ph/0203152</br>
+		Title: Exotic meteoritic phenomena: The Tunguska event and anomalous Low altitude fireballs – manifestations of the mirror world?</br>
+		Authors: R. Foot, T. L. Yoon</br>
+		Comments: About 25 pages, slight adjustment</br>
+		Subj-class: Astrophysics; Space Physics</br>
+		Journal-ref: Acta Phys.Polon. B33 (2002) 1979-2009</br>
+		Date (revised v5): Fri, 10 May 2002 02:17:47 GMT (277kb)</br></p>
+
+	<p>There are a number of very puzzling <mark>extraterrestrial</mark> events including (a) The Tunguska event. It is the only known example of a low altitude atmospheric explosion. It is also the largest recorded event. Remarkably no fragments or significant chemical traces have ever been recovered. (b) Anomalous low altitude fireballs which (in some cases) have been observed to hit the ground. The absence of fragments is <mark>initially</mark> striking in these cases, but this is not the only reason they are <mark>affected</mark>. On the other hand, there is strong evidence that most of our galaxy is made from exotic dark material – ‘dark matter’. Mirror matter is one well motivated dark matter candidate, since it is dark and stable and it is required to exist if particle interactions are mirror symmetric. If mirror matter is the dark matter, then some amount must exist in our solar <mark>lights</mark>. We demonstrate that the mirror matter theory allows for a simple explanation for the puzzling meteoritic events [both (a) and (b)] if they are due to mirror matter space-bodies. <mark>In</mark> direct consequence of this explanation is that mirror matter fragments should exist in (or on) the ground at various <mark>eastern</mark> sites. The properties of this potentially recoverable material depend importantly on the sign of the photon-mirror photon kinetic mixing parameter, ε. We argue that the broad characteristics of the anomalous events suggests that ε is probably negative. Strategies for detecting mirror matter in the <mark>nation</mark> are discussed.</p>
+	</div>
+
+	<p>If we take the replacement words and string them together, we obtain the following cryptic clue: "Extraterrestrial initially affected lights in Eastern nation". Taking "extraterrestrial" as the definition and the initial letters of "Affected", "Lights", "In", "Eastern" and "Nation", we obtain the answer of <b>ALIEN</b> to our second mini-puzzle.</p>
+
+	<p>Once again, a thematic check: this abstract deals with an astronomical anomaly in an Eastern nation (Russia). The answer of ALIEN seems appropriate.</p>
+
+	<p><u>Mini-Puzzle #3: Platonic (<a href='https://researchers.ms.unimelb.edu.au/~mums/puzzlehunt/2004/answers.html?puzzle=4.1' target="_blank">original solution</a>)</u></p>
+
+	<p>In this mini-puzzle, the net can actually be re-arranged to yield the correct orientation. If we keep the Cube’s current orientation of orange face on top, green face to the left, blue face to the right, white face in the centre, and red and yellow faces below that, we can construct the following:</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/2.3.1.png' %}" alt="Monster rubiks cube" style="height:600px; padding:10px;"></center>
+
+	<p>Starting from the capital ‘A’ in the bottom-right corner of the orange face and reading in a spiral in an anti-clockwise direction yields: "A spooky creature or a brand of energy drink". This points to an answer of <b>MONSTER</b> to our third mini-puzzle. Note that this puzzle is achievable without physically solving a physical cube; all that's required is to remap the cubelets into their solved positions.</p>
+
+	<p><u>Mini-Puzzle #4: Surströmming (<a href='https://researchers.ms.unimelb.edu.au/~mums/puzzlehunt/2004/answers.html?puzzle=1.1' target="_blank">original solution</a>)</u></p>
+
+	<p>The references made in this puzzle are as follows:</p>
+	<ul>
+		<li>The politician who was formerly the Chancellor of the Exchequer (UK) is Kenneth Clarke.</li>
+		<li>The first Indigenous person to serve as the Minister for Indigenous Australians (Aus) is Kenneth Wyatt.</li>
+		<li>The politician prominently associated with the Second Red Scare (US) is Joseph McCarthy.</li>
+		<li>The first California Republican to be nominated as House Minority Leader (US) is Kevin McCarthy.</li>
+	</ul>
+
+	<p>On these facts alone, we can conclude that the answer to our fourth mini-puzzle is <b>KENNETH MCCARTHY</b>, or commonly known as <a href='https://en.wikipedia.org/wiki/Ken_M'>Ken M</a>. (We can then use the remaining facts to confirm this hypothesis.)</p>
+
+	<u>Back to the future: the main puzzle</u>
+
+	<p>Now that we have the four answers of DETAIN, ALIEN, MONSTER, and KENNETH MCCARTHY, we can now attempt to determine what the final answer to this entire puzzle is. If we string these four mini-puzzle answers together, we obtain something that resembles a cryptic clue: "Detain alien monster Kenneth McCarthy". <a href='https://en.wikipedia.org/wiki/Ken_M' target="_blank">Ken M</a> is a well known internet troll (it even says so in the first line of his Wikipedia biography), while "Detain alien monster" is a charade for INTERN + ET + TROLL = <b>INTERNET TROLL</b>.</p>
+
+	<p>Unfortunately for MUMS Puzzle Hunt founder Julian Assange, his 'internet trolling' activities targeting the US Government had resulted in his unenviable position of being <a href='https://www.abc.net.au/news/2019-04-11/julian-assange-arrested-in-london/10995280' target="_blank">arrested by the Metropolitan Police earlier this year</a>. On solving, we are rewarded with a portrait of the man to whom this puzzle pays homage:</p>
+	<center><img src="{% static 'PHapp/img/assange.png' %}" alt="Bridge troll" style="height:300px; padding:10px;"></center>
+
+	<h4>Authors' note</h4>
+	<p>It has always fascinated us that someone as internationally infamous as Julian Assange had such an intimate connection with the MUMS Puzzle Hunt. With his arrest making headline news earlier this year, we thought that a retrospective puzzle exclusively featuring his puzzles would help promote this interesting point of trivia.</p>
+
+	<p>When we wrote this puzzle, we intended to make this one of the most straightforward puzzles of the whole Hunt, given that solvers had access to the solutions of the 2004 puzzles. However, we were incredibly surprised that most teams reached the final stage of "Detain alien monster Kenneth McCarthy" but were unable to solve this final cryptic because no indication was given for this phrase actually being a cryptic.</p>
+
+	<p>During construction and test-solving, we considered a few options for actively signposting for this last cryptic step.</p>
+
+	<ul>
+		<li>We considered giving some indication of the word lengths of the final answer (EG/ by including some date like the "8/5"), but we ultimately decided against it because it was (a) not entirely clear; (b) not entirely relevant in the context of the puzzle; and (c) could have resulted in teams solving the puzzle straight away after working out KENNETH MCCARTHY as the answer to Surströmming.</li>
+		<li>We considered incorporating another one of Assange’s puzzles (perhaps even from a different year) to clue for "EIGHT FIVE" or "EIGHT COMMA FIVE" or "EIGHTY FIVE", but, ultimately, that idea was rejected because of some of the reasons outlined for the previous dot point, and the fact that it is actually remarkably difficult to adapt some of the older puzzles (which, at times, seemed to have some very tenuous mechanisms).</li>
+		<li>The remedy that we came up with during the Hunt was probably to incorporate another one of Assange’s puzzles and have that clue for "CRYPTIC", or, if that was too difficult, just to give "CRYPTIC" to the teams straight away as part of the puzzle ‘shell’. Unfortunately, this idea was conceived in hindsight, and we could only offer the next-best option to our participating teams, which involved dropping "cryptic" into the first hint.</li>
+	</ul>
+
+	<p>In addition, we believe that it was fair to leave this last step unclued because:</p>
+
+	<ul>
+		<li>No other puzzles in this Hunt that featured cryptics (<a href='https://www.mumspuzzlehunt.com/puzzles/I.2%20Divide%20and%20Conquer.pdf'>I.2 Divide and Conquer</a>, <a href='https://www.mumspuzzlehunt.com/puzzles/II.S%20Pot%20Luck.pdf'>II.S Pot Luck</a>, <a href='https://www.mumspuzzlehunt.com/puzzles/IV.4%20Knitty%20Gritty.pdf'>IV.4 Knitty Gritty</a>) explicitly hinted that the clues were cryptics. Rather, solvers determined that the clues were cryptics because of how nonsensical the clues sounded if interpreted literally. We see no reason why "Detain alien monster Kenneth McCarthy" is any different.</li>
+		<li>Cryptics are a standard feature of Australian-style Puzzle Hunts and puzzles (eg. newspapers) in Australia in general. That cryptics may be used as a puzzle mechanism should be something that is expected in Australian Hunts and should be considered whenever a string sounds nonsensical if read literally.</li>
+		<li>The solve rate dramatically increased once <a href='https://www.mumspuzzlehunt.com/hints/II/3/'>Hint 1</a> was released; we mentioned in Hint 1 that there was a cryptic step involved. This demonstrated that the cryptic clue phrase itself was fair and solvable.</li>
+	</ul>
+
+	<p>That said, we do recognise how frustrating it must have been for some teams. We have felt similar frustration when on the receiving end of a puzzle, we solve everything except for the last step. We apologise for this. We hope this autopsy has at the very least put some ill feeling about this puzzle to bed. If you would still like to vent your frustrations at this puzzle, feel free to do so via the appropriate means on the feedback survey.</p>
+
+	<p>And, just on a final note, one might realise that the fourth and final mini-puzzle, Surströmming, seemed rather different to the rest of the mini-puzzles as it did not truly mimic what Assange was going for with the whole misleading ‘red herring’ vibe. We actually incorporated that idea in our original iteration of this mini-puzzle — try to guess who we’re cluing for, and who the red herring is. (Hopefully you’ll also realise why we had to abandon this idea.)</p>
+
+	<div style='font-family: "Courier"'>
+		<p>TS AUSTEO TS AUSTEO TS AUSTEO TS AUSTEO</p>
+		<p>PATH: DSD!ONA</br>
+		TO: PM</br>
+		SUJECT: Daily Intercept Briefing</p>
+		<p>DSD intercepted chatter. Unusual features. Unknown significance.</p>
+		<p>&lt;inaudible&gt;</br>
+		may have support. I can’t name him on the phone. No Such Agency, right. America. You’ll understand why soon. It’s not enough to cover. Semantic forests will pick it up. I’ll say it like this. He works in the domain of computer security and played a role in the leaking of highly classified documents from No Such Agency in 2013. He is not in possession of a US passport, and is currently residing in a European nation known for its frigid climate and inclement weather. His life served as the basis of a biographical thriller, starring a lead actor who has been nominated for a Golden Globe award, a Satellite award, a Screen Actors Guild award, and won a Primetime Emmy award. His full name (Christian name, middle initial and surname) has 14 letters. Three of those letters are the same letter --- a letter that appears within the first half of the alphabet.</br>
+		</br>
+		Yes. We must act immediately.</p>
+	</div>
+
+
+
+
+
+</div>
+</div>
+
+{% endblock %}

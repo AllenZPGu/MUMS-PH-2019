@@ -1,0 +1,423 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>While the prospect of wading through a 20-page script might seem rather daunting to a lot of solvers, this puzzle isn’t nearly as complicated or complex as it appears to be. So let’s take a look at it (it's a fun read, I promise you!).</p>
+
+  <p>After a cursory read-through, we note that this script follows a number of contestants as they participate in various game shows. A bit of research should be able to help us identify the game shows in question. Note that the Australian versions of some game shows have different names from the international versions.</p>
+
+  <table class="table table-bordered">
+    <tr>
+      <th> Show #</th>
+      <th>Name of Show (Int / Aus)</th>
+      <th>Section of Script</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Mastermind</td>
+      <td>"An ominous drum beat. Another ominous drum beat…"</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Countdown / Letters &amp; Numbers</td>
+      <td>"Casey and Drew sit behind a long panel desk…"</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Supermarket Sweep</td>
+      <td>"The audience applauds. Ashley and Ashley’s partner stand behind…"</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>University Challenge</td>
+      <td>"The screen splits — the top half consists of a team of contestants…"</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>1 vs. 100</td>
+      <td>"Casey stands opposite the host, basking in the glory of yet another…"</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>The Chase</td>
+      <td>"The host stands next to Drew and continues to fire a barrage of questions…"</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>The Weakest Link</td>
+      <td>"Ashley, Billie, Casey, Drew, and a number of other contestants…"</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Pointless</td>
+      <td>"Billie and Billie’s partner stand uneasily behind a shared podium…"</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Press Your Luck</td>
+      <td>"The audience applauds. Ashley, Billie, and Casey sit behind…"</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Who Wants to Be a Millionaire?</td>
+      <td>"Drew sits opposite the host and sweats furiously under the studio lights…"</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>Catchphrase / Burgo’s Catch Phrase</td>
+      <td>"Meanwhile, Ashley, Billie, and Casey are situated behind…"</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>Strike It Lucky</td>
+      <td>"Billie stands nervously behind a podium next to two other contestants…"</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>Think Tank</td>
+      <td>"Ashley, Billie, and Casey stand behind separate podiums again…"</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>Are You Smarter Than a 5th Grader?</td>
+      <td>"The audience cheers. The atmosphere is very lively and boisterous…" </td>
+    </tr>
+  </table>
+
+  <p>If we scrutinise the script a little bit further, we soon realise that the answers that the contestants have given do not seem to be the correct ones. In fact, a quick Google search should reveal the correct answers to a handful of the questions, and some more in-depth digging and thinking should uncover the rest of the economics-themed answers.</p>
+
+  <table class="table table-bordered">
+    <tr>
+      <th>Show #</th>
+      <th>Name of Show (Int / Aus)</th>
+      <th>Incorrect Answer</th>
+      <th>Correct Answer</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Mastermind</td>
+      <td>Fascism</td>
+      <td>Autarky</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Countdown /<br>  Letters &amp; Numbers</td>
+      <td>Intitules</td>
+      <td>Utilities</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Supermarket Sweep</td>
+      <td>Bouillon</td>
+      <td>Stock</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>University Challenge</td>
+      <td>Greenspan</td>
+      <td>Volcker</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>1 vs. 100</td>
+      <td>Twenty Thousand Dollars</td>
+      <td>Eighty Thousand Dollars</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>The Chase</td>
+      <td>Profit</td>
+      <td>Revenue</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>The Weakest Link</td>
+      <td>Grant</td>
+      <td>Subsidy</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Pointless</td>
+      <td>ME Bank</td>
+      <td>ING Bank</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Press Your Luck</td>
+      <td>G36</td>
+      <td>OECD</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Who Wants to Be a Millionaire?</td>
+      <td>Twenty-One Percent</td>
+      <td>Nineteen Percent</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>Catchphrase / Burgo’s Catch Phrase</td>
+      <td>Money Doesn’t Grow on Trees</td>
+      <td>Hedge Fund</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>Strike It Lucky</td>
+      <td>Darling</td>
+      <td>Osborne</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>Think Tank</td>
+      <td>Excess</td>
+      <td>Surplus</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>Are You Smarter Than a 5th Grader?</td>
+      <td>Double Ticketing</td>
+      <td>Two-Part Tariff </td>
+    </tr>
+  </table>
+
+  <p>Taking the first letters of all of the correct answers reveals the phrase AUS VERSION HOST, which is most likely asking us to consider the hosts of the Australian versions of these game shows.</p>
+
+  <p>Some further investigation leads us to the following list. Note that this <a href='https://australiangameshows.fandom.com/wiki/Australian_Game_Shows_Wiki' target="_blank">Fandom</a> is very handy when it comes to drumming up information for this part of the puzzle, although Wikipedia is good too.</p>
+
+  <table class="table table-bordered">
+    <tr>
+      <th>Show #</th>
+      <th>Name of Show (Int / Aus)</th>
+      <th>Name of Australian Host</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Mastermind</td>
+      <td>Huw Evans*</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Countdown / Letters &amp; Numbers</td>
+      <td>Richard Morecroft</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Supermarket Sweep</td>
+      <td>Ian Turpie</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>University Challenge</td>
+      <td>Magnus Clarke</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>1 vs. 100</td>
+      <td>Eddie McGuire</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>The Chase</td>
+      <td>Andrew O’Keefe</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>The Weakest Link</td>
+      <td>Cornelia Frances</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Pointless</td>
+      <td>Mark Humphries</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Press Your Luck</td>
+      <td>Ian Turpie</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Who Wants to Be a Millionaire?</td>
+      <td>Eddie McGuire</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>Catchphrase / Burgo’s Catch Phrase</td>
+      <td>John Burgess</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>Strike It Lucky</td>
+      <td>Ronnie Burns</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>Think Tank</td>
+      <td>Paul McDermott</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>Are You Smarter Than a 5th Grader?</td>
+      <td>Rove McManus </td>
+    </tr>
+  </table>
+
+  <p>It is at this stage of the solve where we might get a little stuck regarding what we ought to do next. The list of host names is just begging to be indexed, but there does not seem to be any numbers for indexing — not at first glance, anyway.</p>
+
+  <p>However, a close reading of the script should reveal to us some numbers that have been not-so-subtly planted into each game show — numbers in word form (i.e. “three” rather than “3”) that have been uttered by each host.</p>
+
+  <p>So let’s draw up our table once more.</p>
+
+  <table class="table table-bordered">
+    <tr>
+      <th>Show #</th>
+      <th>Name of Show (Int / Aus)</th>
+      <th>Index number</th>
+      <th>Name of Australian Host</th>
+      <th>Extracted letter</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Mastermind</td>
+      <td>7</td>
+      <td>HUW EVA<b>N</b>S*</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Countdown / Letters &amp; Numbers</td>
+      <td>9</td>
+      <td>RICHARD M<b>O</b>RECROFT</td>
+      <td>O</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Supermarket Sweep</td>
+      <td>4</td>
+      <td>IAN <b>T</b>URPIE</td>
+      <td>T</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>University Challenge</td>
+      <td>3</td>
+      <td>MA<b>G</b>NUS CLARKE</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>1 vs. 100</td>
+      <td>10</td>
+      <td>EDDIE MCGU<b>I</b>RE</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>The Chase</td>
+      <td>11</td>
+      <td>ANDREW O'KEE<b>F</b>E</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>The Weakest Link</td>
+      <td>9</td>
+      <td>CORNELIA <b>F</b>RANCES</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Pointless</td>
+      <td>12</td>
+      <td>MARK HUMPHRI<b>E</b>S</td>
+      <td>E</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Press Your Luck</td>
+      <td>3</td>
+      <td>IA<b>N</b> TURPIE</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Who Wants to Be a Millionaire?</td>
+      <td>8</td>
+      <td>EDDIE MC<b>G</b>UIRE</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>Catchphrase / Burgo’s Catch Phrase</td>
+      <td>2</td>
+      <td>J<b>O</b>HN BURGESS</td>
+      <td>O</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>Strike It Lucky</td>
+      <td>2</td>
+      <td>R<b>O</b>NNIE BURNS</td>
+      <td>O</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>Think Tank</td>
+      <td>7</td>
+      <td>PAUL MC<b>D</b>ERMOTT</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>Are You Smarter Than a 5th Grader?</td>
+      <td>11</td>
+      <td>ROVE MCMANU<b>S</b></td>
+      <td>S </td>
+    </tr>
+  </table>
+
+  <p>We now reach the final step of this puzzle. Keeping in line with the broader theme of economics, we find that the "special prizes" alluded to on the final page of the script are NOT GIFFEN GOODS. This means that we ought to look for something that represents the opposite of <a href='https://en.wikipedia.org/wiki/Giffen_good' target='_blank'>Giffen goods</a>. Since Giffen goods are defined as goods whose consumption increases when price increases, we need to be on the lookout for goods whose consumption decreases when price increases. This leads us to our final answer of <b>ORDINARY GOODS</b>.
+
+  <br>
+
+  <h4>Author's notes</h4>
+  <p>While I personally believed that the idea of a puzzle based around TV game shows and economics was sound, the construction and execution of said idea was anything but. We ran into a number of issues during the puzzle writing process, and were forced to make a number of difficult creative decisions. The following list is just a handful of hitches that we ran into along the way:</p>
+
+  <ul>
+    <li>The script was initially written using Amazon Storywriter, with the majority of the script being completed by March 2019. Unfortunately, Amazon Studios discontinued Amazon Storywriter in June 2019, and my script, in its entirety, was lost along with it.</li>
+  
+    <li>The writing process for this script quickly started to become a bit of a drag, and essentially involved watching hours of game show footage and transcribing what was occurring on the screen in pain-staking detail.</li>
+
+    <li>By the time this puzzle was released in August 2019, the Special Broadcasting Service (SBS) was airing a reboot of Mastermind, hosted by Jennifer Byrne, and Huw Evans (*; asterisked in the tables above) was no longer the only host of the Australian version of Mastermind.</li>
+
+    <li>There was some potential for confusion in whether the script was describing the Australian version or the international version of the show. At the end of the day, we opted for the international versions, since they would be more recognisable and more accessible for a lot more teams, and the first clue phrase asked solvers to look for the Australian versions anyway.</li>
+
+    <li>There were a few loose ends that never really got tied up by the time the puzzle was released:
+      <ul>
+        <li>contestant names — The names Ashley Adams, Billie Baker, Casey Clarke, and Drew Davis were essentially filler names (which, y’know, seemed better than Contestant #1, Contestant #2, and so on and whatever) and had no bearing on the puzzle itself.</li>
+        
+        <li>wrong answers — The wrong answers had a distinctly red herring-ish feel about them in that they were only there to serve as “wrong answers” and nothing more than that; my initial conception of the puzzle involved having the right answers but in the wrong game shows.</li>
+
+        <li>scene transitions — Some of these could feel a bit unclear to solvers; having regular “CUT TO:” transitions could have alleviated some of the ambiguity.</li>
+      </ul>
+    </li>
+
+    <li>There were also a number of inelegances that could have been cleaned up:
+      <ul>
+        <li>“$80,000” and “19%” — These answers could have been expressed more cleanly by providing the worded form; however, the concern there was that teams might have been thrown off by the presence of two different numbers in the same game show.</li>
+
+        <li>scene sequencing — The initial intention was to include the earlier rounds of game shows occupying earlier scenes and later rounds of game shows occupying later scenes; unfortunately, because game shows were shuffled about, this did not eventuate and teams could potentially have tried to re-order the scenes.</li>
+        
+        <li>conciseness — This is a twenty-page script. While much has been done to cut the length of the script down, and while the script itself is formatted with wide margins and a healthy amount of line spacing, this is still quite a lengthy document for teams to comb through.</li>
+      </ul>
+    </li>
+  </ul>
+
+
+</div>
+</div>
+
+{% endblock %}

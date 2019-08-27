@@ -1,0 +1,470 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>When we first open this puzzle, we are greeted by three articles of information — the title “No. 102”; a grid of letters, which we can assume to be a word search of some sort; and an “Hour List”, which consists of a number of cryptic clues accompanied by a rather bizarre numbering system.</p>
+
+  <p>So let’s break each of these components down.</p>
+
+  <p>The title is an oblique allusion to the theme that serves as the centrepiece of this puzzle — Nobel laureates and chemical elements. We may recognise that “No” (Nobelium) is the 102nd element of the periodic table, and we had a number of guesses of “NOBELIUM” to reflect this fact. Unfortunately, this puzzle is not that simple.</p>
+
+  <p>Moving away from the title and looking more at the puzzle elements, there are really two ‘ins’ where we can start building up our solve.</p>
+
+  <p>The first 'in', and the one that was intended, involved solvers making a start on the cryptics, and for them to realise any number of the following key facts:</p>
+
+  <ul>
+    <li>The title “Hour List” is missing a “No”, and should really read “Honour List”, suggesting that this is actually just a list of people who have won or attained some “honour” or rather. </li>
+    <li>As a consequence of the above, the clues do not actually clue for words, but rather the names of people. </li>
+    <li>The clues also mimic the style of the 'rationales' provided by the Nobel Prize Committee for the awarding of Prizes. For example, the Nobel Prize for Chemistry was awarded to Dorothy Hodgkin in 1964 “for her determinations by X-ray techniques of the structures of important biochemical substances”.</li>
+    <li>The different types of honours correspond to different types of cryptic clues, with “statement” representing a definition clue, “invention” representing a charade clue, “capture” representing a container clue, “speech” representing a homophone clue, and “manipulation” representing an anagram clue.</li>
+    <li>After working out a number of the clues, we realise that the answers are in alphabetical order, making their search considerably easier.</li>
+    <li>After working out a number of the clues, we realise the meaning behind the numbers — the dash represents a chemical symbol (either one or two letters) that has been stripped away from the name of a Nobel laureate, and the remaining string would be what we would need to look for in the word search.</li>
+  </ul>
+
+  <p>For instance, the second clue reads "For their invention of a fine powder for the family (3-2)". ASH is a fine powder and KIN means family, so the charades clue reveals the answer of ASHKIN. The (3-2) instructs us to strip the element sandwiched between the first three letters and last two letters. This element is potassium, from ASH(K)IN. We are thus left with the string ASHIN.</p>
+
+  <p>Alternatively, the second ‘in’, which revealed itself during the test-solving process, involved starting from the word search and trying to spot as many ‘words’ as they could. ‘Words’ that could have been easily spotted included “CAMBELL” to the right of the third row, “GLDING” towards the middle of the fourth row, and “OSETZKY” to the left of the sixth row. We may need to spot one or more of these before they realise that the clues are after names on an “Honour List” and not words. We then proceed as outlined above. </p>
+
+  <p>Regardless of the entry route that was taken, a complete or near-complete list of names is required for the next step of this puzzle.</p>
+
+  <table class="table table-bordered">
+    <tr>
+      <th>Clue #</th>
+      <th>Clue</th>
+      <th>Answer</th>
+      <th>Clue explanation</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>For their statement on a popular signage symbol (3)</td>
+      <td>(AR)ROW</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>For their invention of a fine powder for the family (3-2)</td>
+      <td>ASH(K)IN</td>
+      <td>ASH + KIN</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>For their capture of the Spanish with a blow (4)</td>
+      <td>(BE)LLOW</td>
+      <td>EL in BLOW</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>For their invention of an infinitive and a definite article (3-1)</td>
+      <td>BET(H)E</td>
+      <td>BE + THE</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>For their speech on being boastful (4)</td>
+      <td>(B)RAGG</td>
+      <td>BRAG ~ BRAGG</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>For their invention of a company model (3-2)</td>
+      <td>BRA(N)DT</td>
+      <td>BRAND + T</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>For their invention of some scalding French wine (3-2)</td>
+      <td>CAL(V)IN</td>
+      <td>sCALd + VIN</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>For their invention of a retreat signal (3-4)</td>
+      <td>CAM(P)BELL</td>
+      <td>CAMP + BELL</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>For their speech about a festive Christmas song (4)</td>
+      <td>(CA)RREL</td>
+      <td>CAROL ~ CARREL</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>For their statement on being a trolley driver (4)</td>
+      <td>(CA)RTER</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>For their invention of a Computer Algebra System with error (3-1)</td>
+      <td>CAS(SI)N</td>
+      <td>CAS + SIN</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>For their statement on being a pain in the neck (4)</td>
+      <td>(C)RICK</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>For their manipulation of Ikeas (3-1)</td>
+      <td>ESA(K)I</td>
+      <td>IKEAS → EKASI</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>For their manipulation of lodging (1-5)</td>
+      <td>G(O)LDING</td>
+      <td>LODGING → GOLDING</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>For their manipulation of rehab (2-1)</td>
+      <td>HA(BE)R</td>
+      <td>REHAB → HABER</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>For their invention of a sentient computer with a Scandinavian (1-4)</td>
+      <td>H(AL)DANE</td>
+      <td>HAL + DANE</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>For their manipulation of a pig kiln (3-2)</td>
+      <td>KIP(LI)NG</td>
+      <td>PIG KILN → KIPLING</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>For their manipulation of a Chinese mountain (2-1)</td>
+      <td>NA(S)H</td>
+      <td>SHAN → NASH</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>For their capture of registered nurses with a net (3-2)</td>
+      <td>NER(N)ST</td>
+      <td>RNS in NET</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>For their manipulations to sky size (2-5)</td>
+      <td>OS(SI)ETZKY</td>
+      <td>TO SKY SIZE → OSSIETZKY</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>For their invention of a fruit child (6)</td>
+      <td>(P)EARSON</td>
+      <td>PEAR + SON</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>For their invention presented before an Antarctic explorer (3-3)</td>
+      <td>PRE(SC)OTT</td>
+      <td>PRE + SCOTT</td>
+    </tr>
+    <tr>
+      <td>23</td>
+      <td>For their invention of a dull habit that makes a woman cross (3-5)</td>
+      <td>RUT(HE)RFORD</td>
+      <td>RUT + HER + FORD</td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td>For their statement on a vocal performer (4)</td>
+      <td>(SI)NGER</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>25</td>
+      <td>For their invention of something really down-to-earth (4)</td>
+      <td>(S)OLOW</td>
+      <td>SO + LOW</td>
+    </tr>
+    <tr>
+      <td>26</td>
+      <td>For their invention of a label on a mined rock (3-2)</td>
+      <td>TAG(O)RE</td>
+      <td>TAG + ORE</td>
+    </tr>
+    <tr>
+      <td>27</td>
+      <td>For their manipulation of lather (2-2)</td>
+      <td>TH(AL)ER</td>
+      <td>LATHER → THALER</td>
+    </tr>
+    <tr>
+      <td>28</td>
+      <td>For their speech on the increasing size of the moon person (2-4)</td>
+      <td>WA(K)SMAN</td>
+      <td>WAX MAN ~ WAKSMAN</td>
+    </tr>
+    <tr>
+      <td>29</td>
+      <td>For their statement on a rover (1-3)</td>
+      <td>W(AL)KER</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>30</td>
+      <td>For their statement on a rabbit hole (1-3)</td>
+      <td>W(AR)REN </td>
+      <td>—</td>
+    </tr>
+  </table>
+
+  <p>We now take the strings that we derived from the previous step of this puzzle and attempt to find them in the word search.</p>
+
+  <center><img src="{% static 'PHapp/img/solutions/5.1.png' %}" style="width: 600px; padding:10px;"></center>
+
+  <p>We note that there are a number of unused letters (circled in orange) and these can be read from left-to-right and top-to-bottom to yield the following clue phrase ORDER PRIZES STARTING LETTER P BY YEAR.</p>
+
+  <p>If we consider this message, we realise that there are three Nobel prize categories starting with P — Peace, Physics, and Physiology / Medicine — that we can sort by year. (While there is some ambiguity around whether or not Physiology / Medicine should be included, we have discounted this concern since teams should quickly realise the room for ambiguity and would be asked to test, at most, two cases.)</p>
+
+  <p>If we choose only the Nobel laureates who have won prizes for Peace, Physics, and Physiology / Medicine and arrange them by year, we get something that resembles the following table.</p> 
+
+  <table class="table table-bordered">
+    <tr>
+      <th>Clue #</th>
+      <th>Answer</th>
+      <th>Prize Type</th>
+      <th>Prize Year</th>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>(CA)RREL</td>
+      <td>Physiology / Medicine</td>
+      <td>1912</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>(B)RAGG</td>
+      <td>Physics</td>
+      <td>1915</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>OS(SI)ETZKY</td>
+      <td>Peace</td>
+      <td>1935</td>
+    </tr>
+    <tr>
+      <td>28</td>
+      <td>WA(K)SMAN</td>
+      <td>Physiology / Medicine</td>
+      <td>1952</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>(P)EARSON</td>
+      <td>Peace</td>
+      <td>1957</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>(C)RICK</td>
+      <td>Physiology / Medicine</td>
+      <td>1962</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>BET(H)E</td>
+      <td>Physics</td>
+      <td>1967</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>CAS(SI)N</td>
+      <td>Peace</td>
+      <td>1968</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>BRA(N)DT</td>
+      <td>Peace</td>
+      <td>1971</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>ESA(K)I</td>
+      <td>Physics</td>
+      <td>1973</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>(CA)RTER</td>
+      <td>Peace</td>
+      <td>2002</td>
+    </tr>
+    <tr>
+      <td>30</td>
+      <td>W(AR)REN</td>
+      <td>Physiology / Medicine</td>
+      <td>2005</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>CAM(P)BELL</td>
+      <td>Physiology / Medicine</td>
+      <td>2015</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>H(AL)DANE</td>
+      <td>Physics</td>
+      <td>2016</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>ASH(K)IN</td>
+      <td>Physics</td>
+      <td>2018 </td>
+    </tr>
+  </table>
+
+  <p>If we get stuck here, it is important to consider any information that was not used to its fullest extent in this puzzle. Here, we should almost certainly consider the chemical elements, which, up until now, appear to have been chosen rather arbitrarily and removed from the names of the Nobel laureates to amp up the difficulty on the word search. So, let's try to use the elements.</p>
+
+  <p>One logical thing to try would be the atomic numbers. A quick inspection of the elements from the above table should make us realise that their atomic numbers are relatively small (all below 20), which should encourage us to try the standard A=1, B=2 etc. (A1Z26) cipher.</p>
+
+  <table class="table table-bordered">
+    <tr>
+      <th>Clue #</th>
+      <th>Answer</th>
+      <th>Atomic No. = Letter</th>
+      <th>Prize Type</th>
+      <th>Prize Year</th>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>(CA)RREL</td>
+      <td>Ca = 20 = <b>T</b></td>
+      <td>Physiology / Medicine</td>
+      <td>1912</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>(B)RAGG</td>
+      <td>B = 5 = <b>E</b></td>
+      <td>Physics</td>
+      <td>1915</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>OS(SI)ETZKY</td>
+      <td>Si = 14 = <b>N</b></td>
+      <td>Peace</td>
+      <td>1935</td>
+    </tr>
+    <tr>
+      <td>28</td>
+      <td>WA(K)SMAN</td>
+      <td>K = 19 = <b>S</b></td>
+      <td>Physiology / Medicine</td>
+      <td>1952</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>(P)EARSON</td>
+      <td>P = 15 = <b>O</b></td>
+      <td>Peace</td>
+      <td>1957</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>(C)RICK</td>
+      <td>C = 6 = <b>F</b></td>
+      <td>Physiology / Medicine</td>
+      <td>1962</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>BET(H)E</td>
+      <td>H = 1 = <b>A</b></td>
+      <td>Physics</td>
+      <td>1967</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>CAS(SI)N</td>
+      <td>Si = 14 = <b>N</b></td>
+      <td>Peace</td>
+      <td>1968</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>BRA(N)DT</td>
+      <td>N = 7 = <b>G</b></td>
+      <td>Peace</td>
+      <td>1971</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>ESA(K)I</td>
+      <td>K = 19 = <b>S</b></td>
+      <td>Physics</td>
+      <td>1973</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>(CA)RTER</td>
+      <td>Ca = 20 = <b>T</b></td>
+      <td>Peace</td>
+      <td>2002</td>
+    </tr>
+    <tr>
+      <td>30</td>
+      <td>W(AR)REN</td>
+      <td>Ar = 18 = <b>R</b></td>
+      <td>Physiology / Medicine</td>
+      <td>2005</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>CAM(P)BELL</td>
+      <td>P = 15 = <b>O</b></td>
+      <td>Physiology / Medicine</td>
+      <td>2015</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>H(AL)DANE</td>
+      <td>Al = 13 = <b>M</b></td>
+      <td>Physics</td>
+      <td>2016</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>ASH(K)IN</td>
+      <td>K = 19 = <b>S</b></td>
+      <td>Physics</td>
+      <td>2018 </td>
+    </tr>
+  </table>
+
+  <p>With this final clue phrase of TENS OF ANGSTROMS, we now reach the last step of our puzzle. An angstrom is equal to one ten-billionth of a metre, or 0.1 nanometres. As such, tens of angstroms would correspond to many <b>NANOMETRES</b>.</p>
+
+  <br>
+
+  <h4>Author's notes</h4>
+  <p>This was actually one of the first puzzles written for this Puzzle Hunt, and, as such, benefited from a more thorough and rigorous test-solving process. The original inspiration for this puzzle actually came from a typo — I was proofreading some high school chemistry questions and came across a misspelling of “Noble Gases” as “Nobel Gases”.</p>
+
+  <p>This puzzle initially involved using only the noble gases as elements that could be extracted from the surnames of Nobel laureates. And while “He”, “Ne”, and “Ar” were in abundant supply, the same could not be said for “Kr” and “Xe”…</p>
+
+  <p>The many moving parts of this puzzle went through a number of iterations. The word search was not straightforward to construct by hand (we are, unfortunately, quite old-fashioned in our ways…), and we ultimately decided only to allow words to be found in orthogonal and not diagonal directions.</p>
+
+  <p>The clues also underwent a considerable amount of tinkering — one of our primary concerns was that these non-definition-containing cryptics would be a bit rough for solvers who were not as experienced with this type of clue, but this was counterbalanced by the understanding that this was a relatively good puzzle to introduce new solvers to the basic principles of cryptic clue mechanisms.</p> 
+
+  <p>So that was No. 102. Hope you all enjoyed it! And apologies to anyone who copied the word search grid directly into Excel — the formatting on the PDF was playing up a bit and we did not realise this as, once again, we are a rather old-fashioned, paper-based puzzle writing team. (Or, at least, I am. Can’t really speak for the others…)</p>
+
+
+</div>
+</div>
+
+{% endblock %}

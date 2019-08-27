@@ -1,0 +1,40 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>We see a 17x10 Tetris-style grid, and a number of Tetris pieces with letters on them, beneath the directions for Left, Right, Rotate and Drop, and the indication that the following pieces are ‘Next:’. We may first try to jigsaw all the pieces in the grid in some order and spell out letters in some way, but this attempt proves fruitless. The indication that the following pieces are ‘Next:’ should help to indicate that they are already in order, and the direction that the player can ‘Rotate’ should indicate that these pieces aren’t necessarily in their final orientation. We notice that there is a very high frequency of uncommon letters on the pieces, such as K, V, X, Q, etc. which may indicate that we should try to think of a way of changing the letters. </p>
+
+	<p>If the first piece is rotated clockwise (in the original Tetris, only clockwise rotation was allowed), and the letters all ‘rotated’ one place through the alphabet, the piece becomes:</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/5.5.1.png' %}" style="width:50%; padding:10px;"></center>
+
+	<p>This looks promising! What about the second piece?</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/5.5.2.png' %}" style="width:50%; padding:10px;"></center>
+
+	<p>Amazing. Continuing in this fashion, the pieces can slowly be dropped into the grid Tetris-style with a varying number of rotations for each piece. The full rows seem to spell out a message and the non-full rows each spell out a ‘graceful’ word. The full grid becomes:</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/5.5.3.png' %}" style="width:400px; padding:10px;"></center>
+
+	<p>The placement of some of the top pieces are somewhat ambiguous. This will be disambiguated later, but the next step is doable even with the ambiguity.</p>
+
+	<p>We can read the full rows (from the bottom) to get the message YOU WILL FIND A MESSAGE HIDDEN WITHIN THE ROTATIONS OF EACH TETROMINO YOUR HOPES MIGHT BE DASHED. This means we should record how many rotations were required for each tetromino in order, and DASHED may hint at the use of Morse Code. The sequence of rotations is 1121011021021100201111010021110121012011012110121101. We recognise this as a possible representation of morse code, especially when paired with the hint about ‘DASHED’ in the message. When translating 1’s as dots and 2’s as dashes, the message becomes FIND THE BRAILLE.</p>
+
+	<p>Then, to find the Braille, the full rows (which contained the initial message) can be deleted, just as is usual for Tetris. The Braille dots are represented by the white spaces. This removes ambiguities in the top half, since we need valid Braille characters. The final grid is thus:</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/5.5.4.png' %}" style="width:400px; padding:10px;"></center>
+
+	<p>The Braille gives us the message TETRIS SEQUEL, which clues for the final answer <b>WELLTRIS</b>.</p>
+
+	<br>
+	<h4>Author's notes</h4>
+	<p>There was a small erratum found in this puzzle, which was that one piece had been duplicated without changing the letters. We did however receive a large number of emails claiming that they had found errata because the number of black lines couldn’t possibly used to form a 3x3 square as in the other S puzzles. This was in fact intentional, as can be seen in the solution above!</p>
+
+</div>
+</div>
+
+{% endblock %}

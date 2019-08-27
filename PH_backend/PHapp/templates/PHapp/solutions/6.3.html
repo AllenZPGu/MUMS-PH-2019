@@ -1,0 +1,61 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>Opening this puzzle reveals a number of rebus puzzles, with columns of numbered bubbles underneath them, followed by one large bubble-shaped hexagonal grid. The logical first step is to solve the rebus puzzles. After solving a few, we realise that the number of bubbles underneath each rebus corresponds to the number of letters in its answer. The rebus puzzles and their answers are:</p>
+	<ul>
+		<li>TIE UP IN KNOTS</li>
+		<li>BIG FISH IN A SMALL POND</li>
+		<li>BLOOD IS THICKER THAN WATER</li>
+		<li>SAILING CLOSE TO THE WIND</li>
+		<li>UNDERWATER</li>
+		<li>THE DEEP BLUE SEA</li>
+		<li>LOOSE CANNON</li>
+		<li>ALL HANDS ON DECK</li>
+		<li>CALM BEFORE THE STORM</li>
+		<li>CLAM UP</li>
+		<li>THE SEVEN SEAS</li>
+		<li>AT CLOSE QUARTERS</li>
+		<li>WALK THE PLANK</li>
+		<li>A WIDE BERTH</li>
+		<li>PLAIN SAILING</li>
+		<li>WATERFALL</li>
+		<li>MAN OVERBOARD</li>
+		<li>HALF MAST</li>
+		<li>PLENTY MORE FISH IN THE SEA</li>
+		<li>ALL IN THE SAME BOAT</li>
+		<li>THE COAST IS CLEAR</li>
+		<li>MAKE WAVES</li>
+		<li>TIP OF THE ICEBERG</li>
+		<li>LOW TIDE</li>
+		<li>CAPTAIN HOOK</li>	
+	</ul>
+
+	<p>The next apparent step would be to use the bubbles underneath each rebus. There is one bubble for each letter in the answer, so we should assign each bubble a letter. Since the bubbles are organised in columns, the logical method is to read vertically starting from the leftmost column.</p>
+	
+	<p>The bubbles come in two sizes: small and large. We may notice that the numbers in the small bubbles are all smaller than the number corresponding to each letter of the answers (using A=1, B=2 etc.). It would then make sense to subtract the number in the small bubble from the number corresponding to the letter, for each small bubble. Similarly, for the large bubbles, it makes sense to add (instead of subtract) the numbers in the large bubbles to that corresponding to the letters. For example, for the first rebus TIE UP IN KNOTS, subtracting the relevant bubbles (17 / 5 3 17 / 11 8 13 9 / 10 12 19 18) yields 3 / 4 2 4 / 5 1 1 2 / 4 3 1 1.</p>
+
+	<p>We now have a large number of columns of numbers, in sets of three (slightly) different colours. These colours can be seen on the edges of the large bubble-shaped hexagonal grid, one for each direction. Therefore placing the columns of numbers on the edges of the hexagonal grid produces a large hexagonal nonogram.</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/6.3.1.png' %}" style="width:100%; padding:10px;"></center>
+
+	<p>Solving this nonogram yields the following image:</p>
+
+	<center><img src="{% static 'PHapp/img/solutions/6.3.2.png' %}" style="width:70%; padding:10px;"></center>
+
+	<p>This is one last rebus puzzle: its solution is <b>SCUBA DIVING</b>.</p>
+
+  <br>
+
+  <h4>Author's notes</h4>
+  <p>Apologies to the teams who faced issues with visually separating the different colours; ultimately, this shouldn't have been too big of an issue in terms of solving the nonogram since each colour corresponded to a different column orientation. It is a shame that our meta didn’t prevent backsolving from teams which had solved nearly all of the puzzles, because it meant some teams missed out on this puzzle! If you have time, we recommend you have a go :)</p>
+
+
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,283 @@
+{% extends "PHapp/header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="outer-container">
+<div class="inner-container">
+	{% include "PHapp/solutions/genericHeader.html" %}  
+	
+	<p>This puzzle initially appears to be a regular (cross-shaped) crossword, alongside a number of clues. The clues quickly reveal themselves to be Australian slang, both in clue wording and in answer, and upon solving a few of them, we quickly notice that the number of letters in the answer doesn’t quite fit with the number of letters in the grid for a large number of the clues. This indicates that some letters may need to be removed, or donated. The title, alongside the Red Cross theme, indicates the concept of blood donations. If we try removing the letters O, B and A (letters used for blood groups) from the answers, they then fit in the grid. The answers to the clues are:</p>
+
+  <table class="table table-bordered">
+    <tr>
+      <th>Across</th>
+      <th>Clue</th>
+      <th>Answer</th>
+      <th>Down</th>
+      <th>Clue</th>
+      <th>Answer</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Someone who whinges a lot</td>
+      <td style="font-weight: bold;">SOOK</td>
+      <td>1</td>
+      <td>A bushman’s bed</td>
+      <td style="font-weight: bold;">SWAG</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Where 14-down goes after doing hard yakka</td>
+      <td style="font-weight: bold;">TIP</td>
+      <td>2</td>
+      <td>Caught going over the limit</td>
+      <td style="font-weight: bold;">BOOKED</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>“Great!”</td>
+      <td style="font-weight: bold;">BEAUT</td>
+      <td>4</td>
+      <td>The chair of the ABC, after Justin</td>
+      <td style="font-weight: bold;">ITA</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Type of telly program typically shown on SBS</td>
+      <td style="font-weight: bold;">DOCO</td>
+      <td>5</td>
+      <td>A member of parliament</td>
+      <td style="font-weight: bold;">POLLY</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>A sheila who plays basketball for Straya</td>
+      <td style="font-weight: bold;">OPAL</td>
+      <td>8</td>
+      <td>You might blow your dough playing these machines</td>
+      <td style="font-weight: bold;">POKIES</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Tucker that you fix in the morning</td>
+      <td style="font-weight: bold;">BREKKY</td>
+      <td>10</td>
+      <td>Where you might keep 27-across cool</td>
+      <td style="font-weight: bold;">ESKY</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>“C’mon, ____, C’mon!”</td>
+      <td style="font-weight: bold;">AUSSIE</td>
+      <td>12</td>
+      <td>Where you send the ankle biters before they start prep</td>
+      <td style="font-weight: bold;">KINDY</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>Skippy, for example</td>
+      <td style="font-weight: bold;">KANGAROO</td>
+      <td>13</td>
+      <td>“Great!”</td>
+      <td style="font-weight: bold;">BONZA</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>Someone who is annoying</td>
+      <td style="font-weight: bold;">NARK</td>
+      <td>14</td>
+      <td>Someone whose job involves wheelie bins</td>
+      <td style="font-weight: bold;">GARBO</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>Truckloads or oodles</td>
+      <td style="font-weight: bold;">HEAPS</td>
+      <td>15</td>
+      <td>The time of day most people knock off</td>
+      <td style="font-weight: bold;">ARVO</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>Rabbit or waffle</td>
+      <td style="font-weight: bold;">YABBER</td>
+      <td>17</td>
+      <td>Buggered or knackered</td>
+      <td style="font-weight: bold;">ROOTED</td>
+    </tr>
+    <tr>
+      <td>25</td>
+      <td>“Great!”</td>
+      <td style="font-weight: bold;">BRAVO</td>
+      <td>19</td>
+      <td>Also a middy or a schooner</td>
+      <td style="font-weight: bold;">POT</td>
+    </tr>
+    <tr>
+      <td>26</td>
+      <td>Played by the Pies and the Souths</td>
+      <td style="font-weight: bold;">FOOTY</td>
+      <td>20</td>
+      <td>If you do this, don’t forget to Slip-Slop-Slap</td>
+      <td style="font-weight: bold;">SUNBAKE</td>
+    </tr>
+    <tr>
+      <td>27</td>
+      <td>Alternative to a longneck</td>
+      <td style="font-weight: bold;">STUBBY</td>
+      <td>21</td>
+      <td>You might catch one in a farm dam</td>
+      <td style="font-weight: bold;">YABBY</td>
+    </tr>
+    <tr>
+      <td>28</td>
+      <td>From Moreton Bay, for example</td>
+      <td style="font-weight: bold;">BUG</td>
+      <td>22</td>
+      <td>Passion Pop and VB, for example</td>
+      <td style="font-weight: bold;">BEVS</td>
+    </tr>
+    <tr>
+      <td>35</td>
+      <td>Traditional tucker cooked on 26-down</td>
+      <td style="font-weight: bold;">DAMPER</td>
+      <td>23</td>
+      <td>Wild horse</td>
+      <td style="font-weight: bold;">BRUMBY</td>
+    </tr>
+    <tr>
+      <td>36</td>
+      <td>An affectionate insult for an unfashionable person</td>
+      <td style="font-weight: bold;">DAG</td>
+      <td>24</td>
+      <td>To ditch class</td>
+      <td style="font-weight: bold;">WAG</td>
+    </tr>
+    <tr>
+      <td>39</td>
+      <td>The captain who rediscovered Straya</td>
+      <td style="font-weight: bold;">COOK</td>
+      <td>26</td>
+      <td>Redheads can be used to start this</td>
+      <td style="font-weight: bold;">FIRE</td>
+    </tr>
+    <tr>
+      <td>40</td>
+      <td>“Ow ya goin?”</td>
+      <td style="font-weight: bold;">GDAY</td>
+      <td>29</td>
+      <td>A marsupial missing from our dollars and cents</td>
+      <td style="font-weight: bold;">WOMBAT</td>
+    </tr>
+    <tr>
+      <td>42</td>
+      <td>Grog shop</td>
+      <td style="font-weight: bold;">BOTTLEO</td>
+      <td>30</td>
+      <td>To be really excited about something</td>
+      <td style="font-weight: bold;">RAPT</td>
+    </tr>
+    <tr>
+      <td>43</td>
+      <td>A government payment you might bludge</td>
+      <td style="font-weight: bold;">DOLE</td>
+      <td>31</td>
+      <td>Someone you often hang out with at Chrissie</td>
+      <td style="font-weight: bold;">RELO</td>
+    </tr>
+    <tr>
+      <td>44</td>
+      <td>Not sheilas</td>
+      <td style="font-weight: bold;">BLOKES</td>
+      <td>32</td>
+      <td>The night before he ties the knot</td>
+      <td style="font-weight: bold;">BUCKS</td>
+    </tr>
+    <tr>
+      <td>45</td>
+      <td>What tinnies are commonly packaged into</td>
+      <td style="font-weight: bold;">SLABS</td>
+      <td>33</td>
+      <td>Bathers or swimmers</td>
+      <td style="font-weight: bold;">TOGS</td>
+    </tr>
+    <tr>
+      <td>46</td>
+      <td>Cheerio or toodle-oo</td>
+      <td style="font-weight: bold;">HOOROO</td>
+      <td>34</td>
+      <td>The Yarra has two of these</td>
+      <td style="font-weight: bold;">BANKS</td>
+    </tr>
+    <tr>
+      <td>47</td>
+      <td>Someone who never burns out from burnouts</td>
+      <td style="font-weight: bold;">HOON</td>
+      <td>37</td>
+      <td>These are a species of cockie</td>
+      <td style="font-weight: bold;">GALAHS</td>
+    </tr>
+    <tr>
+      <td>49</td>
+      <td>Fruity Lexia, for example</td>
+      <td style="font-weight: bold;">GOON</td>
+      <td>38</td>
+      <td>Where someone who uses 1-down might camp</td>
+      <td style="font-weight: bold;">BILLABONG</td>
+    </tr>
+    <tr>
+      <td>51</td>
+      <td>Comfy boot</td>
+      <td style="font-weight: bold;">UGG</td>
+      <td>41</td>
+      <td>Snitches</td>
+      <td style="font-weight: bold;">DOBS</td>
+    </tr>
+    <tr>
+      <td>52</td>
+      <td>Pants, commonly trackies</td>
+      <td style="font-weight: bold;">DAKS</td>
+      <td>43</td>
+      <td>Someone who is incompetent</td>
+      <td style="font-weight: bold;">DRONGO</td>
+    </tr>
+    <tr>
+      <td>53</td>
+      <td>What a billy can is used to brew</td>
+      <td style="font-weight: bold;">TEA</td>
+      <td>48</td>
+      <td>Slagged off or copped a bit of flak</td>
+      <td style="font-weight: bold;">BAGGED</td>
+    </tr>
+    <tr>
+      <td>54</td>
+      <td>Between a kickboard and surfboard in size</td>
+      <td style="font-weight: bold;">BOOGIEBOARD</td>
+      <td>50</td>
+      <td>A small corner where you might find a daddy long-legs</td>
+      <td style="font-weight: bold;">NOOK</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>52</td>
+      <td>A Blue Heeler, for example</td>
+      <td style="font-weight: bold;">DOG</td>
+    </tr>
+  </table>
+
+  <center><img src="{% static 'PHapp/img/solutions/6.1.png' %}" style="width:50%; padding:10px;"></center>
+
+  <p>The solver might then notice four almost-complete words leading into/out of the central Red Cross: TUCKSH_, NWRRIE_, _UNTSMN, _ERHUSE. Filling the blanks, we obtain the words TUCKSH<b>OP</b> (canteen), NOWORRIE<b>S</b> (no problems), <b>H</b>UNTSMAN (a type of spider), <b>OP</b>ERAHOUSE (famous Australian landmark). The missing letters of each word is OP, S, H, OP spelling out the final phrase <b>OP SHOP</b>, which means charity shop or thrift shop. This answer is thematic with the puzzle’s concept of donations, Australian slang, and the Red Cross. If unsure whether the O’s should be counted, removing the O's lead to PSHP, from which the final answer should still be deducible.</p>
+
+  <br>
+
+  <h4>Author's notes</h4>
+  <p>Thanks to the teams who helped spot the misnumbering of the crossword grid. We hope that Australian teams found this puzzle really enjoyable, and that non-Australian teams enjoyed the chance to learn about our ‘culture’ ;)</p>
+
+
+</div>
+</div>
+
+{% endblock %}
