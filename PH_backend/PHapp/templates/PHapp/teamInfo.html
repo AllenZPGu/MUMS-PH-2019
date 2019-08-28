@@ -28,6 +28,11 @@
 	{% endif %}
 	<br>
 
+	{% if team.authClone == user %}
+		<h4><a href="https://docs.google.com/forms/d/e/1FAIpQLSfLUItYVbUqEmnU0rGlWguMVwpVtdcPEW5wmTUU2eynauEYAw/viewform?usp=pp_url&entry.920731804={{team.id}}" target="_blank">Click here for the survey and feedback form</a></h4>
+		<br>
+	{% endif %}
+
 	<h4>Members:</h4>
 	{% for member in members %}
 		<h6>{{member.name}}</h6>
